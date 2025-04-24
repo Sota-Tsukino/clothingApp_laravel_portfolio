@@ -3,6 +3,7 @@
 use App\Http\Controllers\ComponentTestController;
 use App\Http\Controllers\LifeCycleTestController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,9 +31,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
-Route::get('/component-test2', [ComponentTestController::class, 'showComponent2']);
-Route::get('/servicecontainertest', [LifeCycleTestController::class, 'showServiceContainerTest']);
-Route::get('/serviceprovidertest', [LifeCycleTestController::class, 'showServiceProviderTest']);
+// 管理者用
+Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通す　
+    ->prefix('admin') // URLの先頭にadminをつける
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/user', [UserController::class, 'index'])->name('user.index');
+        Route::post('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+        // Route::resource('/user', UserController::class);
+    });
+
+// Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
+// Route::get('/component-test2', [ComponentTestController::class, 'showComponent2']);
+// Route::get('/servicecontainertest', [LifeCycleTestController::class, 'showServiceContainerTest']);
+// Route::get('/serviceprovidertest', [LifeCycleTestController::class, 'showServiceProviderTest']);
+
 
 require __DIR__.'/auth.php';
