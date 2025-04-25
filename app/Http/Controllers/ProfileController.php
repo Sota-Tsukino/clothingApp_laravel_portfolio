@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
+use App\Models\Prefecture;
+use App\Models\City;
+
 
 class ProfileController extends Controller
 {
@@ -15,16 +19,29 @@ class ProfileController extends Controller
      * Display the user's profile form.
      */
 
+     public function __construct() {
+        $this->middleware('auth'); //必要？ web.phpでもこれを通している？
+     }
+
     public function show(Request $request): View
     {
-        return view('profile.show');
+        //※App\Models\User.phpにリレーションを定義していること
+        $user = User::with(['prefecture', 'city'])->findOrFail(Auth::id());
+        // dd($user);
+        return view('profile.show', compact('user'));
     }
 
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = User::with(['prefecture', 'city'])->findOrFail(Auth::id());
+        $prefectures = Prefecture::all();
+
+        //都道府県に該当する市区町村のみ取得
+        $cities = City::where('prefecture_id', $user->prefecture_id)->get();
+
+        // dd($user, $prefectures);
+
+        return view('profile.edit', compact('user', 'prefectures', 'cities'));
     }
 
     /**
