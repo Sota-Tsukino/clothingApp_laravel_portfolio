@@ -25,13 +25,15 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// user/admin共通
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    // Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile/edit', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// 管理者用
+// admin専用
 Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通す　
     ->prefix('admin') // URLの先頭にadminをつける
     ->name('admin.')
