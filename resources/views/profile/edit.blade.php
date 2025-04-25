@@ -8,11 +8,10 @@
   <section class="text-gray-600 body-font overflow-hidden px-7">
     <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
-      {{-- <x-auth-validation-errors class="mb-4" :errors="$errors" /> --}}
-      {{-- <x-flash-message status="session('status')" /> --}}
-      <form action="{{ route('profile.update', ['user' => $user->id]) }}" method="post">
+      <x-auth-validation-errors class="mb-4" :errors="$errors" />
+      <form action="{{ route('profile.update') }}" method="post">
         @csrf
-        @method('put')
+        @method('put') <!-- formタグがPOSTでも、laravelがput methodとして認識できるようになる-->
         <div class="w-full mb-6 ">
           <div class="flex mb-6 items-center">
             <label for="name" class="leading-7 text-sm text-gray-600 w-1/3">ニックネーム</label>

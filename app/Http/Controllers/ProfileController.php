@@ -49,15 +49,29 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        $request->validate([
+            'name' => 'required|string|max:20',
+            'email' => 'required|string|email|max:20|unique:users,email,' . $request->user()->id,//unique:テーブル名、カラム名、除外するID
+            'prefecture_id' => 'integer|nullable',
+            'city_id' => 'integer|nullable',
+        ]);
 
-        $request->user()->save();
+        $user = $request->user();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->prefecture_id = $request->prefecture_id;
+        $user->city_id = $request->city_id;
+        $user->save();
+
+        return redirect()
+            ->route('profile.show')
+            ->with([//セッションにフラッシュデータとして保存  session('message') session('status')
+                'message' => 'ユーザープロフィールを更新しました。',
+                'status' => 'info'
+            ]);
+
     }
 
     /**

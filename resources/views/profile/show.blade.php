@@ -7,6 +7,7 @@
 
   <section class="text-gray-600 body-font overflow-hidden px-7">
     <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
+    <x-flash-message status="session('status')" />
       <div class="w-full mb-6 ">
         <div class="flex mb-6">
           <span class="text-gray-500">ニックネーム</span>
@@ -27,8 +28,6 @@
         <div class="flex justify-between mx-auto">
           <button onclick="location.href='{{ route('profile.edit') }}'"
             class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">編集</button>
-          <button
-            class=" text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">削除</button>
         </div>
       </div>
     </div>
