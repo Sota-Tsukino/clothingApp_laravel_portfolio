@@ -46,8 +46,10 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
         Route::get('/user', [UserController::class, 'index'])->name('user.index');
-        Route::post('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+        Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
+        Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
     });
 
 // Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);

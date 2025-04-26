@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'admin',
                 'email' => 'test@test.com',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('test'),
                 'role' => 'admin',
                 'is_active' => '1',
                 'prefecture_id' => '1',
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'user1',
                 'email' => 'test1@test.com',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('test'),
                 'role' => 'user',
                 'is_active' => '1',
                 'prefecture_id' => '1',
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'user2',
                 'email' => 'test2@test.com',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('test'),
                 'role' => 'user',
                 'is_active' => '1',
                 'prefecture_id' => '1',
@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'user3',
                 'email' => 'test3@test.com',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('test'),
                 'role' => 'user',
                 'is_active' => '1',
                 'prefecture_id' => '1',
