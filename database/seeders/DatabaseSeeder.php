@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             PrefectureSeeder::class,
             CitySeeder::class,
             UserSeeder::class,
+            BodyMeasurementSeeder::class,
         ]);
 
         // \App\Models\User::factory(10)->create();

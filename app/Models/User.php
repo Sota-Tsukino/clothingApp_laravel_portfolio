@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\City;
 use App\Models\Prefecture;
+use App\Models\BodyMeasurement;
 
 class User extends Authenticatable
 {
@@ -57,5 +58,10 @@ class User extends Authenticatable
     public function city()
     {
         return $this->belongsTo(City::class);
+    }
+
+    public function bodymeasurements()
+    {
+        return $this->hasMany(BodyMeasurement::class);
     }
 }

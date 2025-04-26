@@ -4,6 +4,7 @@ use App\Http\Controllers\ComponentTestController;
 use App\Http\Controllers\LifeCycleTestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\BodyMeasurementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +51,11 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::get('/user', [UserController::class, 'index'])->name('user.index');
         Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
         Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+
+
+        Route::get('/measurement', [BodyMeasurementController::class, 'index'])->name('measurement.index');
+
+
     });
 
 // Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
