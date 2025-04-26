@@ -18,18 +18,18 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->date('measured_at');
-            $table->decimal('height', 4, 1)->nullable();// float精度が劣るのでdecimal()を使用
-            $table->decimal('head_circumference', 3, 1)->nullable();// 99.9まで　小数点以下の桁数1
-            $table->decimal('neck_circumference', 3, 1, 3, 1)->nullable();
-            $table->decimal('shoulder_width', 3, 1)->nullable();
-            $table->decimal('chest_circumference', 3, 1)->nullable();
-            $table->decimal('waist', 3, 1)->nullable();
-            $table->decimal('hip', 3, 1)->nullable();
-            $table->decimal('sleeve_length', 3, 1)->nullable();
-            $table->decimal('yuki_length', 3, 1)->nullable();
-            $table->decimal('inseam', 3, 1)->nullable();
-            $table->decimal('foot_length', 3, 1)->nullable();
-            $table->decimal('foot_circumference', 3, 1)->nullable();
+            $table->decimal('height', 4, 1)->unsigned()->nullable();// float精度が劣るのでdecimal()を使用
+            $table->decimal('head_circumference', 3, 1)->unsigned()->nullable();// 99.9まで　小数点以下の桁数1
+            $table->decimal('neck_circumference', 3, 1)->unsigned()->nullable();
+            $table->decimal('shoulder_width', 3, 1)->unsigned()->nullable();
+            $table->decimal('chest_circumference', 3, 1)->unsigned()->nullable();
+            $table->decimal('waist', 3, 1)->unsigned()->nullable();
+            $table->decimal('hip', 3, 1)->unsigned()->nullable();
+            $table->decimal('sleeve_length', 3, 1)->unsigned()->nullable();
+            $table->decimal('yuki_length', 3, 1)->unsigned()->nullable();
+            $table->decimal('inseam', 3, 1)->unsigned()->nullable();
+            $table->decimal('foot_length', 3, 1)->unsigned()->nullable();
+            $table->decimal('foot_circumference', 3, 1)->unsigned()->nullable();
             $table->timestamps();
         });
     }

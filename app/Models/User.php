@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\City;
 use App\Models\Prefecture;
 use App\Models\BodyMeasurement;
+use App\Models\BodyCorrection;
 
 class User extends Authenticatable
 {
@@ -63,5 +64,10 @@ class User extends Authenticatable
     public function bodymeasurements()
     {
         return $this->hasMany(BodyMeasurement::class);
+    }
+
+    public function bodycorrections()
+    {
+        return $this->hasOne(BodyCorrection::class);
     }
 }
