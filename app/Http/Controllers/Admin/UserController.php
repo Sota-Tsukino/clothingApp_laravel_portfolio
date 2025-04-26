@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -12,7 +13,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return '管理者のユーザー管理画面です index';
+        $users = User::with(['prefecture', 'city'])->where('role', 'user')->get();
+        // dd($users);
+        return view('admin.user.index', compact('users'));
     }
 
     /**

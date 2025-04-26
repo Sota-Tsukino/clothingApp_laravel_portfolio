@@ -66,7 +66,7 @@ class ProfileController extends Controller
         $user->save();
 
         return redirect()
-            ->route('profile.show')
+            ->route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show')
             ->with([//セッションにフラッシュデータとして保存  session('message') session('status')
                 'message' => 'ユーザープロフィールを更新しました。',
                 'status' => 'info'

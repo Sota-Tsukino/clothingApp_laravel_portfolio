@@ -9,7 +9,7 @@
     <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
-      <form action="{{ route('profile.update') }}" method="post">
+      <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.profile.update' : 'profile.update') }}" method="post">
         @csrf
         @method('put') <!-- formタグがPOSTでも、laravelがput methodとして認識できるようになる-->
         <div class="w-full mb-6 ">
@@ -48,7 +48,7 @@
           <div class="flex justify-between mx-auto">
             <button
               class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">更新</button>
-            <button type="button" onclick="location.href='{{ route('profile.show') }}'"
+            <button type="button" onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show') }}'"
               class=" text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">キャンセル</button>
           </div>
         </div>

@@ -26,7 +26,7 @@
           <span class="ml-auto text-gray-900">{{ $user->city->name ?? '未設定' }}</span>
         </div>
         <div class="flex justify-between mx-auto">
-          <button onclick="location.href='{{ route('profile.edit') }}'"
+          <button onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.profile.edit' : 'profile.edit') }}'"
             class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">編集</button>
         </div>
       </div>

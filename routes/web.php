@@ -21,29 +21,33 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-// user/admin共通
-Route::middleware('auth')->group(function () {
+// user用ルート
+Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    // put method is not supportedというエラーが出た。記述ミス？ あと{user}って必要か？
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('/profile/edit', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// admin専用
+// admin用ルート
 Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通す　
     ->prefix('admin') // URLの先頭にadminをつける
     ->name('admin.')
     ->group(function () {
+        Route::get('/dashboard', function () {
+            return view('dashboard');
+        })->name('dashboard');
+        Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
         Route::get('/user', [UserController::class, 'index'])->name('user.index');
         Route::post('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
-        // Route::resource('/user', UserController::class);
     });
 
 // Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
