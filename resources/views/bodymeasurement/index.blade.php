@@ -51,6 +51,9 @@
             体格情報が登録されていません。
           </tbody>
         </table>
+        <button
+        onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.create' : 'measurement.create', ['measurement' => $bodyMeasurement->id]) }}'"
+        class="text-white bg-teal-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">新規登録</button>
       </div>
     </div>
   </section>
