@@ -39,6 +39,10 @@
                             :href="route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+                        <x-dropdown-link
+                            :href="route(Auth::user()->role === 'admin' ? 'admin.measurement.index' : 'measurement.index')">
+                            体格情報一覧
+                        </x-dropdown-link>
                         @if (Auth::user()->role === 'admin')
                             <x-dropdown-link
                                 :href="route('admin.user.index')">

@@ -53,9 +53,14 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 
 
-        Route::get('/measurement', [BodyMeasurementController::class, 'index'])->name('measurement.index');
+        Route::resource('/measurement', BodyMeasurementController::class);
 
 
+
+    });
+
+    Route::get('/phpinfo', function() {
+        phpinfo();
     });
 
 // Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
