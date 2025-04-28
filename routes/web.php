@@ -5,6 +5,7 @@ use App\Http\Controllers\LifeCycleTestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\BodyMeasurementController;
+use App\Http\Controllers\BodyCorrectionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,8 +53,9 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
         Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 
-
         Route::resource('/measurement', BodyMeasurementController::class);
+
+        Route::get('/correction', [BodyCorrectionController::class, 'edit'])->name('correction.edit');
 
 
 

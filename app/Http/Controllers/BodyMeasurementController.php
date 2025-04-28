@@ -11,6 +11,34 @@ use Carbon\Carbon;
 
 class BodyMeasurementController extends Controller
 {
+
+    private array $fields = [
+        'height',
+        'head_circumference',
+        'neck_circumference',
+        'shoulder_width',
+        'yuki_length',
+        'sleeve_length',
+        'chest_circumference',
+        'waist',
+        'hip',
+        'inseam',
+        'foot_length',
+        'foot_circumference',
+    ];
+
+    private function validationRules(bool $withDate = false): array
+    {
+        $rules = [];
+        if ($withDate) {
+            $rules['measured_at'] = 'date|required|before_or_equal:today';
+        }
+        foreach ($this->fields as $field) {
+            $rules[$field] = 'nullable|numeric|between:0,999.0';
+        }
+        return $rules;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -18,7 +46,6 @@ class BodyMeasurementController extends Controller
     {
         $user = User::findOrFail(Auth::id());
         $bodyMeasurements = $user->bodymeasurements;
-        // dd($bodyMeasurements);
         return view('bodymeasurement.index', compact('bodyMeasurements'));
     }
 
@@ -27,21 +54,9 @@ class BodyMeasurementController extends Controller
      */
     public function create()
     {
-        $fields = [
-            'height',
-            'head_circumference',
-            'neck_circumference',
-            'shoulder_width',
-            'yuki_length',
-            'sleeve_length',
-            'chest_circumference',
-            'waist',
-            'hip',
-            'inseam',
-            'foot_length',
-            'foot_circumference',
-        ];
-        return view('bodymeasurement.create', compact('fields'));
+
+        //$fields変数にこのクラスのprivate変数を代入
+        return view('bodymeasurement.create', ['fields' => $this->fields]);
     }
 
     /**
@@ -49,40 +64,39 @@ class BodyMeasurementController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'measured_at' => 'date|required|before_or_equal:today', //今日の日付けよりも前の日か？
-            'height' => 'nullable|numeric|between:0,999.0',
-            'head_circumference' => 'nullable|numeric|between:0,999.0',
-            'neck_circumference' => 'nullable|numeric|between:0,999.0',
-            'shoulder_width' => 'nullable|numeric|between:0,999.0',
-            'yuki_length' => 'nullable|numeric|between:0,999.0',
-            'sleeve_length' => 'nullable|numeric|between:0,999.0',
-            'chest_circumference' => 'nullable|numeric|between:0,999.0',
-            'waist' => 'nullable|numeric|between:0,999.0',
-            'hip' => 'nullable|numeric|between:0,999.0',
-            'inseam' => 'nullable|numeric|between:0,999.0',
-            'foot_length' => 'nullable|numeric|between:0,999.0',
-            'foot_circumference' => 'nullable|numeric|between:0,999.0',
-        ]);
+        $request->validate($this->validationRules(true));
         // dd($request);
 
         try {
-            $bodyMeasurement = BodyMeasurement::create([
-                'user_id' => Auth::id(),
-                'measured_at' => $request->measured_at,
-                'height' => $request->height,
-                'head_circumference' => $request->head_circumference,
-                'neck_circumference' => $request->neck_circumference,
-                'shoulder_width' => $request->shoulder_width,
-                'yuki_length' => $request->yuki_length,
-                'sleeve_length' => $request->sleeve_length,
-                'chest_circumference' => $request->chest_circumference,
-                'waist' => $request->waist,
-                'hip' => $request->hip,
-                'inseam' => $request->inseam,
-                'foot_length' => $request->foot_length,
-                'foot_circumference' => $request->foot_circumference,
-            ]);
+            // $bodyMeasurement = BodyMeasurement::create([
+            //     'user_id' => Auth::id(),
+            //     'measured_at' => $request->measured_at,
+            //     'height' => $request->height,
+            //     'head_circumference' => $request->head_circumference,
+            //     'neck_circumference' => $request->neck_circumference,
+            //     'shoulder_width' => $request->shoulder_width,
+            //     'yuki_length' => $request->yuki_length,
+            //     'sleeve_length' => $request->sleeve_length,
+            //     'chest_circumference' => $request->chest_circumference,
+            //     'waist' => $request->waist,
+            //     'hip' => $request->hip,
+            //     'inseam' => $request->inseam,
+            //     'foot_length' => $request->foot_length,
+            //     'foot_circumference' => $request->foot_circumference,
+            // ]);
+
+
+            // ↓の動作確認
+            // $datas = $request->only('measured_at', 'height', 'waist');// ['key' => value]で返す
+            // $datas = array_merge(['measured_at'], $this->fields);
+            // $datas = $request->only(array_merge(['measured_at'], $this->fields));
+            // dd($datas);
+
+            //リファクタリング
+            $bodyMeasurement = BodyMeasurement::create(array_merge(
+                $request->only(array_merge(['measured_at'], $this->fields)), //
+                ['user_id' => Auth::id()]
+            ));
 
             // ここで体格補正も自動作成
             if (!BodyCorrection::where('user_id', Auth::id())->exists()) {
@@ -110,7 +124,6 @@ class BodyMeasurementController extends Controller
     public function show(string $id)
     {
         $bodyMeasurement = BodyMeasurement::findOrFail($id);
-        // dd($bodyMeasurement);
 
         //参照する体格情報が、ログインユーザー所有のものか？を判定
         if ($bodyMeasurement->user_id !== Auth::id()) {
@@ -123,33 +136,25 @@ class BodyMeasurementController extends Controller
         }
 
         //model型で取得 first()でもokでも
-        $bodyCorrection = BodyCorrection::where('user_id',Auth::id())->firstOrFail();
-
-        $fields = [
-            'height',
-            'head_circumference',
-            'neck_circumference',
-            'shoulder_width',
-            'yuki_length',
-            'sleeve_length',
-            'chest_circumference',
-            'waist',
-            'hip',
-            'inseam',
-            'foot_length',
-            'foot_circumference',
-        ];
+        $bodyCorrection = BodyCorrection::where('user_id', Auth::id())->firstOrFail();
 
         $suitableSize = [];
-        foreach ($fields as $field) {
-            if (!empty($bodyMeasurement->$field)) {
-                $suitableSize[$field] = $bodyMeasurement->$field + $bodyCorrection->$field;
-                continue;
-            }
-            $suitableSize[$field] = '未登録';
+        foreach ($this->fields as $field) {
+            // if (!empty($bodyMeasurement->$field)) {
+            //     $suitableSize[$field] = $bodyMeasurement->$field + $bodyCorrection->$field;
+            //     continue;
+            // }
+            // $suitableSize[$field] = '未登録';
+            $suitableSize[$field] = !empty($bodyMeasurement->$field) ? $bodyMeasurement->$field + $bodyCorrection->$field : '未登録';
         }
 
-        return view('bodymeasurement.show', compact('bodyMeasurement', 'bodyCorrection', 'suitableSize', 'fields'));
+        // return view('bodymeasurement.show', compact('bodyMeasurement', 'bodyCorrection', 'suitableSize', 'fields'));
+        return view('bodymeasurement.show', [
+            'bodyMeasurement' => $bodyMeasurement,
+            'bodyCorrection' => $bodyCorrection,
+            'suitableSize' => $suitableSize,
+            'fields' => $this->fields,
+        ]);
     }
 
 
@@ -171,22 +176,11 @@ class BodyMeasurementController extends Controller
                 ]);
         }
 
-        $fields = [
-            'height',
-            'head_circumference',
-            'neck_circumference',
-            'shoulder_width',
-            'yuki_length',
-            'sleeve_length',
-            'chest_circumference',
-            'waist',
-            'hip',
-            'inseam',
-            'foot_length',
-            'foot_circumference',
-        ];
-
-        return view('bodymeasurement.edit', compact('bodyMeasurement', 'fields'));
+        // return view('bodymeasurement.edit', compact('bodyMeasurement', 'fields'));
+        return view('bodymeasurement.edit', [
+            'bodyMeasurement' => $bodyMeasurement,
+            'fields' => $this->fields,//compact()を使うとクラスのプライベート変数を渡せない？
+        ]);
     }
 
     /**
@@ -194,21 +188,7 @@ class BodyMeasurementController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'height' => 'nullable|numeric|between:0,999.0', //※min|maxだと整数比較になる
-            'head_circumference' => 'nullable|numeric|between:0,999.0', //numeric　数値かどうか
-            'neck_circumference' => 'nullable|numeric|between:0,999.0',
-            'shoulder_width' => 'nullable|numeric|between:0,999.0',
-            'yuki_length' => 'nullable|numeric|between:0,999.0',
-            'sleeve_length' => 'nullable|numeric|between:0,999.0',
-            'chest_circumference' => 'nullable|numeric|between:0,999.0',
-            'waist' => 'nullable|numeric|between:0,999.0',
-            'hip' => 'nullable|numeric|between:0,999.0',
-            'inseam' => 'nullable|numeric|between:0,999.0',
-            'foot_length' => 'nullable|numeric|between:0,999.0',
-            'foot_circumference' => 'nullable|numeric|between:0,999.0',
-        ]);
-
+        $request->validate($this->validationRules());
 
         //更新する対象の体格情報idを取得
         $bodyMeasurement = BodyMeasurement::findOrFail($id);
@@ -223,24 +203,10 @@ class BodyMeasurementController extends Controller
                 ]);
         }
 
-        $fields = [
-            'height',
-            'head_circumference',
-            'neck_circumference',
-            'shoulder_width',
-            'yuki_length',
-            'sleeve_length',
-            'chest_circumference',
-            'waist',
-            'hip',
-            'inseam',
-            'foot_length',
-            'foot_circumference',
-        ];
-
-        foreach ($fields as $field) {
-            $bodyMeasurement->$field = $request->$field;
-        }
+        // foreach ($this->fields as $field) {
+        //     $bodyMeasurement->$field = $request->$field;
+        // }
+        $bodyMeasurement->fill($request->only($this->fields))->save(); //リファクタリング
 
         $bodyMeasurement->save();
 
