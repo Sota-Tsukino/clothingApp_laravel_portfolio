@@ -61,7 +61,7 @@
           onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.edit' : 'measurement.edit', ['measurement' => $bodyMeasurement->id]) }}'"
           class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">体格寸法の編集</button>
         <button
-          onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.correction.edit' : 'correction.edit', ['correction' => $bodyCorrection->id]) }}'"
+          onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.correction.edit' : 'correction.edit', ['correction' => $bodyCorrection->id]) }}?from_measurement_id={{ $bodyMeasurement->id }}'"
           class="text-white bg-teal-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">補正値の編集</button>
         <form action="{{ route('admin.measurement.destroy', ['measurement' => $bodyMeasurement->id]) }}" method="post"
           class="inline">

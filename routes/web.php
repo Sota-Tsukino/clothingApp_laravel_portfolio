@@ -55,7 +55,9 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
 
         Route::resource('/measurement', BodyMeasurementController::class);
 
-        Route::get('/correction', [BodyCorrectionController::class, 'edit'])->name('correction.edit');
+        // Route::get('/correction', [BodyCorrectionController::class, 'show'])->name('correction.show');
+        Route::get('/correction/{correction}/edit', [BodyCorrectionController::class, 'edit'])->name('correction.edit');
+        Route::put('/correction/{correction}', [BodyCorrectionController::class, 'update'])->name('correction.update');
 
 
 

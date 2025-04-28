@@ -19,32 +19,38 @@
           <img src="{{ asset('images/foot.png') }}" alt="">
         </div>
       </div>
-      <h3 class="font-semibold text-sm text-gray-800 leading-tight">計測日：{{ $bodyMeasurement->measured_at }}</h3>
       <form
-        action="{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.update' : 'measurement.update', ['measurement' => $bodyMeasurement->id]) }}"
+        action="{{ route(Auth::user()->role === 'admin' ? 'admin.correction.update' : 'correction.update', ['correction' => $bodyCorrection->id]) }}"
         method="post">
+        @csrf
+        @method('put')
         <table class="w-full whitespace-no-wrap">
           <thead>
             <tr>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">部位</th>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">体格寸法</th>
+              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100"></th>
+              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">補正値</th>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">ガイド</th>
             </tr>
           </thead>
           <tbody>
-
-            @csrf
-            @method('put')
             @foreach ($fields as $field)
               <tr>
                 <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
                 <td class="text-center px-2 py-2">
-                  <input type="number" name="{{ $field }}" step="0.1" value="{{ $bodyMeasurement->$field }}" min="0.0" max="999.9">
+                  {{ $bodyMeasurement->$field ?? '未登録' }}<span class="ml-1">cm</span>
+                </td>
+                <td class="text-center px-2 py-2">+</td>
+                <td class="text-center px-2 py-2">
+                  <input type="number" name="{{ $field }}" step="0.1" value="{{ $bodyCorrection->$field }}"
+                    min="0.0" max="14.9">
                   <span class="ml-1">cm</span>
                 </td>
                 <td class="text-center px-2 py-2">
                   <div class="img w-8 mx-auto ">
-                    <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像" class="hover:opacity-50 cursor-pointer">
+                    <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
+                      class="hover:opacity-50 cursor-pointer">
                   </div>
                 </td>
               </tr>
@@ -55,8 +61,11 @@
         <div class="flex justify-between mx-auto my-5 w-1/2">
           <button
             class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">更新する</button>
+          @php
+            $fromMeasurementId = session('from_measurement_id');
+          @endphp
           <button type="button"
-            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $bodyMeasurement->id]) }}'"
+            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $fromMeasurementId]) }}'"
             class="text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">戻る</button>
         </div>
       </form>
