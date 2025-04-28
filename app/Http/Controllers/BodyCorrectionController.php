@@ -27,20 +27,38 @@ class BodyCorrectionController extends Controller
     {
         $rules = [];
         foreach ($this->fields as $field) {
-            $rules[$field] = 'require|numeric|between:0,15';
+            $rules[$field] = 'numeric|between:0,9';
         }
         return $rules;
     }
 
-    public function edit(Request $request, string $id) {
+    public function edit(Request $request, string $id)
+    {
         //セッションに体格情報IDを保持させ、補正値画面で戻るボタン押した際にこれをparamで渡す。
         if ($request->has('from_measurement_id')) {
             session(['from_measurement_id' => $request->input('from_measurement_id')]);
         }
-        
+
         $bodyCorrection = BodyCorrection::Findorfail($id);
+        //参照する体格情報が、ログインユーザー所有のものか？を判定
+        if ($bodyCorrection->user_id !== Auth::id()) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.measurement.index' : 'measurement.index')
+                ->with([
+                    'message' => '他のユーザーの体格補正値は参照できません。',
+                    'status' => 'alert'
+                ]);
+        }
         $bodyMeasurement = bodyMeasurement::Findorfail($request->from_measurement_id);
-        // dd($bodyMeasurement);
+        //参照する体格情報が、ログインユーザー所有のものか？を判定
+        if ($bodyMeasurement->user_id !== Auth::id()) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.measurement.index' : 'measurement.index')
+                ->with([
+                    'message' => '他のユーザーの体格情報は参照できません。',
+                    'status' => 'alert'
+                ]);
+        }
 
         return view('bodycorrection.edit', [
             // 'bodyMeasurement' => $bodyMeasurement,
@@ -48,5 +66,28 @@ class BodyCorrectionController extends Controller
             'bodyCorrection' => $bodyCorrection,
             'bodyMeasurement' => $bodyMeasurement,
         ]);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $request->validate($this->validationRules());
+
+        if ($request->has('from_measurement_id')) {
+            session(['from_measurement_id' => $request->input('from_measurement_id')]);
+        }
+
+        $bodyCorrection = BodyCorrection::Findorfail($id);
+
+        $bodyCorrection->fill($request->only($this->fields))->save(); //リファクタリング
+        $bodyCorrection->save();
+
+        //フォーム送信(POST/PUT) → リダイレクト(302) → GETページ表示
+        // viewではなくredirect()->route)を使う
+        return redirect()
+            ->route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $request->from_measurement_id])
+            ->with([
+                'message' => '補正値を更新しました。',
+                'status' => 'info'
+            ]);
     }
 }

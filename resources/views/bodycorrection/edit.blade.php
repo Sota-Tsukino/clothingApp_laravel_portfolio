@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-      体格情報編集
+      補正値編集
     </h2>
   </x-slot>
 
@@ -19,8 +19,11 @@
           <img src="{{ asset('images/foot.png') }}" alt="">
         </div>
       </div>
+      @php
+        $fromMeasurementId = session('from_measurement_id');
+      @endphp
       <form
-        action="{{ route(Auth::user()->role === 'admin' ? 'admin.correction.update' : 'correction.update', ['correction' => $bodyCorrection->id]) }}"
+        action="{{ route(Auth::user()->role === 'admin' ? 'admin.correction.update' : 'correction.update', ['correction' => $bodyCorrection->id]) }}?from_measurement_id={{ $fromMeasurementId }}"
         method="post">
         @csrf
         @method('put')
@@ -44,7 +47,7 @@
                 <td class="text-center px-2 py-2">+</td>
                 <td class="text-center px-2 py-2">
                   <input type="number" name="{{ $field }}" step="0.1" value="{{ $bodyCorrection->$field }}"
-                    min="0.0" max="14.9">
+                    min="0.0" max="9.0">
                   <span class="ml-1">cm</span>
                 </td>
                 <td class="text-center px-2 py-2">
@@ -61,9 +64,6 @@
         <div class="flex justify-between mx-auto my-5 w-1/2">
           <button
             class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">更新する</button>
-          @php
-            $fromMeasurementId = session('from_measurement_id');
-          @endphp
           <button type="button"
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $fromMeasurementId]) }}'"
             class="text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">戻る</button>
