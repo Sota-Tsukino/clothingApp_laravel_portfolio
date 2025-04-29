@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             BodyMeasurementSeeder::class,
             BodyCorrectionSeeder::class,
+            FittingTolerance::class,
         ]);
 
         // \App\Models\User::factory(10)->create();

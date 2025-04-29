@@ -11,6 +11,7 @@ use App\Models\City;
 use App\Models\Prefecture;
 use App\Models\BodyMeasurement;
 use App\Models\BodyCorrection;
+use App\Models\FittingTolerance;
 
 class User extends Authenticatable
 {
@@ -69,5 +70,10 @@ class User extends Authenticatable
     public function bodycorrections()
     {
         return $this->hasOne(BodyCorrection::class);
+    }
+
+    public function fittingtolerance()
+    {
+        return $this->hasMany(FittingTolerance::class);
     }
 }
