@@ -133,13 +133,6 @@ class FittingTolerance extends Seeder
                 'min_value' => '-4.0',
                 'max_value' => '4.0',
             ],
-            [
-                'user_id' => '1',
-                'body_part' => 'hip',
-                'tolerance_level' => 'long_or_short',
-                'min_value' => '-6.0',
-                'max_value' => '6.0',
-            ],
         ]);
     }
 }

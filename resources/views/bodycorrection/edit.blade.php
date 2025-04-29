@@ -61,12 +61,14 @@
 
           </tbody>
         </table>
-        <div class="flex justify-between mx-auto my-5 w-1/2">
+        <div class="flex justify-between mx-auto my-5">
           <button
-            class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">更新する</button>
+            class="text-white bg-amber-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">更新する</button>
+          <button type="button" onclick="resetToDefault()"
+            class="text-white bg-cyan-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">デフォルト値に戻す</button>
           <button type="button"
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $fromMeasurementId]) }}'"
-            class="text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">戻る</button>
+            class="text-white bg-gray-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">戻る</button>
         </div>
       </form>
     </div>
@@ -74,3 +76,24 @@
 
 
 </x-app-layout>
+<script>
+  const defaultValues = {
+    'head_circumference': 2.0,
+    'neck_circumference': 2.0,
+    'shoulder_width': 2.0,
+    'chest_circumference': 3.0,
+    'waist': 2.0,
+    'hip': 2.0,
+    'sleeve_length': 0.0,
+    'yuki_length': 0.0,
+    'inseam': 0.0,
+    'foot_length': 1.0,
+    'foot_circumference': 0.0,
+  };
+
+  function resetToDefault() {
+    for (const key in defaultValues) {
+      document.querySelector(`input[name="${key}"]`).value = defaultValues[key];
+    }
+  }
+</script>
