@@ -20,7 +20,7 @@
         </div>
       </div>
       @php
-        $fromMeasurementId = session('from_measurement_id');
+        $fromMeasurementId = session('from_measurement_id') ?? $bodyMeasurement->id;//sessionがない場合に$bodyMeasurement->idを追記
       @endphp
       <form
         action="{{ route(Auth::user()->role === 'admin' ? 'admin.correction.update' : 'correction.update', ['correction' => $bodyCorrection->id]) }}?from_measurement_id={{ $fromMeasurementId }}"
@@ -77,19 +77,8 @@
 
 </x-app-layout>
 <script>
-  const defaultValues = {
-    'head_circumference': 2.0,
-    'neck_circumference': 2.0,
-    'shoulder_width': 2.0,
-    'chest_circumference': 3.0,
-    'waist': 2.0,
-    'hip': 2.0,
-    'sleeve_length': 0.0,
-    'yuki_length': 0.0,
-    'inseam': 0.0,
-    'foot_length': 1.0,
-    'foot_circumference': 0.0,
-  };
+
+  const defaultValues = @json($defaultValues);//controllerから渡ってくる変数を変換
 
   function resetToDefault() {
     for (const key in defaultValues) {

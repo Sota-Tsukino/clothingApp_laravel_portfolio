@@ -9,24 +9,25 @@ use App\Models\BodyMeasurement;
 
 class BodyCorrectionController extends Controller
 {
-    private array $fields = [
-        'head_circumference',
-        'neck_circumference',
-        'shoulder_width',
-        'yuki_length',
-        'sleeve_length',
-        'chest_circumference',
-        'waist',
-        'hip',
-        'inseam',
-        'foot_length',
-        'foot_circumference',
+    private array $fieldsDefaultValues = [
+        'head_circumference' => 2.0,
+        'neck_circumference' => 2.0,
+        'shoulder_width' => 2.0,
+        'chest_circumference' => 3.0,
+        'waist' => 2.0,
+        'hip' => 2.0,
+        'sleeve_length' => 0.0,
+        'yuki_length' => 0.0,
+        'inseam' => 0.0,
+        'foot_length' => 1.0,
+        'foot_circumference' => 0.0,
     ];
 
     private function validationRules(): array
     {
         $rules = [];
-        foreach ($this->fields as $field) {
+        $fieldKeys = array_keys($this->fieldsDefaultValues);
+        foreach ($fieldKeys as $field) {
             $rules[$field] = 'numeric|between:0,9';
         }
         return $rules;
@@ -34,12 +35,14 @@ class BodyCorrectionController extends Controller
 
     public function edit(Request $request, string $id)
     {
+        $fieldKeys = array_keys($this->fieldsDefaultValues);//keyのみ取り出して配列に格納
+
         //セッションに体格情報IDを保持させ、補正値画面で戻るボタン押した際にこれをparamで渡す。
         if ($request->has('from_measurement_id')) {
             session(['from_measurement_id' => $request->input('from_measurement_id')]);
         }
 
-        $bodyCorrection = BodyCorrection::Findorfail($id);
+        $bodyCorrection = BodyCorrection::findOrFail($id);
         //参照する体格情報が、ログインユーザー所有のものか？を判定
         if ($bodyCorrection->user_id !== Auth::id()) {
             return redirect()
@@ -49,7 +52,7 @@ class BodyCorrectionController extends Controller
                     'status' => 'alert'
                 ]);
         }
-        $bodyMeasurement = bodyMeasurement::Findorfail($request->from_measurement_id);
+        $bodyMeasurement = BodyMeasurement::findOrFail($request->from_measurement_id);
         //参照する体格情報が、ログインユーザー所有のものか？を判定
         if ($bodyMeasurement->user_id !== Auth::id()) {
             return redirect()
@@ -61,10 +64,10 @@ class BodyCorrectionController extends Controller
         }
 
         return view('bodycorrection.edit', [
-            // 'bodyMeasurement' => $bodyMeasurement,
-            'fields' => $this->fields,
+            'fields' => $fieldKeys,
             'bodyCorrection' => $bodyCorrection,
             'bodyMeasurement' => $bodyMeasurement,
+            'defaultValues' => $this->fieldsDefaultValues,
         ]);
     }
 
@@ -76,10 +79,10 @@ class BodyCorrectionController extends Controller
             session(['from_measurement_id' => $request->input('from_measurement_id')]);
         }
 
-        $bodyCorrection = BodyCorrection::Findorfail($id);
+        $bodyCorrection = BodyCorrection::findOrFail($id);
 
-        $bodyCorrection->fill($request->only($this->fields))->save(); //リファクタリング
-        $bodyCorrection->save();
+        $fieldKeys = array_keys($this->fieldsDefaultValues);
+        $bodyCorrection->fill($request->only($fieldKeys))->save(); //リファクタリング
 
         //フォーム送信(POST/PUT) → リダイレクト(302) → GETページ表示
         // viewではなくredirect()->route)を使う
