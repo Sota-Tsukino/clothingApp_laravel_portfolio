@@ -30,6 +30,7 @@
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">下限値</th>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100"></th>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">上限値</th>
+              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">ガイド</th>
             </tr>
           </thead>
           @foreach ($fittingTolerances as $index => $fittingTolerance)
@@ -39,7 +40,6 @@
             <tr>
               <td class="text-center px-2 py-2">{{ __('measurement.' . $fittingTolerance->body_part) }}</td>
               <td class="text-center px-2 py-2">
-                {{-- 表示部分はそのままでOK --}}
                 @if ($fittingTolerance->tolerance_level === 'just')
                   <span class="text-green-600 font-semibold">✅ ちょうどいい</span>
                 @elseif ($fittingTolerance->tolerance_level === 'slight')
@@ -59,6 +59,11 @@
                   value="{{ $fittingTolerance->max_value }}" step="0.1" min="-10.0" max="10.0">
                 <span class="ml-1">cm</span>
               </td>
+              <td class="text-center px-2 py-2">
+                <div class="img w-8 mx-auto ">
+                  <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像" class="hover:opacity-50 cursor-pointer">
+                </div>
+              </td>
             </tr>
           @endforeach
 
@@ -68,9 +73,11 @@
         <div class="flex justify-between mx-auto my-5">
           <button
             class="text-white bg-amber-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">更新する</button>
-          {{-- <button type="button"
-            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $fromMeasurementId]) }}'"
-            class="text-white bg-gray-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">戻る</button> --}}
+          <button type="button" onclick="resetToDefault()"
+            class="text-white bg-cyan-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">デフォルト値に戻す</button>
+          <button type="button"
+            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index') }}'"
+            class="text-white bg-gray-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">戻る</button>
         </div>
     </div>
     </form>
@@ -78,3 +85,14 @@
 
 
 </x-app-layout>
+
+<script>
+  const defaultValues = @json($defaultValues);
+
+  function resetToDefault() {
+    for (const key in defaultValues) {
+      document.querySelector(`input[name="tolerances[${key}][min_value]"]`).value = defaultValues[key]['min_value'];
+      document.querySelector(`input[name="tolerances[${key}][max_value]"]`).value = defaultValues[key]['max_value'];
+    }
+  }
+</script>

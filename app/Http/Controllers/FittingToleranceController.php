@@ -8,6 +8,93 @@ use App\Models\FittingTolerance;
 
 class FittingToleranceController extends Controller
 {
+    private array $defaultValues = [
+        'yuki_length-just' => [
+            "min_value" => -2.0,
+            "max_value" => 2.0
+        ],
+        'yuki_length-slight' => [
+            "min_value" => -4.0,
+            "max_value" => 4.0
+        ],
+        'yuki_length-long_or_short' => [
+            "min_value" => -6.0,
+            "max_value" => 6.0
+        ],
+        'neck_circumference-just' => [
+            "min_value" => 0.0,
+            "max_value" => 1.0
+        ],
+        'neck_circumference-slight' => [
+            "min_value" => -1.0,
+            "max_value" => 2.0
+        ],
+        'neck_circumference-long_or_short' => [
+            "min_value" => -2.0,
+            "max_value" => 3.0
+        ],
+        'chest_circumference-just' => [
+            "min_value" => -2.0,
+            "max_value" => 2.0
+        ],
+        'chest_circumference-slight' => [
+            "min_value" => -4.0,
+            "max_value" => 4.0
+        ],
+        'chest_circumference-long_or_short' => [
+            "min_value" => -6.0,
+            "max_value" => 6.0
+        ],
+        'waist-just' => [
+            "min_value" => -2.0,
+            "max_value" => 2.0
+        ],
+        'waist-slight' => [
+            "min_value" => -4.0,
+            "max_value" => 4.0
+        ],
+        'waist-long_or_short' => [
+            "min_value" => -6.0,
+            "max_value" => 6.0
+        ],
+        'inseam-just' => [
+            "min_value" => -2.0,
+            "max_value" => 2.0
+        ],
+        'inseam-slight' => [
+            "min_value" => -4.0,
+            "max_value" => 4.0
+        ],
+        'inseam-long_or_short' => [
+            "min_value" => -6.0,
+            "max_value" => 6.0
+        ],
+        'hip-just' => [
+            "min_value" => -2.0,
+            "max_value" => 2.0
+        ],
+        'hip-slight' => [
+            "min_value" => -4.0,
+            "max_value" => 4.0
+        ],
+        'hip-long_or_short' => [
+            "min_value" => -6.0,
+            "max_value" => 6.0
+        ],
+    ];
+
+    private function validationRules(): array
+    {
+        $rules = [];
+        foreach ($this->defaultValues as $key => $values) {
+            // .記法でネストされたキーを指定する
+            $rules["tolerances.$key.min_value"] = 'required|numeric|between:-10.0,10.0';
+            $rules["tolerances.$key.max_value"] = 'required|numeric|between:-10.0,10.0';
+        }
+        return $rules;
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -56,7 +143,11 @@ class FittingToleranceController extends Controller
         $fittingTolerances = FittingTolerance::where('user_id', Auth::id())->get();
         $userId = Auth::id();
 
-        return view('fittingtolerance.edit', compact('fittingTolerances', 'userId'));
+        return view('fittingtolerance.edit',     [
+            'fittingTolerances' => $fittingTolerances,
+            'userId' => $userId,
+            'defaultValues' => $this->defaultValues,
+        ]);
     }
 
     /**
@@ -64,23 +155,25 @@ class FittingToleranceController extends Controller
      */
     public function update(Request $request)
     {
-        $userId = Auth::id();
-        $RequestedTolerances = $request->input('tolerances'); //入力されたparamを取得
-        // dd($RequestedTolerances);
 
-        foreach ($RequestedTolerances as $key => $RequestedValues) {
+        $request->validate($this->validationRules());
+
+        $userId = Auth::id();
+        $requestedTolerances = $request->input('tolerances'); //入力されたparamを取得
+
+        foreach ($requestedTolerances as $key => $requestedValues) {
             // キーを body_part と tolerance_level に分割
             [$bodyPart, $toleranceLevel] = explode('-', $key); // $keyを _ で分割する
 
             // データを取得して更新
             $tolerance = FittingTolerance::where('user_id', $userId)
-                ->where('body_part', $bodyPart) // カラム、データ
+                ->where('body_part', $bodyPart) // 引数（カラム、値）
                 ->where('tolerance_level', $toleranceLevel)
                 ->first();
 
             if ($tolerance) {
-                $tolerance->min_value = $RequestedValues['min_value'];
-                $tolerance->max_value = $RequestedValues['max_value'];
+                $tolerance->min_value = $requestedValues['min_value'];
+                $tolerance->max_value = $requestedValues['max_value'];
                 $tolerance->save();
             } else {
                 return redirect()
