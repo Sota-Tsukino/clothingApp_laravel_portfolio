@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\FittingTolerance;
@@ -91,6 +92,7 @@ class FittingToleranceController extends Controller
             $rules["tolerances.$key.min_value"] = 'required|numeric|between:-10.0,10.0';
             $rules["tolerances.$key.max_value"] = 'required|numeric|between:-10.0,10.0';
         }
+        // dd($rules);
         return $rules;
     }
 
@@ -155,8 +157,30 @@ class FittingToleranceController extends Controller
      */
     public function update(Request $request)
     {
+        // 通常バリデーションを作成
+        $validator = Validator::make($request->all(), $this->validationRules());
 
-        $request->validate($this->validationRules());
+        // カスタムバリデーションを追加
+        $validator->after(function ($validator) use ($request) {
+            $tolerances = $request->input('tolerances');
+
+            foreach ($tolerances as $key => $values) {
+                if (isset($values['min_value'], $values['max_value'])) {
+                    if ($values['min_value'] > $values['max_value']) {
+                        $validator->errors()->add("tolerances.$key.min_value", '下限値は上限値以下に設定してください。');
+                        $validator->errors()->add("tolerances.$key.max_value", '上限値は下限値以上に設定してください。');
+                    }
+                }
+            }
+        });
+
+        // バリデーションエラーがあればリダイレクト
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $userId = Auth::id();
         $requestedTolerances = $request->input('tolerances'); //入力されたparamを取得
