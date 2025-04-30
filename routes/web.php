@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\BodyMeasurementController;
 use App\Http\Controllers\BodyCorrectionController;
+use App\Http\Controllers\FittingToleranceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,7 +60,10 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::get('/correction/{correction}/edit', [BodyCorrectionController::class, 'edit'])->name('correction.edit');
         Route::put('/correction/{correction}', [BodyCorrectionController::class, 'update'])->name('correction.update');
 
-
+        // Route::resource('/tolerance', FittingToleranceController::class)->except('destroy', 'show');
+        Route::get('/tolerance', [FittingToleranceController::class, 'index'])->name('tolerance.index');
+        Route::get('/tolerance/edit', [FittingToleranceController::class, 'edit'])->name('tolerance.edit');
+        Route::put('/tolerance/update', [FittingToleranceController::class, 'update'])->name('tolerance.update');
 
     });
 

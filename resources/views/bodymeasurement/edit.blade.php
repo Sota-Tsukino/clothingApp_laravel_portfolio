@@ -23,6 +23,8 @@
       <form
         action="{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.update' : 'measurement.update', ['measurement' => $bodyMeasurement->id]) }}"
         method="post">
+        @csrf
+        @method('put')
         <table class="w-full whitespace-no-wrap">
           <thead>
             <tr>
@@ -32,9 +34,6 @@
             </tr>
           </thead>
           <tbody>
-
-            @csrf
-            @method('put')
             @foreach ($fields as $field)
               <tr>
                 <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
