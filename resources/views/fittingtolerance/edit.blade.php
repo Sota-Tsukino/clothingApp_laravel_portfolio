@@ -6,12 +6,13 @@
   </x-slot>
 
   <section class="text-gray-600 body-font overflow-hidden px-7">
-    <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
+    <div class="container max-w-4xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
+      {{-- onsubmit="return validateForm()" とは? returnの記載が必要？--}}
       <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.update' : 'tolerance.update') }}"
-        method="post">
+        method="post" onsubmit="return validateForm()">
         @csrf
         @method('put')
         <div class="flex justify-between pb-4">
@@ -49,19 +50,25 @@
                 @endif
               </td>
               <td class="text-center px-2 py-2">
-                <input type="number" name="tolerances[{{ $key }}][min_value]"
-                  value="{{ $fittingTolerance->min_value }}" step="0.1" min="-10.0" max="10.0">
+                <input type="number" id="min_value_{{ $key }}"
+                  name="tolerances[{{ $key }}][min_value]" value="{{ $fittingTolerance->min_value }}"
+                  step="0.1" min="-10.0" max="10.0">
                 <span class="ml-1">cm</span>
+                <div id="error-message-min-{{ $key }}" style="color: red;"></div>
               </td>
-              <td class="text-center px-2 py-2">~</td>
+
+              <td class="text-center px-2 py-2">～</td>
               <td class="text-center px-2 py-2">
-                <input type="number" name="tolerances[{{ $key }}][max_value]"
-                  value="{{ $fittingTolerance->max_value }}" step="0.1" min="-10.0" max="10.0">
+                <input type="number" id="max_value_{{ $key }}"
+                  name="tolerances[{{ $key }}][max_value]" value="{{ $fittingTolerance->max_value }}"
+                  step="0.1" min="-10.0" max="10.0">
                 <span class="ml-1">cm</span>
+                <div id="error-message-max-{{ $key }}" style="color: red;"></div>
               </td>
               <td class="text-center px-2 py-2">
                 <div class="img w-8 mx-auto ">
-                  <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像" class="hover:opacity-50 cursor-pointer">
+                  <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
+                    class="hover:opacity-50 cursor-pointer">
                 </div>
               </td>
             </tr>
@@ -94,5 +101,37 @@
       document.querySelector(`input[name="tolerances[${key}][min_value]"]`).value = defaultValues[key]['min_value'];
       document.querySelector(`input[name="tolerances[${key}][max_value]"]`).value = defaultValues[key]['max_value'];
     }
+  }
+
+  function validateForm() {
+    let isValid = true;
+
+    //以下のコードの解説をお願いします。
+    //JS内にphpの記述ができる?
+    @foreach ($fittingTolerances as $index => $fittingTolerance)
+      @php
+        $key = $fittingTolerance->body_part . '-' . $fittingTolerance->tolerance_level;
+      @endphp
+        (function() {//なぜ即時関数を使う？
+          const minInput = document.getElementById('min_value_{{ $key }}');
+          const maxInput = document.getElementById('max_value_{{ $key }}');
+          const errorDivMin = document.getElementById('error-message-min-{{ $key }}');
+          const errorDivMax = document.getElementById('error-message-max-{{ $key }}');
+
+          const min = parseFloat(minInput.value);//文字列をfloat型に変換している？
+          const max = parseFloat(maxInput.value);
+
+          if (!isNaN(min) && !isNaN(max) && min > max) {//minとmaxの変数が空かどうか判定？
+            errorDivMin.textContent = "下限値は上限値以下にしてください。";
+            errorDivMax.textContent = "上限値は下限値以上にしてください。";
+            isValid = false;
+          } else {
+            errorDivMin.textContent = "";
+            errorDivMax.textContent = "";
+          }
+        })();
+    @endforeach
+
+    return isValid;
   }
 </script>
