@@ -62,8 +62,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        //体格補正値のデフォルト値作成
-        // app(UserInitializationService::class)->createDefaultBodyCorrection(Auth::id());
+        //体格補正値,許容値のデフォルト値作成
+        app(UserInitializationService::class)->initialize(Auth::id());
 
         return redirect(RouteServiceProvider::HOME);
     }

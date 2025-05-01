@@ -44,7 +44,7 @@
     <div class="flex mb-6 items-center">
       <label for="name" class="leading-7 text-sm text-gray-600 w-1/3">都道府県</label>
       <select name="prefecture_id" id="prefecture_id"
-        class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" required>
+        class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
         <option value="">都道府県を選択してください</option>
         @foreach ($prefectures as $prefecture)
           <option value="{{ $prefecture->id }}" {{ old('prefecture_id') == $prefecture->id ? 'selected' : '' }}>
@@ -56,7 +56,7 @@
     <div class="flex mb-6 items-center">
       <label for="name" class="leading-7 text-sm text-gray-600 w-1/3">市区町村</label>
       <select name="city_id" id="city_id"
-        class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" required>
+        class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
         <option value="">市区町村を選択してください</option>
         @foreach ($prefectures as $prefecture)
           @foreach ($prefecture->city as $city)

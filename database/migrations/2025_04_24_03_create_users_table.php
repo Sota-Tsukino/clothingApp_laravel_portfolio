@@ -20,11 +20,11 @@ return new class extends Migration
             $table->rememberToken();
             $table->string('role')->default('user');
             $table->tinyInteger('is_active')->default('1');
-            $table->foreignId('prefecture_id')
+            $table->foreignId('prefecture_id')->nullable()
                 ->constrained()//親テーブルに存在するデータしか選択できないようにする
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('city_id')
+            $table->foreignId('city_id')->nullable()
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');

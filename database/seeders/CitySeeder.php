@@ -32,6 +32,24 @@ class CitySeeder extends Seeder
                 'latitude' => '35.658067',
                 'longitude' => '139.751599',
             ],
+            [
+                'prefecture_id' => '2',
+                'name' => '横浜市',
+                'latitude' => null,
+                'longitude' => null,
+            ],
+            [
+                'prefecture_id' => '2',
+                'name' => '川崎市',
+                'latitude' => null,
+                'longitude' => null,
+            ],
+            [
+                'prefecture_id' => '2',
+                'name' => '小田原市',
+                'latitude' => null,
+                'longitude' => null,
+            ],
         ]);
     }
 }

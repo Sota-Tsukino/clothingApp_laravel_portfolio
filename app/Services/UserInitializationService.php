@@ -6,13 +6,13 @@ use App\Models\BodyCorrection;
 use App\Models\FittingTolerance;
 use App\Services\FittingToleranceService;
 
-class UserInitializationService//編集中
+class UserInitializationService
 {
 
     public function initialize(int $userId): void
     {
         $this->createDefaultBodyCorrection($userId);
-        // $this->createDefaultFittingTolerance($userId);
+        $this->createDefaultFittingTolerance($userId);
     }
 
     public function createDefaultBodyCorrection(int $userId): void
@@ -26,14 +26,14 @@ class UserInitializationService//編集中
     {
         if (!FittingTolerance::where('user_id', $userId)->exists()) {
             $defaultValues = app(FittingToleranceService::class)->getDefaultValues();
-            foreach ($defaultValues as $key => $range) {
-                [$bodypart, $fitType] = explode('-', $key);
+            foreach ($defaultValues as $key => $values) {
+                [$bodypart, $toleranceLevel] = explode('-', $key);
                 FittingTolerance::create([
                     'user_id' => $userId,
                     'body_part' => $bodypart,
-                    'tolerance_level' => $fitType,
-                    'min_value' => $range['min_value'],
-                    'max_value' => $range['max_value'],
+                    'tolerance_level' => $toleranceLevel,
+                    'min_value' => $values['min_value'],
+                    'max_value' => $values['max_value'],
                 ]);
             }
         }

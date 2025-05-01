@@ -17,6 +17,9 @@ class PrefectureSeeder extends Seeder
             [
                 'name' => '東京都',
             ],
+            [
+                'name' => '神奈川',
+            ],
         ]);
     }
 }
