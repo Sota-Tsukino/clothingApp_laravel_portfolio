@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Services;
+
+
+class BodyMeasurementService
+{
+    public static function getFields(): array
+    {
+        return [
+            'height',
+            'head_circumference',
+            'neck_circumference',
+            'shoulder_width',
+            'yuki_length',
+            'sleeve_length',
+            'chest_circumference',
+            'waist',
+            'hip',
+            'inseam',
+            'foot_length',
+            'foot_circumference',
+        ];
+    }
+
+    public static function getValidationRules(bool $withDate = false): array
+    {
+        $rules = [];
+        if ($withDate) {
+            $rules['measured_at'] = 'date|required|before_or_equal:today';
+        }
+        foreach (self::getFields() as $field) {
+            $rules[$field] = 'nullable|numeric|between:0,999.0';
+        }
+        return $rules;
+    }
+}

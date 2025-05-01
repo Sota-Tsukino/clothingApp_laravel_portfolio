@@ -7,37 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\BodyMeasurement;
 use App\Models\BodyCorrection;
-use Carbon\Carbon;
+use App\Services\BodyMeasurementService;
 
 class BodyMeasurementController extends Controller
 {
-
-    private array $fields = [
-        'height',
-        'head_circumference',
-        'neck_circumference',
-        'shoulder_width',
-        'yuki_length',
-        'sleeve_length',
-        'chest_circumference',
-        'waist',
-        'hip',
-        'inseam',
-        'foot_length',
-        'foot_circumference',
-    ];
-
-    private function validationRules(bool $withDate = false): array
-    {
-        $rules = [];
-        if ($withDate) {
-            $rules['measured_at'] = 'date|required|before_or_equal:today';
-        }
-        foreach ($this->fields as $field) {
-            $rules[$field] = 'nullable|numeric|between:0,999.0';
-        }
-        return $rules;
-    }
 
     /**
      * Display a listing of the resource.
@@ -56,7 +29,7 @@ class BodyMeasurementController extends Controller
     {
 
         //$fields変数にこのクラスのprivate変数を代入
-        return view('bodymeasurement.create', ['fields' => $this->fields]);
+        return view('bodymeasurement.create', ['fields' => BodyMeasurementService::getFields()]);
     }
 
     /**
@@ -64,7 +37,7 @@ class BodyMeasurementController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate($this->validationRules(true));
+        $request->validate(BodyMeasurementService::getValidationRules(true));
         // dd($request);
 
         try {
@@ -88,13 +61,13 @@ class BodyMeasurementController extends Controller
 
             // ↓の動作確認
             // $datas = $request->only('measured_at', 'height', 'waist');// ['key' => value]で返す
-            // $datas = array_merge(['measured_at'], $this->fields);
-            // $datas = $request->only(array_merge(['measured_at'], $this->fields));
+            // $datas = array_merge(['measured_at'], BodyMeasurementService::getFields());
+            // $datas = $request->only(array_merge(['measured_at'], BodyMeasurementService::getFields()));
             // dd($datas);
 
             //リファクタリング
             $bodyMeasurement = BodyMeasurement::create(array_merge(
-                $request->only(array_merge(['measured_at'], $this->fields)), //
+                $request->only(array_merge(['measured_at'], BodyMeasurementService::getFields())), //
                 ['user_id' => Auth::id()]
             ));
 
@@ -139,7 +112,7 @@ class BodyMeasurementController extends Controller
         $bodyCorrection = BodyCorrection::where('user_id', Auth::id())->firstOrFail();
 
         $suitableSize = [];
-        foreach ($this->fields as $field) {
+        foreach (BodyMeasurementService::getFields() as $field) {
             // if (!empty($bodyMeasurement->$field)) {
             //     $suitableSize[$field] = $bodyMeasurement->$field + $bodyCorrection->$field;
             //     continue;
@@ -153,7 +126,7 @@ class BodyMeasurementController extends Controller
             'bodyMeasurement' => $bodyMeasurement,
             'bodyCorrection' => $bodyCorrection,
             'suitableSize' => $suitableSize,
-            'fields' => $this->fields,
+            'fields' => BodyMeasurementService::getFields(),
         ]);
     }
 
@@ -179,7 +152,7 @@ class BodyMeasurementController extends Controller
         // return view('bodymeasurement.edit', compact('bodyMeasurement', 'fields'));
         return view('bodymeasurement.edit', [
             'bodyMeasurement' => $bodyMeasurement,
-            'fields' => $this->fields,//compact()を使うとクラスのプライベート変数を渡せない？
+            'fields' => BodyMeasurementService::getFields(),//compact()を使うとクラスのプライベート変数を渡せない？
         ]);
     }
 
@@ -188,7 +161,7 @@ class BodyMeasurementController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate($this->validationRules());
+        $request->validate(BodyMeasurementService::getValidationRules());
 
         //更新する対象の体格情報idを取得
         $bodyMeasurement = BodyMeasurement::findOrFail($id);
@@ -203,10 +176,10 @@ class BodyMeasurementController extends Controller
                 ]);
         }
 
-        // foreach ($this->fields as $field) {
+        // foreach (BodyMeasurementService::getFields() as $field) {
         //     $bodyMeasurement->$field = $request->$field;
         // }
-        $bodyMeasurement->fill($request->only($this->fields))->save(); //リファクタリング
+        $bodyMeasurement->fill($request->only(BodyMeasurementService::getFields()))->save(); //リファクタリング
 
         $bodyMeasurement->save();
 
