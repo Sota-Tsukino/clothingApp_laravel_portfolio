@@ -1,14 +1,15 @@
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-      {{ __('Profile') }}
+      {{ __('Profile') }}編集
     </h2>
   </x-slot>
 
   <section class="text-gray-600 body-font overflow-hidden px-7">
     <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
-      <!-- Validation Errors -->
-      <x-auth-validation-errors class="mb-4" :errors="$errors" />
+    <!-- Validation Errors -->
+    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+    <x-flash-message status="session('status')" />
       <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.profile.update' : 'profile.update') }}" method="post">
         @csrf
         @method('put') <!-- formタグがPOSTでも、laravelがput methodとして認識できるようになる-->
@@ -27,6 +28,7 @@
             <label for="name" class="leading-7 text-sm text-gray-600 w-1/3">都道府県</label>
             <select name="prefecture_id" id="prefecture_id"
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+              <option value="" {{ $user->prefecture_id === null ? 'selected' : '' }}>都道府県を選択してください</option>
               @foreach ($prefectures as $prefecture)
                 <option value="{{ $prefecture->id }}" {{ $user->prefecture_id == $prefecture->id ? 'selected' : '' }}>
                   {{ $prefecture->name }}
@@ -38,10 +40,13 @@
             <label for="name" class="leading-7 text-sm text-gray-600 w-1/3">市区町村</label>
             <select name="city_id" id="city_id"
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-              @foreach ($cities as $city)
-                <option value="{{ $city->id }}" {{ $user->city_id == $city->id ? 'selected' : '' }}>
-                  {{ $city->name }}
-                </option>
+              <option value="" {{ $user->city_id === null ? 'selected' : '' }}>市区町村を選択してください</option>
+              @foreach ($prefectures as $prefecture)
+                @foreach ($prefecture->city as $city )
+                    <option value="{{ $city->id }}" {{ $user->city_id == $city->id ? 'selected' : '' }}>
+                        {{ $city->name }}
+                    </option>
+                @endforeach
               @endforeach
             </select>
           </div>
@@ -56,3 +61,51 @@
     </div>
   </section>
 </x-app-layout>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const prefectures = @json($prefectures);
+
+      const prefectureSelect = document.getElementById('prefecture_id');
+      const citySelect = document.getElementById('city_id');
+
+      // 初期状態の保存（Laravelが出力した<option>を一旦削除して書き直すため）
+      const defaultCityOption = citySelect.innerHTML;
+      console.log(defaultCityOption);
+
+      function renderCities(prefectureId) {
+        // 一度クリア
+        citySelect.innerHTML = '<option value="">市区町村を選択してください</option>';
+
+        // 該当する都道府県を探す
+        const selectedPref = prefectures.find(p => p.id == prefectureId);
+
+        if (selectedPref && selectedPref.city) {
+          selectedPref.city.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city.id;
+            option.textContent = city.name;
+
+            // 既に選択されている市区町村の場合は selected にする
+            @if ($user->city_id)
+            if ({{ $user->city_id }} == city.id) {
+              option.selected = true;
+            }
+            @endif
+
+            citySelect.appendChild(option);
+          });
+        }
+      }
+
+      // 初期レンダリング（ページ読み込み時に都道府県が選択されていたら）
+      if (prefectureSelect.value) {
+        renderCities(prefectureSelect.value);
+      }
+
+      // 都道府県変更時に市区町村の選択肢を更新
+      prefectureSelect.addEventListener('change', function () {
+        renderCities(this.value);
+      });
+    });
+  </script>
+

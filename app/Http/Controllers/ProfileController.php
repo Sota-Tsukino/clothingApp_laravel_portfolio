@@ -34,14 +34,9 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         $user = User::with(['prefecture', 'city'])->findOrFail(Auth::id());
-        $prefectures = Prefecture::all();
+        $prefectures = Prefecture::with('city')->get();
 
-        //都道府県に該当する市区町村のみ取得
-        $cities = City::where('prefecture_id', $user->prefecture_id)->get();
-
-        // dd($user, $prefectures);
-
-        return view('profile.edit', compact('user', 'prefectures', 'cities'));
+        return view('profile.edit', compact('user', 'prefectures'));
     }
 
     /**
@@ -56,6 +51,28 @@ class ProfileController extends Controller
             'prefecture_id' => 'integer|nullable',
             'city_id' => 'integer|nullable',
         ]);
+
+        // dd($request);
+
+        //存在しないprefecture_id、city_idがリクエストされたらエラーを返す
+        if(!empty($request->prefecture_id) && !Prefecture::where('id', $request->prefecture_id)->exists()) {
+            //この記述は正しい？ back()というのもみた事がある
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.profile.edit' : 'profile.edit')
+                ->with([
+                    'message' => '存在しない都道府県が選択されました。',
+                    'status' => 'alert',
+                ]);
+        }
+
+        if(!empty($request->city_id) && !City::where('id', $request->city_id)->exists()) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.profile.edit' : 'profile.edit')
+                ->with([
+                    'message' => '存在しない市区町村が選択されました。',
+                    'status' => 'alert',
+                ]);
+        }
 
         $user = $request->user();
 

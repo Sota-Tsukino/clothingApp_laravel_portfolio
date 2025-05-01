@@ -50,6 +50,25 @@ class RegisteredUserController extends Controller
             'city_id' => ['nullable', 'integer'],
         ]);
 
+        //存在しないprefecture_id、city_idがリクエストされたらエラーを返す
+        if(!empty($request->prefecture_id) && !Prefecture::where('id', $request->prefecture_id)->exists()) {
+            return redirect()
+                ->route('register')
+                ->with([
+                    'message' => '存在しない都道府県が選択されました。',
+                    'status' => 'alert',
+                ]);
+        }
+
+        if(!empty($request->city_id) && !City::where('id', $request->city_id)->exists()) {
+            return redirect()
+                ->route('register')
+                ->with([
+                    'message' => '存在しない市区町村が選択されました。',
+                    'status' => 'alert',
+                ]);
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
