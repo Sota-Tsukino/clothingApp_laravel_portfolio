@@ -6,36 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\BodyCorrection;
 use App\Models\BodyMeasurement;
+use App\Services\BodyCorrectionService;
 
 class BodyCorrectionController extends Controller
 {
-    private array $fieldsDefaultValues = [
-        'head_circumference' => 2.0,
-        'neck_circumference' => 2.0,
-        'shoulder_width' => 2.0,
-        'chest_circumference' => 3.0,
-        'waist' => 2.0,
-        'hip' => 2.0,
-        'sleeve_length' => 0.0,
-        'yuki_length' => 0.0,
-        'inseam' => 0.0,
-        'foot_length' => 1.0,
-        'foot_circumference' => 0.0,
-    ];
-
-    private function validationRules(): array
-    {
-        $rules = [];
-        $fieldKeys = array_keys($this->fieldsDefaultValues);
-        foreach ($fieldKeys as $field) {
-            $rules[$field] = 'numeric|between:0,9';
-        }
-        return $rules;
-    }
-
     public function edit(Request $request, string $id)
     {
-        $fieldKeys = array_keys($this->fieldsDefaultValues);//keyのみ取り出して配列に格納
+        $fieldKeys = array_keys(BodyCorrectionService::$fieldsDefaultValues);//keyのみ取り出して配列に格納
 
         //セッションに体格情報IDを保持させ、補正値画面で戻るボタン押した際にこれをparamで渡す。
         if ($request->has('from_measurement_id')) {
@@ -67,13 +44,13 @@ class BodyCorrectionController extends Controller
             'fields' => $fieldKeys,
             'bodyCorrection' => $bodyCorrection,
             'bodyMeasurement' => $bodyMeasurement,
-            'defaultValues' => $this->fieldsDefaultValues,
+            'defaultValues' => BodyCorrectionService::$fieldsDefaultValues,
         ]);
     }
 
     public function update(Request $request, string $id)
     {
-        $request->validate($this->validationRules());
+        $request->validate(BodyCorrectionService::getValidationRules());
 
         if ($request->has('from_measurement_id')) {
             session(['from_measurement_id' => $request->input('from_measurement_id')]);
@@ -81,7 +58,7 @@ class BodyCorrectionController extends Controller
 
         $bodyCorrection = BodyCorrection::findOrFail($id);
 
-        $fieldKeys = array_keys($this->fieldsDefaultValues);
+        $fieldKeys = array_keys(BodyCorrectionService::$fieldsDefaultValues);
         $bodyCorrection->fill($request->only($fieldKeys))->save(); //リファクタリング
 
         //フォーム送信(POST/PUT) → リダイレクト(302) → GETページ表示

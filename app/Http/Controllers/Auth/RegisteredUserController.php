@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Services\UserInitializationService;
+use App\Models\Prefecture;
+use App\Models\City;
+
 
 class RegisteredUserController extends Controller
 {
@@ -20,7 +24,14 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $prefectures = Prefecture::with('city')->get();//withの引数cityはmodelで定義したメソッド名？
+
+        //blade側で下記で取得
+        // foreach($prefectures as $prefecture) {
+        //     dd($prefecture->city);
+        // }
+
+        return view('auth.register', compact('prefectures'));
     }
 
     /**
@@ -30,21 +41,29 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // dd($request);
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'prefecture_id' => ['nullable', 'integer'],
+            'city_id' => ['nullable', 'integer'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'prefecture_id' => $request->prefecture_id,
+            'city_id' => $request->city_id,
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
+
+        //体格補正値のデフォルト値作成
+        // app(UserInitializationService::class)->createDefaultBodyCorrection(Auth::id());
 
         return redirect(RouteServiceProvider::HOME);
     }

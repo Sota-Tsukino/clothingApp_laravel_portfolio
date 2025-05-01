@@ -36,6 +36,17 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::resource('/measurement', BodyMeasurementController::class);
+
+    Route::get('/correction/{correction}/edit', [BodyCorrectionController::class, 'edit'])->name('correction.edit');
+    Route::put('/correction/{correction}', [BodyCorrectionController::class, 'update'])->name('correction.update');
+
+    Route::get('/tolerance', [FittingToleranceController::class, 'index'])->name('tolerance.index');
+    Route::get('/tolerance/edit', [FittingToleranceController::class, 'edit'])->name('tolerance.edit');
+    Route::put('/tolerance/update', [FittingToleranceController::class, 'update'])->name('tolerance.update');
+
+
 });
 
 // admin用ルート
@@ -50,10 +61,6 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
-        Route::get('/user', [UserController::class, 'index'])->name('user.index');
-        Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
-        Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
-
         Route::resource('/measurement', BodyMeasurementController::class);
 
         // Route::get('/correction', [BodyCorrectionController::class, 'show'])->name('correction.show');
@@ -64,6 +71,11 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::get('/tolerance', [FittingToleranceController::class, 'index'])->name('tolerance.index');
         Route::get('/tolerance/edit', [FittingToleranceController::class, 'edit'])->name('tolerance.edit');
         Route::put('/tolerance/update', [FittingToleranceController::class, 'update'])->name('tolerance.update');
+
+        //adminのみユーザー管理権原
+        Route::get('/user', [UserController::class, 'index'])->name('user.index');
+        Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
+        Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 
     });
 
