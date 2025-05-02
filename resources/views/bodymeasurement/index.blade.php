@@ -11,6 +11,7 @@
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
       <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+        @if (count($bodyMeasurements) > 0)
         <table class="table-auto w-full text-left whitespace-no-wrap">
           <thead>
             <tr>
@@ -24,7 +25,6 @@
             </tr>
           </thead>
           <tbody>
-            @if (!empty($bodyMeasurements))
                 @foreach ($bodyMeasurements as $bodyMeasurement)
                 <tr>
                     <td class="text-center px-4 py-3">{{ $bodyMeasurement->measured_at }}</td>
@@ -37,7 +37,7 @@
                     <button
                         onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $bodyMeasurement->id]) }}'"
                         class="inline-block text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">詳細</button>
-                    <form action="{{ route('admin.measurement.destroy', ['measurement' => $bodyMeasurement->id]) }}"
+                    <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.destroy' : 'measurement.destroy', ['measurement' => $bodyMeasurement->id]) }}"
                         method="post" class="inline-block">
                         @csrf
                         @method('delete')
@@ -47,12 +47,13 @@
                     </td>
                 </tr>
                 @endforeach
-            @endif
-            体格情報が登録されていません。
           </tbody>
         </table>
+        @else
+        <p class="my-3">体格情報が登録されていません。</p>
+        @endif
         <button
-        onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.create' : 'measurement.create', ['measurement' => $bodyMeasurement->id]) }}'"
+        onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.create' : 'measurement.create') }}'"
         class="text-white bg-teal-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">新規登録</button>
       </div>
     </div>
