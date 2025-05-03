@@ -47,6 +47,10 @@
                             :href="route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index')">
                             体格許容値の表示
                         </x-dropdown-link>
+                        <x-dropdown-link
+                            :href="route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index')">
+                            サイズチェッカー
+                        </x-dropdown-link>
                         @if (Auth::user()->role === 'admin')
                             <x-dropdown-link
                                 :href="route('admin.user.index')">

@@ -16,27 +16,6 @@ class FittingTolerance extends Seeder
         DB::table('fitting_tolerances')->insert([
             [
                 'user_id' => '1',
-                'body_part' => 'yuki_length',
-                'tolerance_level' => 'just',
-                'min_value' => '-1.5',
-                'max_value' => '1.5',
-            ],
-            [
-                'user_id' => '1',
-                'body_part' => 'yuki_length',
-                'tolerance_level' => 'slight',
-                'min_value' => '-3.0',
-                'max_value' => '3.0',
-            ],
-            [
-                'user_id' => '1',
-                'body_part' => 'yuki_length',
-                'tolerance_level' => 'long_or_short',
-                'min_value' => '-5.0',
-                'max_value' => '5.0',
-            ],
-            [
-                'user_id' => '1',
                 'body_part' => 'neck_circumference',
                 'tolerance_level' => 'just',
                 'min_value' => '-0.5',
@@ -55,6 +34,27 @@ class FittingTolerance extends Seeder
                 'tolerance_level' => 'long_or_short',
                 'min_value' => '-2.0',
                 'max_value' => '2.5',
+            ],
+            [
+                'user_id' => '1',
+                'body_part' => 'yuki_length',
+                'tolerance_level' => 'just',
+                'min_value' => '-1.5',
+                'max_value' => '1.5',
+            ],
+            [
+                'user_id' => '1',
+                'body_part' => 'yuki_length',
+                'tolerance_level' => 'slight',
+                'min_value' => '-3.0',
+                'max_value' => '3.0',
+            ],
+            [
+                'user_id' => '1',
+                'body_part' => 'yuki_length',
+                'tolerance_level' => 'long_or_short',
+                'min_value' => '-5.0',
+                'max_value' => '5.0',
             ],
             [
                 'user_id' => '1',

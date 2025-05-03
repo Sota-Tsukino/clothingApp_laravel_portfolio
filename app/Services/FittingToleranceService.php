@@ -8,53 +8,53 @@ class FittingToleranceService
     public static function getDefaultValues(): array
     {
         return [
+            'neck_circumference-just' => [
+                "min_value" => -0.5,
+                "max_value" => 1.0
+            ],
+            'neck_circumference-slight' => [
+                "min_value" => -1.0,
+                "max_value" => 2.0
+            ],
+            'neck_circumference-long_or_short' => [
+                "min_value" => -2.0,
+                "max_value" => 3.0
+            ],
             'yuki_length-just' => [
                 "min_value" => -1.5,
                 "max_value" => 1.5
             ],
             'yuki_length-slight' => [
-                "min_value" => -3.0,
-                "max_value" => 3.0
-            ],
-            'yuki_length-long_or_short' => [
                 "min_value" => -5.0,
                 "max_value" => 5.0
             ],
-            'neck_circumference-just' => [
-                "min_value" => -0.5,
-                "max_value" => 0.5
-            ],
-            'neck_circumference-slight' => [
-                "min_value" => -1.0,
-                "max_value" => 1.5
-            ],
-            'neck_circumference-long_or_short' => [
-                "min_value" => -2.0,
-                "max_value" => 2.5
+            'yuki_length-long_or_short' => [
+                "min_value" => -9.0,
+                "max_value" => 9.0
             ],
             'chest_circumference-just' => [
                 "min_value" => -1.5,
-                "max_value" => 1.5
+                "max_value" => 3.0
             ],
             'chest_circumference-slight' => [
                 "min_value" => -3.0,
-                "max_value" => 3.0
+                "max_value" => 6.0
             ],
             'chest_circumference-long_or_short' => [
                 "min_value" => -5.0,
-                "max_value" => 5.0
+                "max_value" => 9.0
             ],
             'waist-just' => [
-                "min_value" => -1.0,
+                "min_value" => -0.5,
                 "max_value" => 1.0
             ],
             'waist-slight' => [
-                "min_value" => -2.5,
-                "max_value" => 2.5
+                "min_value" => -2.0,
+                "max_value" => 3.0
             ],
             'waist-long_or_short' => [
                 "min_value" => -4.0,
-                "max_value" => 4.0
+                "max_value" => 5.0
             ],
             'inseam-just' => [
                 "min_value" => -1.5,
