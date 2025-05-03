@@ -53,9 +53,9 @@
       <div class="flex justify-between mx-auto my-5">
         <button  onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.edit' : 'tolerance.edit') }}'"
             class="text-white bg-amber-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">編集する</button>
-          {{-- <button type="button"
-            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $fromMeasurementId]) }}'"
-            class="text-white bg-gray-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">サイズチェッカーへ</button> --}}
+          <button type="button"
+            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index') }}'"
+            class="text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">サイズチェッカーへ</button>
         </div>
       </div>
   </section>

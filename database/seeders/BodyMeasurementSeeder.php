@@ -32,7 +32,7 @@ class BodyMeasurementSeeder extends Seeder
             ],
             [
                 'user_id' => '1',
-                'measured_at' => '2025/01/02',
+                'measured_at' => '2024/01/02',
                 'height'=> '144.1',
                 'head_circumference'=> '33.5',
                 'neck_circumference'=> '44.2',

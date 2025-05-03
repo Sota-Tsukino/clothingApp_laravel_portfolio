@@ -6,7 +6,7 @@
   </x-slot>
 
   <section class="text-gray-600 body-font overflow-hidden px-7">
-    <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
+    <div class="container max-w-3xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
@@ -27,6 +27,7 @@
           <thead>
             <tr>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">部位</th>
+              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">体格寸法</th>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">あなたに合う衣類サイズ</th>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">衣類サイズ</th>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">判定</th>
@@ -39,11 +40,14 @@
               <tr>
                 <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
                 <td class="text-center px-2 py-2">
-                  {{ $suitableSize[$field] ?? '未登録' }}<span class="ml-1">cm</span>
+                  {{ number_format($bodyMeasurement[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
+                </td>
+                <td class="text-center px-2 py-2">
+                  {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
                 </td>
                 <td class="text-center px-2 py-2">
                     <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1" value=""
-                      min="0.0" max="999.0">
+                      min="0.0" max="999.0" placeholder="40.0" class="text-black">
                     <span class="ml-1">cm</span>
                 </td>
                 <td>
@@ -62,9 +66,9 @@
           </tbody>
         </table>
         <div class="flex justify-between mx-auto my-5">
-            {{-- <button type="button"
-            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $fromMeasurementId]) }}'"
-            class="text-white bg-gray-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">戻る</button> --}}
+            <button type="button"
+            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index') }}'"
+            class="text-white bg-violet-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">体格許容値を表示</button>
         </div>
     </div>
   </section>
@@ -74,22 +78,27 @@
 <script>
 const userTolerance = @json($userTolerance);
 const suitableSize = @json($suitableSize);
-console.log(userTolerance)
+
+const colorClasses = ["text-green-600", "text-yellow-600", "text-red-600"];
 
 for (let field in userTolerance) {
   const inputEl = document.querySelector(`input[name="${field}"]`);
-  const resultTd = document.createElement("td"); // 結果表示用（本番では既存列に反映）
 
-  inputEl.addEventListener("change", function () {
-
+  inputEl.addEventListener("input", function () {
     const inputVal = parseFloat(this.value);
     const ideal = suitableSize[field];
+    const resultEl = document.querySelector(`#${field}_result`);
 
-    if (isNaN(inputVal)) return;
-
-    
     let result = "未判定";
-    let resultClass;
+    let resultClass = '';
+
+    if (isNaN(inputVal)) {
+        resultEl.classList.remove(...colorClasses);
+        resultEl.innerText = result;
+        return;
+    }
+
+
 
     // ユーザーの許容値（min~max)を取得
     const toleranceJust = userTolerance[field]['just'];
@@ -109,12 +118,10 @@ for (let field in userTolerance) {
       resultClass = "text-red-600";
     }
 
-    document.querySelector(`#${field}_result`).innerText = result
-    document.querySelector(`#${field}_result`).classList.add(resultClass);
-
-    // 結果の表示（例：同じ行に結果用のtdがあるなら innerTextで更新）
-    // console.log(`${key}の判定: ${result}`);
-    // ここでDOMを更新する処理を書く（例：document.querySelector(`#${key}_result`).innerText = result）
+    // すべての色クラスを削除してから新しいクラスを追加
+    resultEl.classList.remove(...colorClasses);
+    resultEl.classList.add(resultClass);
+    resultEl.innerText = result;
   });
 }
 
