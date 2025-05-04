@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\SubCategory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,6 +22,13 @@ class DatabaseSeeder extends Seeder
             BodyMeasurementSeeder::class,
             BodyCorrectionSeeder::class,
             FittingTolerance::class,
+            BrandSeeder::class,
+            CategorySeeder::class,
+            ColorSeeder::class,
+            MaterialSeeder::class,
+            SeasonSeeder::class,
+            SubCategorySeeder::class,
+            TagSeeder::class,
         ]);
 
         // \App\Models\User::factory(10)->create();
