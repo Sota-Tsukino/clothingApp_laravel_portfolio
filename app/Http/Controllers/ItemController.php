@@ -55,6 +55,7 @@ class ItemController extends Controller
 
         $fields = [
             'neck_circumference',
+            'shoulder_width',
             'yuki_length',
             'chest_circumference',
             'waist',

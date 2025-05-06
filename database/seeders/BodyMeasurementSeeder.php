@@ -22,7 +22,7 @@ class BodyMeasurementSeeder extends Seeder
                 'neck_circumference'=> '36.0',
                 'shoulder_width'=> '40.5',
                 'chest_circumference'=> '77.5',
-                'waist'=> '73',
+                'waist'=> '71',
                 // 'hip'=> '0',
                 'sleeve_length'=> '56.0',
                 'yuki_length'=> '76.0',
