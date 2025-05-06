@@ -260,5 +260,5 @@
 </x-app-layout>
 
 {{-- JSファイルにPHPの変数を渡す --}}
-<div id="size-checker" data-tolerance='@json($userTolerance)' data-suitable='@json($suitableSize)'>
-</div>
+<div id="size-checker" data-tolerance='@json($userTolerance)' data-suitable='@json($suitableSize)'></div>
+<div id="item-categories-list" data-categories='@json($categories)'></div>
