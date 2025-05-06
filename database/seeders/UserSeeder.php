@@ -25,33 +25,6 @@ class UserSeeder extends Seeder
                 'prefecture_id' => '1',
                 'city_id' => '1',
             ],
-            [
-                'name' => 'user1',
-                'email' => 'test1@test.com',
-                'password' => Hash::make('test'),
-                'role' => 'user',
-                'is_active' => '1',
-                'prefecture_id' => '1',
-                'city_id' => '2',
-            ],
-            [
-                'name' => 'user2',
-                'email' => 'test2@test.com',
-                'password' => Hash::make('test'),
-                'role' => 'user',
-                'is_active' => '1',
-                'prefecture_id' => '1',
-                'city_id' => '3',
-            ],
-            [
-                'name' => 'user3',
-                'email' => 'test3@test.com',
-                'password' => Hash::make('test'),
-                'role' => 'user',
-                'is_active' => '1',
-                'prefecture_id' => '1',
-                'city_id' => '3',
-            ],
         ]);
     }
 }

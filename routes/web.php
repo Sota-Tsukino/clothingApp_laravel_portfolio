@@ -48,6 +48,10 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/tolerance/edit', [FittingToleranceController::class, 'edit'])->name('tolerance.edit');
     Route::put('/tolerance/update', [FittingToleranceController::class, 'update'])->name('tolerance.update');
 
+    Route::get('/size-checker', [SizeCheckerController::class, 'index'])->name('sizechecker.index');
+
+    Route::resource('/clothing-item', ItemController::class);
+
 
 });
 

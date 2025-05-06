@@ -12,7 +12,18 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite([
+            'resources/css/app.css',
+            'resources/js/app.js',//全ページ(blade)で読み込むのでこの中で下記JSをimportしない
+            //↓ページ別にJS読み込み
+            Request::routeIs('admin.clothing-item.create') ? 'resources/js/clothing-item.js' : '',
+            Request::routeIs('admin.clothing-item.create') ? 'resources/js/size-checker.js' : '',
+            Request::routeIs('admin.sizechecker.index') ? 'resources/js/size-checker.js' : '',
+            //↓一般ユーザー用
+            Request::routeIs('clothing-item.create') ? 'resources/js/clothing-item.js' : '',
+            Request::routeIs('clothing-item.create') ? 'resources/js/size-checker.js' : '',
+            Request::routeIs('sizechecker.index') ? 'resources/js/size-checker.js' : '',
+            ])
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
