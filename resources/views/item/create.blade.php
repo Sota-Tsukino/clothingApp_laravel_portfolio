@@ -15,6 +15,12 @@
         @csrf
         <div class="w-full mb-6 ">
           <h2 class='text-black'>必須入力</h2>
+          <div class="flex flex-col mb-6">
+            <label for="file_name" class="mb-2 text-gray-700">衣類アイテム画像を選択</label>
+            <input type="file" id="file_name" name="file_name" accept="image/*" class="file_name" required autofocus>
+            <img id="preview" src="" alt="プレビュー画像" class="mt-4 max-w-xs rounded shadow"
+              style="display: none;">
+          </div>
           <div class="flex mb-6 items-center">
             <label for="category_id" class="leading-7 text-sm text-gray-600 w-1/3">カテゴリー</label>
             <select name="category_id" id="category_id"
@@ -59,10 +65,9 @@
           </div>
           <div class="flex mb-6 items-center">
             <label for="color" class="leading-7 text-sm text-gray-600 w-1/3">色</label>
-            {{-- 色をマルチセレクトで選択できるようにするには？ --}}
-            <select name="colors[]" id="colors" multiple class="w-2/3 bg-gray-100" required>
+            <select name="colors[]" id="colors" multiple class="w-2/3 bg-gray-100 inline-block" required>
               @foreach ($colors as $color)
-                <option value="{{ $color->id }}"
+                <option value="{{ $color->id }}" data-custom-properties='{"hex":"{{ $color->hex_code }}"}'
                   {{ collect(old('colors'))->contains($color->id) ? 'selected' : '' }}>
                   {{ $color->name }}
                 </option>
@@ -91,10 +96,8 @@
             <select name="is_public" id="is_public"
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required>
-              {{-- is_publicは 0 or 1が入るのでnull合体演算子は使用できない？ --}}
               <option value="1" {{ old('is_public') == '1' ? 'selected' : '' }}>公開する</option>
               <option value="0" {{ old('is_public') == '0' ? 'selected' : '' }}>公開しない</option>
-
             </select>
           </div>
           <div class="flex mb-6 items-center">
@@ -109,11 +112,9 @@
           <h2 class='text-black'>任意入力</h2>
           <div class="flex mb-6 items-center">
             <label for="tags" class="leading-7 text-sm text-gray-600 w-1/3">タグ</label>
-            {{-- 色をマルチセレクトで選択できるようにするには？ --}}
             <select name="tags[]" id="tags" multiple class="w-2/3 bg-gray-100">
               @foreach ($tags as $tag)
-                <option value="{{ $tag->id }}"
-                  {{ collect(old('tags'))->contains($tag->id) ? 'selected' : '' }}>
+                <option value="{{ $tag->id }}" {{ collect(old('tags'))->contains($tag->id) ? 'selected' : '' }}>
                   {{ $tag->name }}
                 </option>
               @endforeach
@@ -122,7 +123,6 @@
           <div class="flex mb-6 items-center">
             <legend for="season" class="leading-7 text-sm text-gray-600 w-1/3">季節</legend>
             @foreach ($seasons as $season)
-              {{-- マルチセレクト可能にするには？ --}}
               <div>
                 <input type="checkbox" name="seasons[]" class="mr-2" value="{{ $season->id }}">
                 <label for="season" class="leading-7 text-sm text-gray-600 mr-2">{{ $season->name }}</label>
@@ -258,7 +258,46 @@
     </div>
   </section>
 </x-app-layout>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script>
+  // Choices.js を使ってマルチセレクトを拡張　色
+  const colorSelect = new Choices('#colors', {
+    removeItemButton: true,
+    searchEnabled: true,
+    placeholderValue: '色を選択してください',
+    callbackOnCreateTemplates: function(template) {
+      return {
+        item: (classNames, data) => {
+          const hex = data.customProperties?.hex || '#ccc';
+          return template(`
+          <div class="${classNames.item} ${data.highlighted ? classNames.highlightedState : classNames.itemSelectable} inline-block mr-2" data-item data-id="${data.id}" data-value="${data.value}" ${data.active ? 'aria-selected="true"' : ''} ${data.disabled ? 'aria-disabled="true"' : ''} style="border-left: 30px solid ${hex}; padding: 4px; border-radius:5px; ">
+            ${data.label}
+            <button type="button" class="${classNames.button}" data-button>✕</button>
+          </div>
+        `);
+        },
+        choice: (classNames, data) => {
+          const hex = data.customProperties?.hex || '#ccc';
+          return template(`
+          <div class="${classNames.item} ${classNames.itemChoice} ${data.disabled ? classNames.itemDisabled : classNames.itemSelectable}" data-select-text="${this.config.itemSelectText}" data-choice ${data.disabled ? 'data-choice-disabled aria-disabled="true"' : 'data-choice-selectable'} data-id="${data.id}" data-value="${data.value}" ${data.groupId > 0 ? 'role="treeitem"' : 'role="option"'} style="border-left: 30px solid ${hex}; padding-left: 6px;">
+            ${data.label}
+          </div>
+        `);
+        }
+      };
+    }
+  });
+
+
+  // Choices.js を使ってマルチセレクトを拡張　タグ
+  const tagSelect = new Choices('#tags', {
+    removeItemButton: true, // タグごとに✕ボタンを表示する
+    searchEnabled: true, // 検索機能を有効にする（任意）
+    placeholderValue: 'タグを選択してください',
+  });
+
+  //サイズチェッカー
   const userTolerance = @json($userTolerance);
   const suitableSize = @json($suitableSize);
 
@@ -307,4 +346,36 @@
       resultEl.innerText = result;
     });
   }
+
+  //登録画像のプレビュー
+  document.getElementById('file_name').addEventListener('change', function(event) {
+    const file = event.target.files[0]; //event.targetにDOM(input)が渡ってくる
+    const preview = document.getElementById('preview'); //img tagを取得
+
+    //下記のコードの解説お願いします FileReader()とは？
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader(); // FileReader ブラウザでファイルを読み込むAPI
+      reader.onload = function(e) { //  onload  読み込み完了後に発火するイベント。
+        preview.src = e.target.result; // 読み込んだ画像をBase64で取得して表示
+        preview.style.display = 'block'; // styleを書き換え
+      };
+      reader.readAsDataURL(file); // 画像をBase64形式で読み込み
+    } else {
+      preview.src = '';
+      preview.style.display = 'none';
+    }
+  });
 </script>
+<style>
+ /* choice.js CSSカスタム */
+  .choices__list--multiple .choices__item {
+    background-color: #0071BC;
+    border: 1px solid #0071BC;
+    border-radius: 10px;
+  }
+
+  .choices {
+    width: calc(2/3 * 100%);
+  }
+
+</style>
