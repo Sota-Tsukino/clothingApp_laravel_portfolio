@@ -1,9 +1,19 @@
 const el = document.getElementById("item-categories-list");
-const categories = JSON.parse(el.dataset.categories);// [{},{},...]で渡る
+const categories = JSON.parse(el.dataset.categories); // [{},{},...]で渡る
+const subCategoryTranslations = JSON.parse(el.dataset.subcategorytranslations);
 const user = el.dataset.user ? JSON.parse(el.dataset.user) : "";
 
 const categorySelect = document.getElementById("category_id");
 const subCategorySelect = document.getElementById("sub_category_id");
+
+//英語→日本語に置き換え
+categories.forEach((category) => {
+    category.sub_category.forEach((subCategory) => {
+        if (subCategory.name in subCategoryTranslations) {
+            subCategory.name = subCategoryTranslations[subCategory.name];
+        }
+    });
+});
 
 // 初期状態の保存（Laravelが出力した<option>を一旦削除して書き直すため）
 const defaultCategoryOption = categorySelect.innerHTML;

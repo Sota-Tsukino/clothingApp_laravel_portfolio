@@ -29,7 +29,7 @@
               <option value="" {{ old('category_id') == '' ? 'selected' : '' }}>カテゴリーを選択してください</option>
               @foreach ($categories as $category)
                 <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                  {{ $category->name }}
+                  {{ __("category.$category->name") }}
                 </option>
               @endforeach
             </select>
@@ -44,7 +44,7 @@
                 @foreach ($category->subCategory as $subCategory)
                   <option value="{{ $subCategory->id }}"
                     {{ old('sub_category_id') == $subCategory->id ? 'selected' : '' }}>
-                    {{ $subCategory->name }}
+                    {{ __("subcategory.$subCategory->name") }}
                   </option>
                 @endforeach
               @endforeach
@@ -125,7 +125,7 @@
             @foreach ($seasons as $season)
               <div>
                 <input type="checkbox" name="seasons[]" class="mr-2" value="{{ $season->id }}">
-                <label for="season" class="leading-7 text-sm text-gray-600 mr-2">{{ $season->name }}</label>
+                <label for="season" class="leading-7 text-sm text-gray-600 mr-2">{{ __("season.$season->name") }}</label>
               </div>
             @endforeach
           </div>
@@ -136,7 +136,7 @@
               <option value="" {{ old('main_material') == '' ? 'selected' : '' }}>素材を選択してください</option>
               @foreach ($materials as $material)
                 <option value="{{ $material->id }}" {{ old('main_material') == $material->id ? 'selected' : '' }}>
-                  {{ $material->name }}
+                  {{ __("material.$material->name") }}
                 </option>
               @endforeach
             </select>
@@ -148,7 +148,7 @@
               <option value="" {{ old('sub_material') == '' ? 'selected' : '' }}>素材を選択してください</option>
               @foreach ($materials as $material)
                 <option value="{{ $material->id }}" {{ old('sub_material') == $material->id ? 'selected' : '' }}>
-                  {{ $material->name }}
+                    {{ __("material.$material->name") }}
                 </option>
               @endforeach
             </select>
@@ -261,4 +261,4 @@
 
 {{-- JSファイルにPHPの変数を渡す --}}
 <div id="size-checker" data-tolerance='@json($userTolerance)' data-suitable='@json($suitableSize)'></div>
-<div id="item-categories-list" data-categories='@json($categories)'></div>
+<div id="item-categories-list" data-categories='@json($categories)' data-subcategorytranslations='@json(__("subcategory"))'></div>
