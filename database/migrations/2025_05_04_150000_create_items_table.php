@@ -21,7 +21,7 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('main_category_id')
+            $table->foreignId('category_id')
                 ->constrained('categories')//引数でテーブル指定
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -36,16 +36,16 @@ return new class extends Migration
             $table->enum('status', ['owned', 'cleaning', 'discarded']);//DB保存英語保存＋日本語幼児推奨（将来的な国際化(i18n))
             $table->tinyInteger('is_public');
             $table->tinyInteger('is_coordinate_suggest');
-            $table->foreignId('main_material_id')
+            $table->foreignId('main_material_id')->nullable()
                 ->constrained('materials')//引数でテーブル指定
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('sub_material_id')
+            $table->foreignId('sub_material_id')->nullable()
                 ->constrained('materials')//引数でテーブル指定
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->enum('washability_option', ['washable_machine', 'washable_hand', 'not_washable']);// 洗濯可能区分：machine=洗濯機OK, hand=手洗いOK, not=不可
-            $table->date('purchased_date');
+            $table->enum('washability_option', ['washable_machine', 'washable_hand', 'not_washable'])->nullable();// 洗濯可能区分：machine=洗濯機OK, hand=手洗いOK, not=不可
+            $table->date('purchased_date')->nullable();
             $table->integer('price')->unsigned()->nullable();
             $table->string('purchased_place')->nullable();
             $table->string('memo', 100)->nullable();//最大100文字に制限

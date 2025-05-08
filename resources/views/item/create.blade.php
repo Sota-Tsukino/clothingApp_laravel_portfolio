@@ -11,13 +11,13 @@
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
       <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.store' : 'clothing-item.store') }}"
-        method="post">
+        method="post" enctype="multipart/form-data">
         @csrf
         <div class="w-full mb-6 ">
           <h2 class='text-black'>必須入力</h2>
           <div class="flex flex-col mb-6">
             <label for="file_name" class="mb-2 text-gray-700">衣類アイテム画像を選択</label>
-            <input type="file" id="file_name" name="file_name" accept="image/*" class="file_name" required autofocus>
+            <input type="file" id="file_name" name="file_name" accept="image/jpg, image/jpeg, image/png"  class="file_name" required autofocus>
             <img id="preview" src="" alt="プレビュー画像" class="mt-4 max-w-xs rounded shadow"
               style="display: none;">
           </div>
@@ -225,7 +225,7 @@
                   </td>
                   <td class="text-center px-2 py-2">
                     <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1"
-                      value="" min="0.0" max="999.0" placeholder="40.0" class="text-black">
+                      value="{{ old($field) }}" min="0.0" max="999.0" placeholder="40.0" class="text-black">
                     <span class="ml-1">cm</span>
                   </td>
                   <td>

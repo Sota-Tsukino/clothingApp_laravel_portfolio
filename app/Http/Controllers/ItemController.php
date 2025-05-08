@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Color;
@@ -13,6 +15,9 @@ use App\Models\Material;
 use App\Models\BodyMeasurement;
 use App\Models\BodyCorrection;
 use App\Models\FittingTolerance;
+use App\Models\Item;
+use App\Models\Image;
+use App\Services\ImageService;
 
 class ItemController extends Controller
 {
@@ -21,7 +26,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        return 'item C index()';
     }
 
     /**
@@ -83,7 +88,92 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);//image file, colors, tags multi select対応未完了
+        $request->validate([//pngファイルの場合容量容量超えると容量エラーが表示されず、失敗と出る
+            'file_name' => 'required|image|mimes:jpg,jpeg,png|mimetypes:image/jpeg,image/png|max:4096', //画像であるか、拡張子が指定の物か、画像サイズが最大1MBまで
+            'category_id' => 'integer|required|exists:categories,id',
+            'sub_category_id' => 'integer|required|exists:sub_categories,id',
+            'brand_id' => 'integer|required|exists:brands,id',
+            'colors' => 'required|array',
+            'colors.*' => 'integer|exists:colors,id',
+            'status' => [Rule::in(['owned', 'cleaning', 'discarded'])],
+            'is_public' => 'integer|required',
+            'is_coordinate_suggest' => 'integer|required|between:0,1',
+            'tags' => 'nullable|array',
+            'tags.*' => 'integer|exists:tags,id',
+            'seasons' => 'nullable|array',
+            'seasons.*' => 'integer|exists:seasons,id',
+            'main_material' => 'nullable|integer|exists:materials,id',
+            'sub_material' => 'nullable|integer|exists:materials,id',
+            'washability_option' => [Rule::in(['washable_machine', 'washable_hand', 'not_washable']), 'nullable'],
+            'purchased_at' => 'nullable|string|max:20',
+            'price' => 'integer|nullable',
+            'memo' => 'string|nullable|max:50',
+            'neck_circumference' => 'nullable|numeric|between:0,999.0',
+            'shoulder_width' => 'nullable|numeric|between:0,999.0',
+            'yuki_length' => 'nullable|numeric|between:0,999.0',
+            'chest_circumference' => 'nullable|numeric|between:0,999.0',
+            'waist' => 'nullable|numeric|between:0,999.0',
+            'inseam' => 'nullable|numeric|between:0,999.0',
+            'hip' => 'nullable|numeric|between:0,999.0',
+        ]);
+        // dd($request, $request->file('file_name'));
+
+        try {
+            //items, images item_colors, item_tags, item_seasons tableに保存
+            DB::transaction(function () use ($request) {
+                $imageFile =  $request->file('file_name');//input tag name='file_name'
+                if ($imageFile) {
+                    $fileNameToStore = ImageService::upload($imageFile, 'items');
+                    $image = Image::create([
+                        'user_id' => Auth::id(),
+                        'file_name' => $fileNameToStore
+                    ]);
+                }
+
+                // dd($request);
+                $item = Item::create([
+                    'user_id' => Auth::id(),
+                    'image_id' => isset($image) ? $image->id : null,
+                    'category_id' => $request->category_id,
+                    'sub_category_id' => $request->sub_category_id,
+                    'brand_id' => $request->brand_id,
+                    'status' => $request->status,
+                    'is_public' => $request->is_public,
+                    'is_coordinate_suggest' => $request->is_coordinate_suggest,
+                    'main_material_id' => $request->main_material,
+                    'sub_material_id' => $request->sub_material,
+                    'washability_option' => $request->washability_option,
+                    'purchased_date' => $request->purchased_date,
+                    'price' => $request->price,
+                    'purchased_place' => $request->purchased_place,
+                    'neck_circumference' => $request->neck_circumference,
+                    'yuki_length' => $request->yuki_length,
+                    'chest_circumference' => $request->chest_circumference,
+                    'waist' => $request->waist,
+                    'inseam' => $request->inseam,
+                    'hip' => $request->hip,
+                ]);
+
+                // 色の登録（中間テーブル）のデータ挿入
+                $item->colors()->attach($request->colors); // color_idsは配列で送る（例：[1, 2, 3]）
+
+                // タグの登録（中間テーブル）のデータ挿入
+                $item->tags()->attach($request->tags);
+
+                // 季節の登録（中間テーブル）のデータ挿入
+                $item->seasons()->attach($request->seasons);
+            });//引数2で、transactionの回数を指定？
+        } catch (Throwable $e) {// Exceptionの方がいい？
+            Log::error($e);
+            throw $e;
+        }
+
+        return redirect()
+        ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.create' : 'clothing-item.create')
+        ->with([
+            'message' => '衣類アイテムを登録しました。',
+            'status' => 'info'
+        ]);
     }
 
     /**

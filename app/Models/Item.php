@@ -21,6 +21,7 @@ class Item extends Model
         'user_id',
         'image_id',
         'category_id',
+        'sub_category_id',
         'brand_id',
         'status',
         'is_public',
