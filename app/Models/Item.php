@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\SubCategory;
 use App\Models\Image;
 use App\Models\Material;
 use App\Models\Color;
@@ -31,8 +32,10 @@ class Item extends Model
         'washability_option',
         'purchased_date',
         'price',
-        'purchased_place',
+        'purchased_at',
+        'memo',
         'neck_circumference',
+        'shoulder_width',
         'yuki_length',
         'chest_circumference',
         'waist',
@@ -53,6 +56,11 @@ class Item extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function subCategory()
+    {
+        return $this->belongsTo(SubCategory::class);
     }
 
     public function image()

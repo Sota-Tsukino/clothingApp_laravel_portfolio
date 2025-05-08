@@ -88,8 +88,9 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([//pngファイルの場合容量容量超えると容量エラーが表示されず、失敗と出る
-            'file_name' => 'required|image|mimes:jpg,jpeg,png|mimetypes:image/jpeg,image/png|max:4096', //画像であるか、拡張子が指定の物か、画像サイズが最大1MBまで
+        $request->validate([
+             //画像であるか、拡張子が指定の物か、画像サイズが最大4MBまで
+            'file_name' => 'required|image|mimes:jpg,jpeg,png|mimetypes:image/jpeg,image/png|max:4096',
             'category_id' => 'integer|required|exists:categories,id',
             'sub_category_id' => 'integer|required|exists:sub_categories,id',
             'brand_id' => 'integer|required|exists:brands,id',
@@ -145,8 +146,10 @@ class ItemController extends Controller
                     'washability_option' => $request->washability_option,
                     'purchased_date' => $request->purchased_date,
                     'price' => $request->price,
-                    'purchased_place' => $request->purchased_place,
+                    'purchased_at' => $request->purchased_at,
+                    'memo' => $request->memo,
                     'neck_circumference' => $request->neck_circumference,
+                    'shoulder_width' => $request->shoulder_width,
                     'yuki_length' => $request->yuki_length,
                     'chest_circumference' => $request->chest_circumference,
                     'waist' => $request->waist,
@@ -181,7 +184,64 @@ class ItemController extends Controller
      */
     public function show(string $id)
     {
-        //
+        //　with() modelで定義したリレーションのメソッド名
+        $item = Item::with(['image','category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])->findOrFail($id);
+        //参照する体格情報が、ログインユーザー所有のものか？を判定
+        if ($item->user_id !== Auth::id()) {
+        return redirect()
+            ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'measurement.index')
+            ->with([
+                'message' => '他のユーザーの衣類情報は参照できません。',
+                'status' => 'alert'
+            ]);
+        }
+
+        $fields = [
+            'neck_circumference',
+            'shoulder_width',
+            'yuki_length',
+            'chest_circumference',
+            'waist',
+            'inseam',
+            'hip',
+        ];
+
+
+        //要リファクタリング（サイズチェッカーと同じ処理）
+        $bodyMeasurement = BodyMeasurement::where('user_id', Auth::id())
+        ->orderBy('measured_at', 'desc')->firstOrFail();
+        $bodyCorrection = BodyCorrection::findOrFail(Auth::id());
+        $fittingTolerance = FittingTolerance::where('user_id', Auth::id())->get();
+
+        $fields = [
+            'neck_circumference',
+            'shoulder_width',
+            'yuki_length',
+            'chest_circumference',
+            'waist',
+            'inseam',
+            'hip',
+        ];
+        $suitableSize = [];
+        foreach ($fields as $field) {
+            $suitableSize[$field] = $bodyMeasurement->$field + $bodyCorrection->$field;
+        }
+
+        $userTolerance = [];
+        foreach ($fittingTolerance as $tolerance) {
+            $userTolerance[$tolerance->body_part][$tolerance->tolerance_level] = [
+                'min_value' => $tolerance->min_value,
+                'max_value' => $tolerance->max_value,
+            ];
+        }
+
+        // dd($item);
+        return view('item.show', [
+            'item' => $item,
+            'fields' => $fields,
+            'suitableSize' => $suitableSize,
+            'userTolerance' => $userTolerance,
+        ]);
     }
 
     /**

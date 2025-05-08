@@ -47,9 +47,10 @@ return new class extends Migration
             $table->enum('washability_option', ['washable_machine', 'washable_hand', 'not_washable'])->nullable();// 洗濯可能区分：machine=洗濯機OK, hand=手洗いOK, not=不可
             $table->date('purchased_date')->nullable();
             $table->integer('price')->unsigned()->nullable();
-            $table->string('purchased_place')->nullable();
+            $table->string('purchased_at')->nullable();
             $table->string('memo', 100)->nullable();//最大100文字に制限
             $table->decimal('neck_circumference', 4, 1)->unsigned()->nullable();
+            $table->decimal('shoulder_width', 4, 1)->unsigned()->nullable();
             $table->decimal('yuki_length', 4, 1)->unsigned()->nullable();
             $table->decimal('chest_circumference', 4, 1)->unsigned()->nullable();
             $table->decimal('waist', 4, 1)->unsigned()->nullable();

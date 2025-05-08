@@ -171,10 +171,10 @@
             </select>
           </div>
           <div class="flex mb-6 items-center">
-            <label for="purchased_at" class="leading-7 text-sm text-gray-600 w-1/3">購入日</label>
-            <input type="date" name="purchased_at" id="purchased_at"
+            <label for="purchased_date" class="leading-7 text-sm text-gray-600 w-1/3">購入日</label>
+            <input type="date" name="purchased_date" id="purchased_date"
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              value="{{ old('purchased_at', Carbon\Carbon::now()->format('Y/m/d')) }}">
+              value="{{ old('purchased_date', Carbon\Carbon::now()->format('Y/m/d')) }}">
           </div>
           <div class="flex mb-6 items-center">
             <label for="price" class="leading-7 text-sm text-gray-600 w-1/3">金額</label>
