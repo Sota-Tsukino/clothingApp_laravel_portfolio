@@ -196,17 +196,6 @@ class ItemController extends Controller
             ]);
         }
 
-        $fields = [
-            'neck_circumference',
-            'shoulder_width',
-            'yuki_length',
-            'chest_circumference',
-            'waist',
-            'inseam',
-            'hip',
-        ];
-
-
         //要リファクタリング（サイズチェッカーと同じ処理）
         $bodyMeasurement = BodyMeasurement::where('user_id', Auth::id())
         ->orderBy('measured_at', 'desc')->firstOrFail();
@@ -235,12 +224,19 @@ class ItemController extends Controller
             ];
         }
 
+        //サイズチェッカー用で衣類サイズをJSに渡す変数
+        $itemSize = [];
+        foreach($fields as $field) {
+            $itemSize[$field] = $item[$field];
+        }
+
         // dd($item);
         return view('item.show', [
             'item' => $item,
             'fields' => $fields,
             'suitableSize' => $suitableSize,
             'userTolerance' => $userTolerance,
+            'itemSize' => $itemSize,
         ]);
     }
 

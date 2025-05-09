@@ -21,11 +21,11 @@
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">カテゴリー</span>
-          <span class="ml-auto text-gray-900">{{ $item->category->name }}</span>
+          <span class="ml-auto text-gray-900">{{ __("category.{$item->category->name}") }}</span>
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">サブカテゴリー</span>
-          <span class="ml-auto text-gray-900">{{ $item->subCategory->name ?? '未登録' }}</span>
+          <span class="ml-auto text-gray-900">{{ __("subcategory.{$item->subCategory->name}") ?? '未登録' }}</span>
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">ブランド</span>
@@ -43,7 +43,7 @@
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">ステータス</span>
-          <span class="ml-auto text-gray-900">{{ $item->status }}</span>
+          <span class="ml-auto text-gray-900">{{ __("status.$item->status") }}</span>
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">衣類の公開</span>
@@ -57,31 +57,32 @@
           <span class="leading-7 text-sm text-gray-600 w-1/3">タグ</span>
           @foreach ($item->tags as $tag)
             <span
-              class="ml-4 text-gray-900 inline-block border-solid border-gray-500 border p-1 rounded-md">{{ $tag->name ?? '未登録' }}</span>
+              class="ml-4 text-gray-900 inline-block border-solid border-gray-500 border p-1 rounded-md">{{ __("tag.$tag->name") ?? '未登録' }}</span>
           @endforeach
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">季節</span>
           @foreach ($item->seasons as $season)
             <span
-              class="ml-4 text-gray-900 inline-block border-solid border-gray-500 border p-1 rounded-md">{{ $season->name ?? '未登録' }}</span>
+              class="ml-4 text-gray-900 inline-block border-solid border-gray-500 border p-1 rounded-md">{{ __("season.$season->name") ?? '未登録' }}</span>
           @endforeach
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">主素材</span>
-          <span class="ml-auto text-gray-900">{{ $item->mainMaterial->name ?? '未登録' }}</span>
+          <span class="ml-auto text-gray-900">{{ __("material.{$item->mainMaterial->name}") ?? '未登録' }}</span>
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">副素材</span>
-          <span class="ml-auto text-gray-900">{{ $item->subMaterial->name ?? '未登録' }}</span>
+          <span class="ml-auto text-gray-900">{{ __("material.{$item->subMaterial->name}") ?? '未登録' }}</span>
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">家庭洗濯</span>
-          <span class="ml-auto text-gray-900">{{ $item->washability_option ?? '未登録' }}</span>
+          <span class="ml-auto text-gray-900">{{ __("washability.$item->washability_option") ?? '未登録' }}</span>
         </div>
         <div class="flex mb-6 items-center">
           <span for="purchased_at" class="leading-7 text-sm text-gray-600 w-1/3">購入日</span>
-          <span class="ml-auto text-gray-900">{{ $item->purchased_date ?? '未登録' }}</span>
+          <span
+            class="ml-auto text-gray-900">{{ $item->purchased_date ? \Carbon\Carbon::parse($item->purchased_date)->format('Y/m/d') : '未登録' }}</span>
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">金額</span>
@@ -108,6 +109,16 @@
             </tr>
           </thead>
           <tbody>
+            @php
+              $categoryName = $item->category->name;
+              if ($categoryName === 'setup') {
+                  $fields = ['neck', 'shoulder', 'yuki_length', 'chest_circumference', 'waist', 'inseam', 'hip'];
+              } elseif (in_array($categoryName, ['topps', 'outer'])) {
+                  $fields = ['neck_circumference', 'shoulder_width', 'yuki_length', 'chest_circumference'];
+              } elseif ($categoryName === 'bottoms') {
+                  $fields = ['waist', 'inseam', 'hip'];
+              }
+            @endphp
             @foreach ($fields as $field)
               <tr>
                 <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
@@ -115,7 +126,8 @@
                   {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
                 </td>
                 <td class="text-center px-2 py-2">
-                  <span class="text-black">{{ $item->$field }}</span>
+                  <span id="{{ $field }}__size"
+                    class="text-black">{{ $item->$field ? number_format($item->$field, 1) : '未登録' }}</span>
                   <span class="ml-1">cm</span>
                 </td>
                 <td>
@@ -149,3 +161,5 @@
     </div>
   </section>
 </x-app-layout>
+<div id="item-detail" data-tolerance='@json($userTolerance)' data-suitable='@json($suitableSize)'
+  data-itemsize='@json($itemSize)'></div>

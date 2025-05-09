@@ -69,7 +69,7 @@
               @foreach ($colors as $color)
                 <option value="{{ $color->id }}" data-custom-properties='{"hex":"{{ $color->hex_code }}"}'
                   {{ collect(old('colors'))->contains($color->id) ? 'selected' : '' }}>
-                  {{ $color->name }}
+                  {{ __("color.$color->name") }}
                 </option>
               @endforeach
             </select>
@@ -115,7 +115,7 @@
             <select name="tags[]" id="tags" multiple class="w-2/3 bg-gray-100">
               @foreach ($tags as $tag)
                 <option value="{{ $tag->id }}" {{ collect(old('tags'))->contains($tag->id) ? 'selected' : '' }}>
-                  {{ $tag->name }}
+                  {{ __("tag.$tag->name") }}
                 </option>
               @endforeach
             </select>

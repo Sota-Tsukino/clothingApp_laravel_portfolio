@@ -17,16 +17,18 @@
             'resources/js/app.js',//全ページ(blade)で読み込むのでこの中で下記JSをimportしない
             //↓ページ別にJS読み込み
             Request::routeIs('admin.clothing-item.create') ? 'resources/js/clothing-item.js' : '',
-            Request::routeIs('admin.clothing-item.create') ? 'resources/js/size-checker.js' : '',
+            Request::routeIs('admin.clothing-item.create') ? 'resources/js/init-size-checker.js' : '',
             Request::routeIs('admin.clothing-item.create') ? 'resources/js/item-category-list.js' : '',
-            Request::routeIs('admin.sizechecker.index') ? 'resources/js/size-checker.js' : '',
+            Request::routeIs('admin.clothing-item.show') ? 'resources/js/init-size-checker-display.js' : '',
+            Request::routeIs('admin.sizechecker.index') ? 'resources/js/init-size-checker.js' : '',
             Request::routeIs('admin.profile.edit') ? 'resources/js/prefecture-city-list.js' : '',
             //↓一般ユーザー用
             Request::routeIs('profile.edit') ? 'resources/js/prefecture-city-list.js' : '',
             Request::routeIs('clothing-item.create') ? 'resources/js/clothing-item.js' : '',
-            Request::routeIs('clothing-item.create') ? 'resources/js/size-checker.js' : '',
+            Request::routeIs('clothing-item.create') ? 'resources/js/init-size-checker.js' : '',
             Request::routeIs('clothing-item.create') ? 'resources/js/item-category-list.js' : '',
-            Request::routeIs('sizechecker.index') ? 'resources/js/size-checker.js' : '',
+            Request::routeIs('clothing-item.show') ? 'resources/js/init-size-checker-display.js' : '',
+            Request::routeIs('sizechecker.index') ? 'resources/js/init-size-checker.js' : '',
             ])
     </head>
     <body class="font-sans antialiased">
