@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\BodyCorrection;
 
 class BodyCorrectionService
 {
@@ -27,5 +28,10 @@ class BodyCorrectionService
             $rules[$field] = 'numeric|between:0,9';
         }
         return $rules;
+    }
+
+    public static function getForUser($userId)
+    {
+        return BodyCorrection::findOrFail($userId);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\BodyMeasurement;
 
 class BodyMeasurementService
 {
@@ -33,5 +34,12 @@ class BodyMeasurementService
             $rules[$field] = 'nullable|numeric|between:0,999.0';
         }
         return $rules;
+    }
+
+    public static function getLatestForUser($userId)
+    {
+        return BodyMeasurement::where('user_id', $userId)
+            ->orderBy('measured_at', 'desc')
+            ->firstOrFail();
     }
 }

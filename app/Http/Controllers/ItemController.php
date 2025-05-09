@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ItemRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,10 @@ use App\Models\FittingTolerance;
 use App\Models\Item;
 use App\Models\Image;
 use App\Services\ImageService;
+use App\Services\SizeCheckerService;
+use App\Services\BodyMeasurementService;
+use App\Services\BodyCorrectionService;
+use App\Services\FittingToleranceService;
 
 class ItemController extends Controller
 {
@@ -45,40 +50,13 @@ class ItemController extends Controller
         $seasons = Season::all();
         $materials = Material::all();
 
-        $bodyMeasurement = BodyMeasurement::where('user_id', Auth::id())
-            ->orderBy('measured_at', 'desc')->firstOrFail();
-        // dd(
-        //     $tags,
-        //     $seasons,
-        //     $materials,
-        // );
-
-
-        //要リファクタリング（サイズチェッカーと同じ処理）
-        $bodyCorrection = BodyCorrection::findOrFail(Auth::id());
-        $fittingTolerance = FittingTolerance::where('user_id', Auth::id())->get();
-
-        $fields = [
-            'neck_circumference',
-            'shoulder_width',
-            'yuki_length',
-            'chest_circumference',
-            'waist',
-            'inseam',
-            'hip',
-        ];
-        $suitableSize = [];
-        foreach ($fields as $field) {
-            $suitableSize[$field] = $bodyMeasurement->$field + $bodyCorrection->$field;
-        }
-
-        $userTolerance = [];
-        foreach ($fittingTolerance as $tolerance) {
-            $userTolerance[$tolerance->body_part][$tolerance->tolerance_level] = [
-                'min_value' => $tolerance->min_value,
-                'max_value' => $tolerance->max_value,
-            ];
-        }
+        //サイズチェッカーに必要な情報を取得
+        $userId = Auth::id();
+        $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
+        $bodyCorrection = BodyCorrectionService::getForUser($userId);
+        $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
+        $userTolerance = FittingToleranceService::getForUser($userId);
+        $fields = SizeCheckerService::getFields();
 
         return view('item.create', compact('categories', 'colors', 'brands', 'tags', 'seasons', 'materials', 'bodyMeasurement', 'suitableSize', 'fields', 'userTolerance'));
     }
@@ -86,43 +64,13 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ItemRequest $request)
     {
-        $request->validate([
-             //画像であるか、拡張子が指定の物か、画像サイズが最大4MBまで
-            'file_name' => 'required|image|mimes:jpg,jpeg,png|mimetypes:image/jpeg,image/png|max:4096',
-            'category_id' => 'integer|required|exists:categories,id',
-            'sub_category_id' => 'integer|required|exists:sub_categories,id',
-            'brand_id' => 'integer|required|exists:brands,id',
-            'colors' => 'required|array',
-            'colors.*' => 'integer|exists:colors,id',
-            'status' => [Rule::in(['owned', 'cleaning', 'discarded'])],
-            'is_public' => 'integer|required',
-            'is_coordinate_suggest' => 'integer|required|between:0,1',
-            'tags' => 'nullable|array',
-            'tags.*' => 'integer|exists:tags,id',
-            'seasons' => 'nullable|array',
-            'seasons.*' => 'integer|exists:seasons,id',
-            'main_material' => 'nullable|integer|exists:materials,id',
-            'sub_material' => 'nullable|integer|exists:materials,id',
-            'washability_option' => [Rule::in(['washable_machine', 'washable_hand', 'not_washable']), 'nullable'],
-            'purchased_at' => 'nullable|string|max:20',
-            'price' => 'integer|nullable',
-            'memo' => 'string|nullable|max:50',
-            'neck_circumference' => 'nullable|numeric|between:0,999.0',
-            'shoulder_width' => 'nullable|numeric|between:0,999.0',
-            'yuki_length' => 'nullable|numeric|between:0,999.0',
-            'chest_circumference' => 'nullable|numeric|between:0,999.0',
-            'waist' => 'nullable|numeric|between:0,999.0',
-            'inseam' => 'nullable|numeric|between:0,999.0',
-            'hip' => 'nullable|numeric|between:0,999.0',
-        ]);
-        // dd($request, $request->file('file_name'));
 
         try {
             //items, images item_colors, item_tags, item_seasons tableに保存
             DB::transaction(function () use ($request) {
-                $imageFile =  $request->file('file_name');//input tag name='file_name'
+                $imageFile =  $request->file('file_name'); //input tag name='file_name'
                 if ($imageFile) {
                     $fileNameToStore = ImageService::upload($imageFile, 'items');
                     $image = Image::create([
@@ -131,7 +79,6 @@ class ItemController extends Controller
                     ]);
                 }
 
-                // dd($request);
                 $item = Item::create([
                     'user_id' => Auth::id(),
                     'image_id' => isset($image) ? $image->id : null,
@@ -165,18 +112,18 @@ class ItemController extends Controller
 
                 // 季節の登録（中間テーブル）のデータ挿入
                 $item->seasons()->attach($request->seasons);
-            });//引数2で、transactionの回数を指定？
-        } catch (Throwable $e) {// Exceptionの方がいい？
+            }); //引数2で、transactionの回数を指定？
+        } catch (Throwable $e) { // Exceptionの方がいい？
             Log::error($e);
             throw $e;
         }
 
         return redirect()
-        ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.create' : 'clothing-item.create')
-        ->with([
-            'message' => '衣類アイテムを登録しました。',
-            'status' => 'info'
-        ]);
+            ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.create' : 'clothing-item.create')
+            ->with([
+                'message' => '衣類アイテムを登録しました。',
+                'status' => 'info'
+            ]);
     }
 
     /**
@@ -185,50 +132,27 @@ class ItemController extends Controller
     public function show(string $id)
     {
         //　with() modelで定義したリレーションのメソッド名
-        $item = Item::with(['image','category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])->findOrFail($id);
+        $item = Item::with(['image', 'category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])->findOrFail($id);
         //参照する体格情報が、ログインユーザー所有のものか？を判定
         if ($item->user_id !== Auth::id()) {
-        return redirect()
-            ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'measurement.index')
-            ->with([
-                'message' => '他のユーザーの衣類情報は参照できません。',
-                'status' => 'alert'
-            ]);
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'measurement.index')
+                ->with([
+                    'message' => '他のユーザーの衣類情報は参照できません。',
+                    'status' => 'alert'
+                ]);
         }
 
-        //要リファクタリング（サイズチェッカーと同じ処理）
-        $bodyMeasurement = BodyMeasurement::where('user_id', Auth::id())
-        ->orderBy('measured_at', 'desc')->firstOrFail();
-        $bodyCorrection = BodyCorrection::findOrFail(Auth::id());
-        $fittingTolerance = FittingTolerance::where('user_id', Auth::id())->get();
-
-        $fields = [
-            'neck_circumference',
-            'shoulder_width',
-            'yuki_length',
-            'chest_circumference',
-            'waist',
-            'inseam',
-            'hip',
-        ];
-        $suitableSize = [];
-        foreach ($fields as $field) {
-            $suitableSize[$field] = $bodyMeasurement->$field + $bodyCorrection->$field;
-        }
-
-        $userTolerance = [];
-        foreach ($fittingTolerance as $tolerance) {
-            $userTolerance[$tolerance->body_part][$tolerance->tolerance_level] = [
-                'min_value' => $tolerance->min_value,
-                'max_value' => $tolerance->max_value,
-            ];
-        }
+        //サイズチェッカーに必要な情報を取得
+        $userId = Auth::id();
+        $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
+        $bodyCorrection = BodyCorrectionService::getForUser($userId);
+        $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
+        $userTolerance = FittingToleranceService::getForUser($userId);
+        $fields = SizeCheckerService::getFields();
 
         //サイズチェッカー用で衣類サイズをJSに渡す変数
-        $itemSize = [];
-        foreach($fields as $field) {
-            $itemSize[$field] = $item[$field];
-        }
+        $itemSize = SizeCheckerService::getItemSize($item);
 
         // dd($item);
         return view('item.show', [

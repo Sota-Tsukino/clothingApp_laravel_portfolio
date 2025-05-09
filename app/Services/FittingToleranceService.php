@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\FittingTolerance;
 
 class FittingToleranceService
 {
@@ -105,5 +106,20 @@ class FittingToleranceService
         }
         // dd($rules);
         return $rules;
+    }
+
+    public static function getForUser($userId)
+    {
+        $raw = FittingTolerance::where('user_id', $userId)->get();
+        $userTolerance = [];
+
+        foreach ($raw as $tolerance) {
+            $userTolerance[$tolerance->body_part][$tolerance->tolerance_level] = [
+                'min_value' => $tolerance->min_value,
+                'max_value' => $tolerance->max_value,
+            ];
+        }
+
+        return $userTolerance;
     }
 }
