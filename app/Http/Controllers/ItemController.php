@@ -81,7 +81,7 @@ class ItemController extends Controller
 
                 $item = Item::create([
                     'user_id' => Auth::id(),
-                    'image_id' => isset($image) ? $image->id : null,
+                    'image_id' => $image->id ?? null,
                     'category_id' => $request->category_id,
                     'sub_category_id' => $request->sub_category_id,
                     'brand_id' => $request->brand_id,

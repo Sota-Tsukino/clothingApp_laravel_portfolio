@@ -17,18 +17,20 @@
           <h2 class='text-black'>必須入力</h2>
           <div class="flex flex-col mb-6">
             <label for="file_name" class="mb-2 text-gray-700">衣類アイテム画像を選択</label>
-            <input type="file" id="file_name" name="file_name" accept="image/jpg, image/jpeg, image/png"  class="file_name" required autofocus>
+            <input type="file" id="file_name" name="file_name" accept="image/jpg, image/jpeg, image/png"
+              class="file_name" required autofocus>
             <img id="preview" src="" alt="プレビュー画像" class="mt-4 max-w-xs rounded shadow"
               style="display: none;">
           </div>
           <div class="flex mb-6 items-center">
             <label for="category_id" class="leading-7 text-sm text-gray-600 w-1/3">カテゴリー</label>
-            <select name="category_id" id="category_id"
+            <select name="category_id" id="categorySelect"
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required>
               <option value="" {{ old('category_id') == '' ? 'selected' : '' }}>カテゴリーを選択してください</option>
               @foreach ($categories as $category)
-                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}
+                  data-type="{{ $category->name }}">
                   {{ __("category.$category->name") }}
                 </option>
               @endforeach
@@ -125,7 +127,8 @@
             @foreach ($seasons as $season)
               <div>
                 <input type="checkbox" name="seasons[]" class="mr-2" value="{{ $season->id }}">
-                <label for="season" class="leading-7 text-sm text-gray-600 mr-2">{{ __("season.$season->name") }}</label>
+                <label for="season"
+                  class="leading-7 text-sm text-gray-600 mr-2">{{ __("season.$season->name") }}</label>
               </div>
             @endforeach
           </div>
@@ -148,7 +151,7 @@
               <option value="" {{ old('sub_material') == '' ? 'selected' : '' }}>素材を選択してください</option>
               @foreach ($materials as $material)
                 <option value="{{ $material->id }}" {{ old('sub_material') == $material->id ? 'selected' : '' }}>
-                    {{ __("material.$material->name") }}
+                  {{ __("material.$material->name") }}
                 </option>
               @endforeach
             </select>
@@ -197,10 +200,10 @@
           </div>
           <h2 class='text-black'>衣類サイズ入力</h2>
           <div class="flex justify-between pb-4">
-            <div class="w-1/2 border">
+            <div class="top-item w-1/2 border">
               <img src="{{ asset('images/topps.png') }}" class="w-full"alt="">
             </div>
-            <div class="w-1/2 border">
+            <div class="bottom-item w-1/2 border">
               <img src="{{ asset('images/bottoms.png') }}"class="w-full" alt="">
             </div>
           </div>
@@ -218,14 +221,27 @@
             </thead>
             <tbody>
               @foreach ($fields as $field)
-                <tr>
+                @php
+                  $fieldClass = in_array($field, [
+                      'neck_circumference',
+                      'shoulder_width',
+                      'yuki_length',
+                      'chest_circumference',
+                  ])
+                      ? 'top-item'
+                      : (in_array($field, ['waist', 'inseam', 'hip'])
+                          ? 'bottom-item'
+                          : '');
+                @endphp
+                <tr class="{{ $fieldClass }}">
                   <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
                   <td class="text-center px-2 py-2">
                     {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
                   </td>
                   <td class="text-center px-2 py-2">
                     <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1"
-                      value="{{ old($field) }}" min="0.0" max="999.0" placeholder="40.0" class="text-black">
+                      value="{{ old($field) }}" min="0.0" max="999.0" placeholder="40.0"
+                      class="text-black">
                     <span class="ml-1">cm</span>
                   </td>
                   <td>
@@ -260,5 +276,40 @@
 </x-app-layout>
 
 {{-- JSファイルにPHPの変数を渡す --}}
-<div id="size-checker" data-tolerance='@json($userTolerance)' data-suitable='@json($suitableSize)'></div>
-<div id="item-categories-list" data-categories='@json($categories)' data-subcategorytranslations='@json(__("subcategory"))'></div>
+<div id="size-checker" data-tolerance='@json($userTolerance)' data-suitable='@json($suitableSize)'>
+</div>
+<div id="item-categories-list" data-categories='@json($categories)'
+  data-subcategorytranslations='@json(__('subcategory'))'></div>
+<script>
+    //カテゴリーに応じて、衣類サイズ部位の表示切替
+  document.addEventListener('DOMContentLoaded', function() {
+    const categorySelect = document.getElementById('categorySelect');
+
+    function toggleFields(categoryName) {
+      const topItems = document.querySelectorAll('.top-item');
+      const bottomItems = document.querySelectorAll('.bottom-item');
+
+      if (categoryName === 'topps' || categoryName === 'outer') {
+        topItems.forEach(el => el.style.display = '');
+        bottomItems.forEach(el => el.style.display = 'none');
+      } else if (categoryName === 'bottoms') {
+        topItems.forEach(el => el.style.display = 'none');
+        bottomItems.forEach(el => el.style.display = '');
+      } else {
+        // どちらでもない場合（未選択）
+        topItems.forEach(el => el.style.display = '');
+        bottomItems.forEach(el => el.style.display = '');
+      }
+    }
+
+    categorySelect.addEventListener('change', function() {
+      const selected = categorySelect.options[categorySelect.selectedIndex];
+      const categoryName = selected.getAttribute('data-type');
+      toggleFields(categoryName);
+    });
+
+    // 初期化（画面ロード時に実行）
+    const initialCategoryName = categorySelect.options[categorySelect.selectedIndex]?.getAttribute('data-type');
+    toggleFields(initialCategoryName);
+  });
+</script>

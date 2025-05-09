@@ -3,7 +3,7 @@ const categories = JSON.parse(el.dataset.categories); // [{},{},...]で渡る
 const subCategoryTranslations = JSON.parse(el.dataset.subcategorytranslations);
 const user = el.dataset.user ? JSON.parse(el.dataset.user) : "";
 
-const categorySelect = document.getElementById("category_id");
+const categorySelect = document.getElementById("categorySelect");
 const subCategorySelect = document.getElementById("sub_category_id");
 
 //英語→日本語に置き換え
