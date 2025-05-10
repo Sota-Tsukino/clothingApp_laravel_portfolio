@@ -6,12 +6,6 @@ use App\Http\Requests\ItemRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Models\Category;
-use App\Models\Brand;
-use App\Models\Color;
-use App\Models\Tag;
-use App\Models\Season;
-use App\Models\Material;
 use App\Models\Item;
 use App\Models\Image;
 use App\Services\ImageService;
@@ -37,25 +31,21 @@ class ItemController extends Controller
     public function create()
     {
 
-        //with()の引数はmodels/Category.phpで定義したメソッド名を指定
-        $categories = Category::with('subCategory')->get();
-
-        //マスターテーブルより全データ取得
-        $colors = Color::all();
-        $brands = Brand::all();
-        $tags = Tag::all();
-        $seasons = Season::all();
-        $materials = Material::all();
-
-        //サイズチェッカーに必要な情報を取得
         $userId = Auth::id();
-        $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
-        $bodyCorrection = BodyCorrectionService::getForUser($userId);
-        $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
-        $userTolerance = FittingToleranceService::getForUser($userId);
-        $fields = SizeCheckerService::getFields();
+        $formData = ItemService::getFormData($userId);
 
-        return view('item.create', compact('categories', 'colors', 'brands', 'tags', 'seasons', 'materials', 'bodyMeasurement', 'suitableSize', 'fields', 'userTolerance'));
+        return view('item.create', [
+            'categories' => $formData['categories'],
+            'colors' => $formData['colors'],
+            'brands' => $formData['brands'],
+            'tags' => $formData['tags'],
+            'seasons' => $formData['seasons'],
+            'materials' => $formData['materials'],
+            'bodyMeasurement' => $formData['bodyMeasurement'],
+            'suitableSize' => $formData['suitableSize'],
+            'fields' => $formData['fields'],
+            'userTolerance' => $formData['userTolerance'],
+        ]);
     }
 
     /**
@@ -110,7 +100,7 @@ class ItemController extends Controller
                 // 季節の登録（中間テーブル）のデータ挿入
                 $item->seasons()->attach($request->seasons);
             }); //引数2で、transactionの回数を指定？
-        } catch (Throwable $e) { // Exceptionの方がいい？
+        } catch (Throwable $e) {
             Log::error($e);
             throw $e;
         }
@@ -128,28 +118,32 @@ class ItemController extends Controller
      */
     public function show(string $id)
     {
-        $userId = Auth::id();
-        $item = ItemService::getItemById($id);
-        ItemService::isUserOwn($item, $userId);
+        try {
+            $userId = Auth::id();
+            $item = ItemService::getItemById($id);
+            ItemService::isUserOwn($item, $userId);
 
-        //サイズチェッカーに必要な情報を取得
-        $userId = Auth::id();
-        $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
-        $bodyCorrection = BodyCorrectionService::getForUser($userId);
-        $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
-        $userTolerance = FittingToleranceService::getForUser($userId);
-        $fields = SizeCheckerService::getFields();
+            //サイズチェッカーに必要な情報を取得
+            $userId = Auth::id();
+            $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
+            $bodyCorrection = BodyCorrectionService::getForUser($userId);
+            $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
+            $userTolerance = FittingToleranceService::getForUser($userId);
+            $fields = SizeCheckerService::getFields();
+        } catch (\Exception $e) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'measurement.index')
+                ->with([
+                    'message' => $e->getMessage(),
+                    'status' => 'alert'
+                ]);
+        }
 
-        //サイズチェッカー用で衣類サイズをJSに渡す変数
-        $itemSize = SizeCheckerService::getItemSize($item);
-
-        // dd($item->mainMaterial);
         return view('item.show', [
             'item' => $item,
             'fields' => $fields,
             'suitableSize' => $suitableSize,
             'userTolerance' => $userTolerance,
-            'itemSize' => $itemSize,
         ]);
     }
 
@@ -159,33 +153,32 @@ class ItemController extends Controller
     public function edit(string $id)
     {
         $userId = Auth::id();
-
-        //マスターテーブルより全データ取得
-        $categories = Category::with('subCategory')->get();
-        $colors = Color::all();
-        $brands = Brand::all();
-        $tags = Tag::all();
-        $seasons = Season::all();
-        $materials = Material::all();
-
-        //アイテム情報を取得
-        $item = ItemService::getItemById($id);
-        ItemService::isUserOwn($item, $userId);
-
-        //サイズチェッカーに必要な情報を取得
-        $userId = Auth::id();
-        $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
-        $bodyCorrection = BodyCorrectionService::getForUser($userId);
-        $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
-        $userTolerance = FittingToleranceService::getForUser($userId);
-        $fields = SizeCheckerService::getFields();
-
-        //サイズチェッカー用で衣類サイズをJSに渡す変数
-        $itemSize = SizeCheckerService::getItemSize($item);
+        try {
+            $formDataWithItem = ItemService::getFormDataWithItem($id, $userId);
+        } catch (\Exception $e) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'measurement.index')
+                ->with([
+                    'message' => $e->getMessage(),
+                    'status' => 'alert'
+                ]);
+        }
 
         // dd($item->colors);
 
-        return view('item.edit', compact('categories', 'colors', 'brands', 'tags', 'seasons', 'materials', 'item', 'bodyMeasurement', 'suitableSize', 'fields', 'userTolerance'));
+        return view('item.edit', [
+            'categories' => $formDataWithItem['categories'],
+            'colors' => $formDataWithItem['colors'],
+            'brands' => $formDataWithItem['brands'],
+            'tags' => $formDataWithItem['tags'],
+            'seasons' => $formDataWithItem['seasons'],
+            'materials' => $formDataWithItem['materials'],
+            'item' => $formDataWithItem['item'],
+            'bodyMeasurement' => $formDataWithItem['bodyMeasurement'],
+            'suitableSize' => $formDataWithItem['suitableSize'],
+            'fields' => $formDataWithItem['fields'],
+            'userTolerance' => $formDataWithItem['userTolerance'],
+        ]);
     }
 
     /**

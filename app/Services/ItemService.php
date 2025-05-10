@@ -3,6 +3,12 @@
 namespace App\Services;
 
 use App\Models\Item;
+use App\Models\Category;
+use App\Models\Brand;
+use App\Models\Color;
+use App\Models\Tag;
+use App\Models\Season;
+use App\Models\Material;
 use App\Services\BodyMeasurementService;
 use App\Services\BodyCorrectionService;
 use App\Services\FittingToleranceService;
@@ -10,27 +16,37 @@ use App\Services\SizeCheckerService;
 
 class ItemService
 {
+    // フォームデータの取得
+    public static function getFormData(int $userId): array
+    {
+        $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
+        $bodyCorrection = BodyCorrectionService::getForUser($userId);
+        return [
+            'categories' => Category::with('subCategory')->get(), //with()の引数はmodels/Category.phpで定義したメソッド名を指定
+            'colors' => Color::all(),
+            'brands' => Brand::all(),
+            'tags' => Tag::all(),
+            'seasons' => Season::all(),
+            'materials' => Material::all(),
+            //サイズチェッカーに必要な情報を取得
+            'bodyMeasurement' => BodyMeasurementService::getLatestForUser($userId),
+            'bodyCorrection' => BodyCorrectionService::getForUser($userId),
+            'suitableSize' => SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection),
+            'userTolerance' => FittingToleranceService::getForUser($userId),
+            'fields' => SizeCheckerService::getFields(),
+        ];
+    }
 
-    //リクエストデータの取得
-    // public static function getFormData(int $userId): array
-    // {
-    //     return [
-    //         'categories' => Category::with('subCategory')->get(),
-    //         'colors' => Color::all(),
-    //         'brands' => Brand::all(),
-    //         'tags' => Tag::all(),
-    //         'seasons' => Season::all(),
-    //         'materials' => Material::all(),
-    //         'bodyMeasurement' => BodyMeasurementService::getLatestForUser($userId),
-    //         'bodyCorrection' => BodyCorrectionService::getForUser($userId),
-    //         'suitableSize' => SizeCheckerService::getSuitableSize(
-    //             BodyMeasurementService::getLatestForUser($userId),
-    //             BodyCorrectionService::getForUser($userId)
-    //         ),
-    //         'userTolerance' => FittingToleranceService::getForUser($userId),
-    //         'fields' => SizeCheckerService::getFields(),
-    //     ];
-    // }
+    public static function getFormDataWithItem(int $itemId, int $userId): array
+    {
+        $formData = self::getFormData($userId);
+        $item = self::getItemById($itemId);
+        self::isUserOwn($item, $userId);
+
+        $formData['item'] = $item;
+        return $formData;
+    }
+
 
     //アイテムの取得
     public static function getItemById($id)
@@ -40,15 +56,10 @@ class ItemService
     }
 
     //アイテムがログインユーザー所有か判定
-    public static function isUserOwn($item, $userId)
+    public static function isUserOwn($item, $userId): void
     {
         if ($item->user_id !== $userId) {
-            return redirect()
-                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'measurement.index')
-                ->with([
-                    'message' => '他のユーザーの衣類情報は参照できません。',
-                    'status' => 'alert'
-                ]);
+            throw new \Exception('他のユーザーの衣類情報は参照できません。');
         }
     }
 

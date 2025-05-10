@@ -165,4 +165,4 @@
   </section>
 </x-app-layout>
 <div id="item-detail" data-tolerance='@json($userTolerance)' data-suitable='@json($suitableSize)'
-  data-itemsize='@json($itemSize)'></div>
+  data-item='@json($item)'></div>

@@ -4,7 +4,7 @@ export function applyStaticSizeEvaluation(
     container,
     tolerance,
     suitableSize,
-    actualSize
+    item
 ) {
     const colorClasses = ["text-green-600", "text-yellow-600", "text-red-600"];
 
@@ -12,7 +12,7 @@ export function applyStaticSizeEvaluation(
         const resultEl = container.querySelector(`#${field}_result`);
         if (!resultEl) continue;
 
-        const inputVal = parseFloat(actualSize[field]);
+        const inputVal = parseFloat(item[field]);
         if (isNaN(inputVal)) {
             resultEl.classList.remove(...colorClasses);
             resultEl.innerText = "未判定";
