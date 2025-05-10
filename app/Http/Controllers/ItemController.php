@@ -99,7 +99,7 @@ class ItemController extends Controller
 
                 // 季節の登録（中間テーブル）のデータ挿入
                 $item->seasons()->attach($request->seasons);
-            }); //引数2で、transactionの回数を指定？
+            });
         } catch (Throwable $e) {
             Log::error($e);
             throw $e;
@@ -184,9 +184,23 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ItemRequest $request, string $id)
     {
-        //
+        dd($request);
+        $item = ItemService::getItemById($id);
+
+        try {
+        } catch (Throwable $e) {
+            Log::error($e);
+            throw $e;
+        }
+
+        return redirect()
+            ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.show' : 'clothing-item.show')
+            ->with([
+                'message' => '衣類アイテムを更新しました。',
+                'status' => 'info'
+            ]);
     }
 
     /**

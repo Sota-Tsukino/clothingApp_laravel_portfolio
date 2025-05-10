@@ -10,15 +10,17 @@
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
-      <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.store' : 'clothing-item.store') }}"
+      <form
+        action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.update' : 'clothing-item.update', ['clothing_item' => $item->id]) }}"
         method="post" enctype="multipart/form-data">
         @csrf
+        @method('put')
         <div class="w-full mb-6 ">
           <h2 class='text-black'>必須入力</h2>
           <div class="flex flex-col mb-6">
             <label for="file_name" class="mb-2 text-gray-700">衣類アイテム画像を変更</label>
             <input type="file" id="file_name" name="file_name" accept="image/jpg, image/jpeg, image/png"
-              class="file_name" required autofocus>
+              class="file_name" autofocus>
             <img id="preview" src="{{ asset('storage/items/' . $item->image->file_name) }}" alt="プレビュー画像"
               class="mt-4 max-w-xs rounded shadow">
           </div>
@@ -280,5 +282,5 @@
 {{-- JSファイルにPHPの変数を渡す --}}
 <div id="size-checker" data-tolerance='@json($userTolerance)' data-suitable='@json($suitableSize)'>
 </div>
-<div id="item-categories-list" data-categories='@json($categories)'
-  data-subcategorytranslations='@json(__('subcategory'))'></div>
+<div id="init-item-category-list" data-categories='@json($categories)'
+  data-subcategorytranslations='@json(__('subcategory'))' data-item='@json($item)'></div>
