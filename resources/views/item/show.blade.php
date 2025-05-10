@@ -69,15 +69,18 @@
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">主素材</span>
-          <span class="ml-auto text-gray-900">{{ __("material.{$item->mainMaterial->name}") ?? '未登録' }}</span>
+          <span
+            class="ml-auto text-gray-900">{{ $item->mainMaterial !== null ? __("material.{$item->mainMaterial->name}") : '未登録' }}</span>
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">副素材</span>
-          <span class="ml-auto text-gray-900">{{ __("material.{$item->subMaterial->name}") ?? '未登録' }}</span>
+          <span
+            class="ml-auto text-gray-900">{{ $item->subMaterial !== null ? __("material.{$item->subMaterial->name}") : '未登録' }}</span>
         </div>
         <div class="flex mb-6 items-center">
           <span class="leading-7 text-sm text-gray-600 w-1/3">家庭洗濯</span>
-          <span class="ml-auto text-gray-900">{{ __("washability.$item->washability_option") ?? '未登録' }}</span>
+          <span
+            class="ml-auto text-gray-900">{{ $item->washability_option !== null ? __("washability.$item->washability_option") : '未登録' }}</span>
         </div>
         <div class="flex mb-6 items-center">
           <span for="purchased_at" class="leading-7 text-sm text-gray-600 w-1/3">購入日</span>

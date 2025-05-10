@@ -83,18 +83,18 @@ class Item extends Model
     //中間テーブル
     public function colors()
     {
-        return $this->belongsToMany(Color::class, 'item_colors');
+        return $this->belongsToMany(Color::class, 'item_colors')->withTimestamps();
     }
 
     //中間テーブル
     public function seasons()
     {
-        return $this->belongsToMany(Season::class, 'item_seasons');
+        return $this->belongsToMany(Season::class, 'item_seasons')->withTimestamps();
     }
 
     //中間テーブル
     public function tags()
     {
-        return $this->belongsToMany(Tag::class, 'item_tags');
+        return $this->belongsToMany(Tag::class, 'item_tags')->withTimestamps();
     }
 }

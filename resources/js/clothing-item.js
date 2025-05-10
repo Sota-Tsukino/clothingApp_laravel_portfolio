@@ -86,3 +86,34 @@ document.getElementById('file_name').addEventListener('change', function(event) 
         preview.style.display = 'none';
     }
 });
+
+//カテゴリーの選択に応じた、衣類サイズ入力項目の表示切替
+const categorySelect = document.getElementById('categorySelect');
+
+function toggleFields(categoryName) {
+    const topItems = document.querySelectorAll('.top-item');
+    const bottomItems = document.querySelectorAll('.bottom-item');
+
+    if (categoryName === 'topps' || categoryName === 'outer') {
+    topItems.forEach(el => el.style.display = '');
+    bottomItems.forEach(el => el.style.display = 'none');
+    } else if (categoryName === 'bottoms') {
+    topItems.forEach(el => el.style.display = 'none');
+    bottomItems.forEach(el => el.style.display = '');
+    } else {
+    // どちらでもない場合（未選択）
+    topItems.forEach(el => el.style.display = '');
+    bottomItems.forEach(el => el.style.display = '');
+    }
+}
+
+categorySelect.addEventListener('change', function() {
+    const selected = categorySelect.options[categorySelect.selectedIndex];
+    const categoryName = selected.getAttribute('data-type');
+    toggleFields(categoryName);
+});
+
+// 初期化（画面ロード時に実行）
+const initialCategoryName = categorySelect.options[categorySelect.selectedIndex]?.getAttribute('data-type');
+toggleFields(initialCategoryName);
+

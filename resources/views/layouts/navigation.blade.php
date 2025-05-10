@@ -48,6 +48,10 @@
                             体格許容値の表示
                         </x-dropdown-link>
                         <x-dropdown-link
+                            :href="route(Auth::user()->role === 'admin' ? 'admin.clothing-item.create' : 'clothing-item.create')">
+                            衣類アイテム登録
+                        </x-dropdown-link>
+                        <x-dropdown-link
                             :href="route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index')">
                             サイズチェッカー
                         </x-dropdown-link>

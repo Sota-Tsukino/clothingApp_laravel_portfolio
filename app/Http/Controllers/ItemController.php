@@ -6,16 +6,12 @@ use App\Http\Requests\ItemRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Color;
 use App\Models\Tag;
 use App\Models\Season;
 use App\Models\Material;
-use App\Models\BodyMeasurement;
-use App\Models\BodyCorrection;
-use App\Models\FittingTolerance;
 use App\Models\Item;
 use App\Models\Image;
 use App\Services\ImageService;
@@ -23,6 +19,7 @@ use App\Services\SizeCheckerService;
 use App\Services\BodyMeasurementService;
 use App\Services\BodyCorrectionService;
 use App\Services\FittingToleranceService;
+use App\Services\ItemService;
 
 class ItemController extends Controller
 {
@@ -131,17 +128,9 @@ class ItemController extends Controller
      */
     public function show(string $id)
     {
-        //　with() modelで定義したリレーションのメソッド名
-        $item = Item::with(['image', 'category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])->findOrFail($id);
-        //参照する体格情報が、ログインユーザー所有のものか？を判定
-        if ($item->user_id !== Auth::id()) {
-            return redirect()
-                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'measurement.index')
-                ->with([
-                    'message' => '他のユーザーの衣類情報は参照できません。',
-                    'status' => 'alert'
-                ]);
-        }
+        $userId = Auth::id();
+        $item = ItemService::getItemById($id);
+        ItemService::isUserOwn($item, $userId);
 
         //サイズチェッカーに必要な情報を取得
         $userId = Auth::id();
@@ -154,7 +143,7 @@ class ItemController extends Controller
         //サイズチェッカー用で衣類サイズをJSに渡す変数
         $itemSize = SizeCheckerService::getItemSize($item);
 
-        // dd($item);
+        // dd($item->mainMaterial);
         return view('item.show', [
             'item' => $item,
             'fields' => $fields,
@@ -169,7 +158,34 @@ class ItemController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $userId = Auth::id();
+
+        //マスターテーブルより全データ取得
+        $categories = Category::with('subCategory')->get();
+        $colors = Color::all();
+        $brands = Brand::all();
+        $tags = Tag::all();
+        $seasons = Season::all();
+        $materials = Material::all();
+
+        //アイテム情報を取得
+        $item = ItemService::getItemById($id);
+        ItemService::isUserOwn($item, $userId);
+
+        //サイズチェッカーに必要な情報を取得
+        $userId = Auth::id();
+        $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
+        $bodyCorrection = BodyCorrectionService::getForUser($userId);
+        $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
+        $userTolerance = FittingToleranceService::getForUser($userId);
+        $fields = SizeCheckerService::getFields();
+
+        //サイズチェッカー用で衣類サイズをJSに渡す変数
+        $itemSize = SizeCheckerService::getItemSize($item);
+
+        // dd($item->colors);
+
+        return view('item.edit', compact('categories', 'colors', 'brands', 'tags', 'seasons', 'materials', 'item', 'bodyMeasurement', 'suitableSize', 'fields', 'userTolerance'));
     }
 
     /**
