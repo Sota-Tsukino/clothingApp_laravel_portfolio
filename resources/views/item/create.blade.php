@@ -19,8 +19,10 @@
             <label for="file_name" class="mb-2 text-gray-700">衣類アイテム画像を選択</label>
             <input type="file" id="file_name" name="file_name" accept="image/jpg, image/jpeg, image/png"
               class="file_name" required autofocus>
-            <img id="preview" src="" alt="プレビュー画像" class="mt-4 max-w-xs rounded shadow"
-              style="display: none;">
+            <div class="w-2/3">
+              <img id="preview" src="" alt="プレビュー画像" class="mt-4 max-w-xs rounded shadow w-full"
+                style="display: none;">
+            </div>
           </div>
           <div class="flex mb-6 items-center">
             <label for="category_id" class="leading-7 text-sm text-gray-600 w-1/3">カテゴリー</label>
@@ -279,5 +281,5 @@
 {{-- JSファイルにPHPの変数を渡す --}}
 <div id="size-checker" data-tolerance='@json($userTolerance)' data-suitable='@json($suitableSize)'>
 </div>
-<div id="item-categories-list" data-categories='@json($categories)'
+<div id="init-item-category-list" data-categories='@json($categories)'
   data-subcategorytranslations='@json(__('subcategory'))'></div>

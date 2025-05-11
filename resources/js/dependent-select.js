@@ -42,9 +42,9 @@ export function setupDependentSelect({
     }
 
     // 初期レンダリング
-    if (parentSelect.value) {
+    // if (parentSelect.value) {
         renderChildOptions(parentSelect.value);
-    }
+    // }
 
     // 親変更時に子を更新
     parentSelect.addEventListener("change", function () {

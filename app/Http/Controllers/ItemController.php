@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ItemRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +13,7 @@ use App\Services\BodyMeasurementService;
 use App\Services\BodyCorrectionService;
 use App\Services\FittingToleranceService;
 use App\Services\ItemService;
+use Exception;
 
 class ItemController extends Controller
 {
@@ -51,8 +51,9 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ItemRequest $request)
+    public function store(Request $request)
     {
+        $request->validate(ItemService::getValidationRules());
 
         try {
             //items, images item_colors, item_tags, item_seasons tableに保存
@@ -184,23 +185,26 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ItemRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
-        dd($request);
-        $item = ItemService::getItemById($id);
+        $request->validate(ItemService::getValidationRules(true));
+        $userId = Auth::id();
 
         try {
-        } catch (Throwable $e) {
-            Log::error($e);
-            throw $e;
-        }
+            $item = ItemService::getItemById($id);
+            ItemService::isUserOwn($item, $userId);
 
-        return redirect()
-            ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.show' : 'clothing-item.show')
-            ->with([
-                'message' => '衣類アイテムを更新しました。',
-                'status' => 'info'
-            ]);
+            $updatedItem = ItemService::saveItem($request->all(), $item);
+
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.show' : 'clothing-item.show', $updatedItem)
+                ->with(['message' => '衣類アイテムを更新しました。', 'status' => 'info']);
+
+        } catch (Exception $e) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.edit' : 'clothing-item.edit', $id)
+                ->with(['message' => $e->getMessage(), 'status' => 'alert']);
+        }
     }
 
     /**
