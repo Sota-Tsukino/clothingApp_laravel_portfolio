@@ -18,7 +18,12 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return 'item C index()';
+        $userId = Auth::id();
+        $items = ItemService::getAllItemsByUserId($userId);
+        // dd($items);
+        return view('item.index', [
+            'items' => $items,
+        ]);
     }
 
     /**

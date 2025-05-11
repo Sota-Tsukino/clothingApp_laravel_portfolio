@@ -119,7 +119,7 @@ class ItemService
             if (isset($data['file_name']) && $data['file_name'] instanceof \Illuminate\Http\UploadedFile) {
                 $fileName = ImageService::upload($data['file_name'], 'items');
 
-                if ($item && $item->image) {//既存アイテムなら更新する
+                if ($item && $item->image) { //既存アイテムなら更新する
                     //サーバーのファイル削除
                     Storage::delete('public/items/' . $item->image->file_name);
                     // 画像情報を update（file_name だけを更新）
@@ -143,7 +143,7 @@ class ItemService
 
             $itemData = [
                 'user_id' => Auth::id(),
-                'image_id' => $image->id ?? ($item->image_id ?? null),//画像が新規登録 or 既存アイテムのimage_idか？
+                'image_id' => $image->id ?? ($item->image_id ?? null), //画像が新規登録 or 既存アイテムのimage_idか？
                 'category_id' => $data['category_id'],
                 'sub_category_id' => $data['sub_category_id'],
                 'brand_id' => $data['brand_id'],
@@ -185,8 +185,9 @@ class ItemService
         });
     }
 
-
-
     //Item一覧を取得(index画面用)
-    public static function getAllItemsByUserId($userId) {}
+    public static function getAllItemsByUserId($userId)
+    {
+        return Item::with(['image', 'category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])->where('user_id', $userId)->get();
+    }
 }
