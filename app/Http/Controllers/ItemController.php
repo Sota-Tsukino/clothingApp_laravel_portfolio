@@ -4,10 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use App\Models\Item;
-use App\Models\Image;
-use App\Services\ImageService;
 use App\Services\SizeCheckerService;
 use App\Services\BodyMeasurementService;
 use App\Services\BodyCorrectionService;
@@ -56,58 +52,15 @@ class ItemController extends Controller
         $request->validate(ItemService::getValidationRules());
 
         try {
-            //items, images item_colors, item_tags, item_seasons tableに保存
-            DB::transaction(function () use ($request) {
-                $imageFile =  $request->file('file_name'); //input tag name='file_name'
-                if ($imageFile) {
-                    $fileNameToStore = ImageService::upload($imageFile, 'items');
-                    $image = Image::create([
-                        'user_id' => Auth::id(),
-                        'file_name' => $fileNameToStore
-                    ]);
-                }
-
-                $item = Item::create([
-                    'user_id' => Auth::id(),
-                    'image_id' => $image->id ?? null,
-                    'category_id' => $request->category_id,
-                    'sub_category_id' => $request->sub_category_id,
-                    'brand_id' => $request->brand_id,
-                    'status' => $request->status,
-                    'is_public' => $request->is_public,
-                    'is_coordinate_suggest' => $request->is_coordinate_suggest,
-                    'main_material_id' => $request->main_material,
-                    'sub_material_id' => $request->sub_material,
-                    'washability_option' => $request->washability_option,
-                    'purchased_date' => $request->purchased_date,
-                    'price' => $request->price,
-                    'purchased_at' => $request->purchased_at,
-                    'memo' => $request->memo,
-                    'neck_circumference' => $request->neck_circumference,
-                    'shoulder_width' => $request->shoulder_width,
-                    'yuki_length' => $request->yuki_length,
-                    'chest_circumference' => $request->chest_circumference,
-                    'waist' => $request->waist,
-                    'inseam' => $request->inseam,
-                    'hip' => $request->hip,
-                ]);
-
-                // 色の登録（中間テーブル）のデータ挿入
-                $item->colors()->attach($request->colors); // color_idsは配列で送る（例：[1, 2, 3]）
-
-                // タグの登録（中間テーブル）のデータ挿入
-                $item->tags()->attach($request->tags);
-
-                // 季節の登録（中間テーブル）のデータ挿入
-                $item->seasons()->attach($request->seasons);
-            });
-        } catch (Throwable $e) {
-            Log::error($e);
-            throw $e;
+            $item = ItemService::saveItem($request->all());
+        } catch (Exception $e) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.create' : 'clothing-item.create')
+                ->with(['message' => $e->getMessage(), 'status' => 'alert']);
         }
 
         return redirect()
-            ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.create' : 'clothing-item.create')
+            ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.show' : 'clothing-item.show', $item->id)
             ->with([
                 'message' => '衣類アイテムを登録しました。',
                 'status' => 'info'
@@ -194,12 +147,11 @@ class ItemController extends Controller
             $item = ItemService::getItemById($id);
             ItemService::isUserOwn($item, $userId);
 
-            $updatedItem = ItemService::saveItem($request->all(), $item);
+            $item = ItemService::saveItem($request->all(), $item);
 
             return redirect()
-                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.show' : 'clothing-item.show', $updatedItem)
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.show' : 'clothing-item.show', $item)
                 ->with(['message' => '衣類アイテムを更新しました。', 'status' => 'info']);
-
         } catch (Exception $e) {
             return redirect()
                 ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.edit' : 'clothing-item.edit', $id)

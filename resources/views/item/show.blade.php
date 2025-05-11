@@ -115,7 +115,7 @@
             @php
               $categoryName = $item->category->name;
               if ($categoryName === 'setup') {
-                  $fields = ['neck', 'shoulder', 'yuki_length', 'chest_circumference', 'waist', 'inseam', 'hip'];
+                  $fields = ['neck_circumference', 'shoulder_width', 'yuki_length', 'chest_circumference', 'waist', 'inseam', 'hip'];
               } elseif (in_array($categoryName, ['topps', 'outer'])) {
                   $fields = ['neck_circumference', 'shoulder_width', 'yuki_length', 'chest_circumference'];
               } elseif ($categoryName === 'bottoms') {
