@@ -36,6 +36,9 @@
             Request::routeIs('clothing-item.show') ? 'resources/js/init-size-checker-display.js' : '',
             Request::routeIs('sizechecker.index') ? 'resources/js/init-size-checker.js' : '',
             ])
+
+            <!-- alpine.js -->
+            <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
