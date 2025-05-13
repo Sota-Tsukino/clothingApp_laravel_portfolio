@@ -115,7 +115,15 @@
             @php
               $categoryName = $item->category->name;
               if ($categoryName === 'setup') {
-                  $fields = ['neck_circumference', 'shoulder_width', 'yuki_length', 'chest_circumference', 'waist', 'inseam', 'hip'];
+                  $fields = [
+                      'neck_circumference',
+                      'shoulder_width',
+                      'yuki_length',
+                      'chest_circumference',
+                      'waist',
+                      'inseam',
+                      'hip',
+                  ];
               } elseif (in_array($categoryName, ['topps', 'outer'])) {
                   $fields = ['neck_circumference', 'shoulder_width', 'yuki_length', 'chest_circumference'];
               } elseif ($categoryName === 'bottoms') {
@@ -159,6 +167,12 @@
         <button type="button"
           onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index') }}'"
           class=" text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">衣類アイテム一覧へ</button>
+        <form action="{{ route('admin.clothing-item.destroy', ['clothing_item' => $item->id]) }}" method="post" class="inline">
+          @csrf
+          @method('delete')
+          <button onclick="deletePost(this)"
+            class="text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-300 rounded">削除</button>
+        </form>
       </div>
     </div>
     </div>
@@ -166,3 +180,11 @@
 </x-app-layout>
 <div id="item-detail" data-tolerance='@json($userTolerance)' data-suitable='@json($suitableSize)'
   data-item='@json($item)'></div>
+<script>
+  function deletePost(e) {
+    'use strict';
+    if (confirm('本当に削除してもいいですか?')) {
+      document.getElementById('delete_' + e.dataset.id).submit();
+    }
+  }
+</script>

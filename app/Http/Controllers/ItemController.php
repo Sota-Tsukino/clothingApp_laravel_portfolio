@@ -9,6 +9,7 @@ use App\Services\BodyMeasurementService;
 use App\Services\BodyCorrectionService;
 use App\Services\FittingToleranceService;
 use App\Services\ItemService;
+use Illuminate\Support\Facades\Storage;
 use Exception;
 
 class ItemController extends Controller
@@ -91,7 +92,7 @@ class ItemController extends Controller
             $fields = SizeCheckerService::getFields();
         } catch (\Exception $e) {
             return redirect()
-                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'measurement.index')
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')
                 ->with([
                     'message' => $e->getMessage(),
                     'status' => 'alert'
@@ -169,6 +170,40 @@ class ItemController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $userId = Auth::id();
+        $item = ItemService::getItemById($id);
+
+        ItemService::isUserOwn($item, $userId);
+
+        try {
+
+            if (!empty($item->image)) {
+                $filePath = $item->image->file_name;
+
+                //イメージテーブル削除
+                $item->image->delete();
+
+                //イメージ画像削除（サーバー内）
+                Storage::delete('public/items/' . $filePath);
+            }
+
+            //衣類アイテムを削除
+            $item->delete();
+
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')
+                ->with([
+                    'message' => 'アイテム情報を削除しました。',
+                    'status' => 'info'
+                ]);
+
+        } catch (Exception $e) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.show' : 'clothing-item.show', ['clothing_item' => $item->id])
+                ->with([
+                    'message' => '削除処理に失敗しました: ' . $e->getMessage(),
+                    'status' => 'alert'
+                ]);
+        }
     }
 }
