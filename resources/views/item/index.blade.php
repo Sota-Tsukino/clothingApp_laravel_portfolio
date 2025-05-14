@@ -1,19 +1,61 @@
-@php
-  $categories = [
-      'all' => '全て',
-      'topps' => 'トップス',
-      'bottoms' => 'ボトムズ',
-      'outer' => 'アウター',
-      'setup' => 'セットアップ',
-      'others' => 'その他',
-  ];
-@endphp
-
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
       衣類アイテム一覧
     </h2>
+    <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index') }}"
+      method="get" class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div>
+          <label for="category" class="block text-sm font-medium text-gray-700">カテゴリー</label>
+          <select name="category" id="category" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <option value="0" @if (request('category') === '0') selected @endif>全て</option>
+            @foreach ($categories as $category)
+              <option value="{{ $category->id }}" @if (request('category') == $category->id) selected @endif>
+                {{ __("category.$category->name") }}
+              </option>
+            @endforeach
+          </select>
+        </div>
+
+        <div>
+          <label for="status" class="block text-sm font-medium text-gray-700">ステータス</label>
+          <select name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <option value="">全て</option>
+            <option value="owned" @selected(request('status') === 'owned')>所持中</option>
+            <option value="cleaning" @selected(request('status') === 'cleaning')>クリーニング中</option>
+            <option value="discarded" @selected(request('status') === 'discarded')>破棄済</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="sort" class="block text-sm font-medium text-gray-700">表示順</label>
+          <select name="sort" id="sort" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <option value="">並び順を選択</option>
+            <option value="purchased_date_desc" @selected(request('sort') === 'purchased_date_desc')>購入日が新しい</option>
+            <option value="purchased_date_asc" @selected(request('sort') === 'purchased_date_asc')>購入日が古い</option>
+            <option value="created_at_desc" @selected(request('sort') === 'created_at_desc')>登録日が新しい</option>
+            <option value="created_at_asc" @selected(request('sort') === 'created_at_asc')>登録日が古い</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="pagination" class="block text-sm font-medium text-gray-700">表示件数</label>
+          <select id="pagination" name="pagination" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <option value="8" @selected(request('pagination') === '8')>8件</option>
+            <option value="12" @selected(request('pagination') === '12')>12件</option>
+            <option value="16" @selected(request('pagination') === '16')>16件</option>
+            <option value="20" @selected(request('pagination') === '20')>20件</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button class="mt-4 bg-indigo-600 text-white font-semibold py-2 px-6 rounded hover:bg-indigo-700 transition">
+          この条件で検索
+        </button>
+      </div>
+    </form>
   </x-slot>
 
   <section class="text-gray-600 body-font">
@@ -21,26 +63,22 @@
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
 
-      <div x-data="{ tab: '{{ array_key_first($categories) }}' }">
-        <!-- タブメニュー -->
-        <div class="flex space-x-4 mb-6">
-          @foreach ($categories as $key => $label)
-            <button class="px-4 py-2 text-sm text-gray-600"
-              :class="{ 'border-b-2 border-blue-500 text-blue-600': tab === '{{ $key }}' }" @click="tab = '{{ $key }}'">
-              {{ $label }}
-            </button>
-          @endforeach
-        </div>
-
-        <!-- アイテムリスト -->
+      <div class="lg:w-full w-full mx-auto mb-6">
         <div class="flex flex-wrap -m-2">
-          @foreach ($items as $item)
-            <template x-if="tab === 'all' || tab === '{{ $item->category->name }}'">
+          @if ($items->count() > 0)
+            @foreach ($items as $item)
               <x-item-card :item="$item" />
-            </template>
-          @endforeach
+            @endforeach
+          @else
+            @if (request()->hasAny(['category', 'status', 'sort', 'pagination']))
+              <p class="text-xl text-gray-700">検索条件に一致するアイテムは見つかりませんでした。</p>
+            @else
+              <p class="text-xl text-gray-700">衣類アイテムが登録されていません。</p>
+            @endif
+          @endif
         </div>
       </div>
+      {{ $items->links() }}
     </div>
   </section>
 </x-app-layout>

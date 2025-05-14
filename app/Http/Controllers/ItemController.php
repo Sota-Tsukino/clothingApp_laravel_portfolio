@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\SizeCheckerService;
@@ -17,13 +18,21 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $userId = Auth::id();
-        $items = ItemService::getAllItemsByUserId($userId);
-        // dd($items);
+        $params = $request->only(['category', 'status', 'sort', 'pagination']);
+        $pagination = $params['pagination'] ?? 8;
+
+        //getにparamが含まれる（検索）場合、通常表示の場合
+        $items = !empty(array_filter($params))// array_filter()は値が空でない要素のみ返す
+            ? ItemService::searchItemsByUser($userId, $params, $pagination)
+            : ItemService::getAllItemsByUserId($userId, $pagination);
+        $categories = Category::with('subCategory')->get();
+
         return view('item.index', [
             'items' => $items,
+            'categories' => $categories,
         ]);
     }
 
@@ -196,7 +205,6 @@ class ItemController extends Controller
                     'message' => 'アイテム情報を削除しました。',
                     'status' => 'info'
                 ]);
-
         } catch (Exception $e) {
             return redirect()
                 ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.show' : 'clothing-item.show', ['clothing_item' => $item->id])

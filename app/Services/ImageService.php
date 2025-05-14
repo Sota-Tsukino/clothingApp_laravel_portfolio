@@ -5,6 +5,7 @@ namespace App\Services;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use InterventionImage;
+use Throwable;
 
 class ImageService
 {
@@ -27,7 +28,7 @@ class ImageService
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })->encode();//encode('jpg')で形式を指定できる
-        } catch (Exception $e) { //Exception, throwable 適切なのは？違いは何か？
+        } catch (Throwable $e) { //通常はExceptionで十分だが、Fatal Error(メモリ不足など)も捕まえるならThrowableを使う
             Log::error('画像処理エラー: ' . $e->getMessage());
             throw new Exception('画像の読み込みに失敗しました。対応形式の画像か確認してください。');
         }
