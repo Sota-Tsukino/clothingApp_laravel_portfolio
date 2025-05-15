@@ -10,11 +10,11 @@
       <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
         <h1 class="text-xl md:text-2xl font-bold text-white">衣類アイテム詳細</h1>
       </div>
-      <!-- バリデーションエラーとフラッシュメッセージ -->
-      <x-auth-validation-errors class="mb-4" :errors="$errors" />
-      <x-flash-message status="session('status')" />
 
       <div class="p-6 md:p-8">
+          <!-- バリデーションエラーとフラッシュメッセージ -->
+          <x-auth-validation-errors class="mb-4" :errors="$errors" />
+          <x-flash-message status="session('status')" />
         <!-- 画像とプライマリ情報のグリッド -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <!-- 左側: 画像 -->
@@ -190,21 +190,41 @@
         <!-- サイズ情報テーブル -->
         <div class="mb-8">
           <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2 mb-4">サイズ情報</h2>
-          <div class="flex justify-between pb-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
             @if ($item->category->name == 'topps')
-              <div class="top-item w-1/2 border">
-                <img src="{{ asset('images/topps.png') }}" class="w-full"alt="">
+              <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                  <h3 class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
+                </div>
+                <div class="p-2">
+                  <img src="{{ asset('images/topps.png') }}" class="w-full h-auto" alt="トップス測定ガイド">
+                </div>
               </div>
             @elseif($item->category->name == 'bottoms')
-              <div class="bottom-item w-1/2 border">
-                <img src="{{ asset('images/bottoms.png') }}" class="w-full" alt="">
+              <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                  <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
+                </div>
+                <div class="p-2">
+                  <img src="{{ asset('images/bottoms.png') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
+                </div>
               </div>
             @else
-              <div class="top-item w-1/2 border">
-                <img src="{{ asset('images/topps.png') }}" class="w-full"alt="">
+              <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                  <h3 class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
+                </div>
+                <div class="p-2">
+                  <img src="{{ asset('images/topps.png') }}" class="w-full h-auto" alt="トップス測定ガイド">
+                </div>
               </div>
-              <div class="bottom-item w-1/2 border">
-                <img src="{{ asset('images/bottoms.png') }}" class="w-full" alt="">
+              <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                  <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
+                </div>
+                <div class="p-2">
+                  <img src="{{ asset('images/bottoms.png') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
+                </div>
               </div>
             @endif
           </div>
@@ -213,18 +233,18 @@
               <thead class="bg-gray-50">
                 <tr>
                   <th scope="col"
-                    class="px-4 py-12 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">部位</th>
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">部位</th>
                   <th scope="col"
-                    class="px-4 py-12 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">あなたに合う衣類サイズ
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">あなたに合う衣類サイズ
                   </th>
                   <th scope="col"
-                    class="px-4 py-12 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">衣類サイズ</th>
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">衣類サイズ</th>
                   <th scope="col"
-                    class="px-4 py-12 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">判定</th>
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">判定</th>
                   <th scope="col"
-                    class="px-4 py-8 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">優先度</th>
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">優先度</th>
                   <th scope="col"
-                    class="px-4 py-8 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ガイド</th>
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ガイド</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
