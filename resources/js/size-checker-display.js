@@ -6,7 +6,7 @@ export function applyStaticSizeEvaluation(
     suitableSize,
     item
 ) {
-    const colorClasses = ["text-green-600", "text-yellow-600", "text-red-600"];
+    const colorClasses = ["text-green-600", "text-yellow-500", "text-red-600", "text-gray-800"];
 
     for (let field in tolerance) {
         const resultEl = container.querySelector(`#${field}_result`);
