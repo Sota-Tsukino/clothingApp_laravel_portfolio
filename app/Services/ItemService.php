@@ -195,40 +195,11 @@ class ItemService
 
     public static function searchItemsByUser($userId, $filters = [])
     {
-        $query = Item::with(['image', 'category', 'brand'])
-            ->where('user_id', $userId);//$queryはEloquent クエリビルダインスタンス
-            //クエリ実行は paginate(), get()を最後につなげる
-
-        if (!empty($filters['category'] && $filters['category'] !== '0')) {
-            $query->where('category_id', $filters['category']);
-        }
-
-        if (!empty($filters['status'])) {
-            $query->where('status', $filters['status']);
-        }
-
-        if (!empty($filters['sort'])) {
-            switch ($filters['sort']) {
-                case 'purchased_date_desc':
-                    $query->orderBy('purchased_date', 'desc');
-                    break;
-                case 'purchased_date_asc':
-                    $query->orderBy('purchased_date', 'asc');
-                    break;
-                case 'created_at_desc':
-                    $query->orderBy('created_at', 'desc');
-                    break;
-                case 'created_at_asc':
-                    $query->orderBy('created_at', 'asc');
-                    break;
-            }
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
-
-        $perPage = $filters['pagination'] ?? 8;
-        //appends()はページネーションリンクに現在の検索条件を維持させる
-        //?page=2&category=3&sort=created_at_asc がリンクにつく
-        return $query->paginate($perPage)->appends($filters);
+        return Item::ofUser($userId)
+            ->category($filters['category'] ?? null)
+            ->status($filters['status'] ?? null)
+            ->sortOrder($filters['sort'] ?? null)
+            ->paginate($filters['pagination'] ?? 8)
+            ->appends($filters);
     }
 }

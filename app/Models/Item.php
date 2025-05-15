@@ -97,4 +97,41 @@ class Item extends Model
     {
         return $this->belongsToMany(Tag::class, 'item_tags')->withTimestamps();
     }
+
+    public function scopeOfUser($query, $userId)
+    {
+        return $query->with(['image', 'category', 'brand'])
+            ->where('user_id', $userId); //$queryはEloquent クエリビルダインスタンス
+        //クエリ実行は paginate(), get()を最後につなげる
+
+    }
+
+    public function scopeCategory($query, $categoryId)
+    {
+        if (!empty($categoryId) && $categoryId !== '0') {
+            $query->where('category_id', $categoryId);
+        }
+        return $query;
+    }
+
+    public function scopeStatus($query, $status)
+    {
+        if (!empty($status)) {
+            return $query->where('status', $status);
+        }
+        return $query;
+    }
+    public function scopeSortOrder($query, $sortOrder)
+    {
+        switch ($sortOrder) {
+            case 'purchased_date_desc':
+                return $query->orderBy('purchased_date', 'desc');
+            case 'purchased_date_asc':
+                return $query->orderBy('purchased_date', 'asc');
+            case 'created_at_asc':
+                return $query->orderBy('created_at', 'asc');
+            default:
+                return $query->orderBy('created_at', 'desc');
+        }
+    }
 }

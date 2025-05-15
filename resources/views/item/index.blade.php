@@ -31,18 +31,17 @@
         <div>
           <label for="sort" class="block text-sm font-medium text-gray-700">表示順</label>
           <select name="sort" id="sort" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            <option value="">並び順を選択</option>
+            <option value="">登録日が新しい(デフォルト)</option>
+            <option value="created_at_asc" @selected(request('sort') === 'created_at_asc')>登録日が古い</option>
             <option value="purchased_date_desc" @selected(request('sort') === 'purchased_date_desc')>購入日が新しい</option>
             <option value="purchased_date_asc" @selected(request('sort') === 'purchased_date_asc')>購入日が古い</option>
-            <option value="created_at_desc" @selected(request('sort') === 'created_at_desc')>登録日が新しい</option>
-            <option value="created_at_asc" @selected(request('sort') === 'created_at_asc')>登録日が古い</option>
           </select>
         </div>
 
         <div>
           <label for="pagination" class="block text-sm font-medium text-gray-700">表示件数</label>
           <select id="pagination" name="pagination" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            <option value="8" @selected(request('pagination') === '8')>8件</option>
+            <option value="" @selected(empty(request('pagination')))>8件(デフォルト)</option>
             <option value="12" @selected(request('pagination') === '12')>12件</option>
             <option value="16" @selected(request('pagination') === '16')>16件</option>
             <option value="20" @selected(request('pagination') === '20')>20件</option>
