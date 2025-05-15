@@ -6,7 +6,7 @@
 @endphp
 
 @if(session('message'))
-    <div class="{{ $textColor }} w-1/2 p-2 mb-4">
+    <div class="{{ $textColor }} mb-4">
     {{ session('message' )}}
     </div>
 @endif

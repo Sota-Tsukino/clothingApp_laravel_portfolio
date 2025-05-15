@@ -5,29 +5,60 @@
     </h2>
   </x-slot>
 
-  <section class="text-gray-600 body-font overflow-hidden px-7">
-    <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
-      <!-- Validation Errors -->
-      <x-auth-validation-errors class="mb-4" :errors="$errors" />
-      <x-flash-message status="session('status')" />
-      <form
+  <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+      <!-- ヘッダー部分 -->
+      <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
+        <h1 class="text-xl md:text-2xl font-bold text-white">衣類アイテム編集</h1>
+      </div>
+
+      <form id="form"
         action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.update' : 'clothing-item.update', ['clothing_item' => $item->id]) }}"
-        method="post" enctype="multipart/form-data">
+        method="post" enctype="multipart/form-data" class="p-6 md:p-8">
         @csrf
         @method('put')
-        <div class="w-full mb-6 ">
-          <h2 class='text-black'>必須入力</h2>
-          <div class="flex flex-col mb-6">
-            <label for="file_name" class="mb-2 text-gray-700">衣類アイテム画像を変更</label>
-            <input type="file" id="file_name" name="file_name" accept="image/jpg, image/jpeg, image/png"
-              class="file_name" autofocus>
-            <img id="preview" src="{{ asset('storage/items/' . $item->image->file_name) }}" alt="プレビュー画像"
-              class="mt-4 max-w-xs rounded shadow">
+
+        <!-- 必須入力項目 -->
+        <div class="mb-8">
+          <!-- バリデーションエラーとフラッシュメッセージ -->
+          <x-auth-validation-errors class="mb-4" :errors="$errors" />
+          <x-flash-message status="session('status')" />
+          <h2 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-6">必須入力</h2>
+
+          <!-- 画像アップロード -->
+          <div class="mb-6">
+            <label for="file_name" class="block text-sm font-medium text-gray-700 mb-2">衣類アイテム画像を変更</label>
+            <div class="flex flex-col md:flex-row md:items-start gap-6">
+              <div class="w-full md:w-1/2">
+                <div
+                  class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-indigo-500 transition-colors">
+                  <div class="space-y-1 text-center">
+                    <div class="flex text-sm text-gray-600">
+                      <label for="file_name"
+                        class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                        <span>画像をアップロード</span>
+                        <input id="file_name" name="file_name" type="file" class="sr-only"
+                          accept="image/jpg, image/jpeg, image/png">
+                      </label>
+                    </div>
+                    <p class="text-xs text-gray-500">PNG, JPG, JPEG (最大4MB)</p>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full md:w-1/2">
+                <div class="aspect-square max-w-xs bg-gray-100 rounded-lg overflow-hidden shadow-md">
+                  <img id="preview" src="{{ asset('storage/items/' . $item->image->file_name) }}" alt="プレビュー画像"
+                    class="w-full h-full object-cover">
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="category_id" class="leading-7 text-sm text-gray-600 w-1/3">カテゴリー</label>
+
+          <!-- カテゴリー -->
+          <div class="mb-6">
+            <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">カテゴリー</label>
             <select name="category_id" id="categorySelect"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
               required>
               <option value="" {{ $item->category_id == '' ? 'selected' : '' }}>カテゴリーを選択してください</option>
               @foreach ($categories as $category)
@@ -38,10 +69,12 @@
               @endforeach
             </select>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="sub_category_id" class="leading-7 text-sm text-gray-600 w-1/3">サブカテゴリー</label>
+
+          <!-- サブカテゴリー -->
+          <div class="mb-6">
+            <label for="sub_category_id" class="block text-sm font-medium text-gray-700 mb-1">サブカテゴリー</label>
             <select name="sub_category_id" id="sub_category_id"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
               required>
               <option value="" {{ $item->sub_category_id == '' ? 'selected' : '' }}>サブカテゴリーを選択してください</option>
               @foreach ($categories as $category)
@@ -54,10 +87,12 @@
               @endforeach
             </select>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="brand_id" class="leading-7 text-sm text-gray-600 w-1/3">ブランド</label>
+
+          <!-- ブランド -->
+          <div class="mb-6">
+            <label for="brand_id" class="block text-sm font-medium text-gray-700 mb-1">ブランド</label>
             <select name="brand_id" id="brand_id"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
               required>
               <option value="" {{ $item->brand_id == '' ? 'selected' : '' }}>ブランドを選択してください</option>
               @foreach ($brands as $brand)
@@ -67,9 +102,12 @@
               @endforeach
             </select>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="color" class="leading-7 text-sm text-gray-600 w-1/3">色</label>
-            <select name="colors[]" id="colors" multiple class="w-2/3 bg-gray-100 inline-block" required>
+
+          <!-- 色 -->
+          <div class="mb-6">
+            <label for="colors" class="block text-sm font-medium text-gray-700 mb-1">色</label>
+            <select name="colors[]" id="colors" multiple
+              class="mt-1 block w-full text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
               @foreach ($colors as $color)
                 <option value="{{ $color->id }}" data-custom-properties='{"hex":"{{ $color->hex_code }}"}'
                   {{ in_array($color->id, $item->colors->pluck('id')->toArray()) ? 'selected' : '' }}>
@@ -77,47 +115,54 @@
                 </option>
               @endforeach
             </select>
+            <p class="text-xs text-gray-500 mt-1">複数選択可能</p>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="status" class="leading-7 text-sm text-gray-600 w-1/3">ステータス</label>
+
+          <!-- ステータス -->
+          <div class="mb-6">
+            <label for="status" class="block text-sm font-medium text-gray-700 mb-1">ステータス</label>
             <select name="status" id="status"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
               required>
               <option value="" {{ $item->status == null ? 'selected' : '' }}>ステータスを選択してください</option>
-              <option value="owned" {{ $item->status == 'owned' ? 'selected' : '' }}>
-                所持中
-              </option>
-              <option value="cleaning" {{ $item->status == 'cleaning' ? 'selected' : '' }}>
-                クリーニング中
-              </option>
-              <option value="discarded" {{ $item->status == 'discarded' ? 'selected' : '' }}>
-                破棄済
-              </option>
+              <option value="owned" {{ $item->status == 'owned' ? 'selected' : '' }}>所持中</option>
+              <option value="cleaning" {{ $item->status == 'cleaning' ? 'selected' : '' }}>クリーニング中</option>
+              <option value="discarded" {{ $item->status == 'discarded' ? 'selected' : '' }}>破棄済</option>
             </select>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="is_public" class="leading-7 text-sm text-gray-600 w-1/3">衣類の公開</label>
+
+          <!-- 公開設定 -->
+          <div class="mb-6">
+            <label for="is_public" class="block text-sm font-medium text-gray-700 mb-1">衣類の公開</label>
             <select name="is_public" id="is_public"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
               required>
               <option value="1" {{ $item->is_public == '1' ? 'selected' : '' }}>公開する</option>
               <option value="0" {{ $item->is_public == '0' ? 'selected' : '' }}>公開しない</option>
             </select>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="is_coordinate_suggest" class="leading-7 text-sm text-gray-600 w-1/3">コーデ提案に</label>
+
+          <!-- コーデ提案 -->
+          <div class="mb-6">
+            <label for="is_coordinate_suggest" class="block text-sm font-medium text-gray-700 mb-1">コーデ提案に</label>
             <select name="is_coordinate_suggest" id="is_coordinate_suggest"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
               required>
               <option value="1" {{ $item->is_coordinate_suggest == '1' ? 'selected' : '' }}>使用する</option>
               <option value="0" {{ $item->is_coordinate_suggest == '0' ? 'selected' : '' }}>使用しない</option>
             </select>
           </div>
-          <hr class="my-6">
-          <h2 class='text-black'>任意入力</h2>
-          <div class="flex mb-6 items-center">
-            <label for="tags" class="leading-7 text-sm text-gray-600 w-1/3">タグ</label>
-            <select name="tags[]" id="tags" multiple class="w-2/3 bg-gray-100">
+        </div>
+
+        <!-- 任意入力項目 -->
+        <div class="mb-8">
+          <h2 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-6">任意入力</h2>
+
+          <!-- タグ -->
+          <div class="mb-6">
+            <label for="tags" class="block text-sm font-medium text-gray-700 mb-1">タグ</label>
+            <select name="tags[]" id="tags" multiple
+              class="mt-1 block w-full text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
               @foreach ($tags as $tag)
                 <option value="{{ $tag->id }}"
                   {{ in_array($tag->id, $item->tags->pluck('id')->toArray()) ? 'selected' : '' }}>
@@ -125,21 +170,29 @@
                 </option>
               @endforeach
             </select>
+            <p class="text-xs text-gray-500 mt-1">複数選択可能</p>
           </div>
-          <div class="flex mb-6 items-center">
-            <legend for="season" class="leading-7 text-sm text-gray-600 w-1/3">季節</legend>
-            @foreach ($seasons as $season)
-              <label class="mr-4 flex items-center">
-                <input type="checkbox" name="seasons[]" value="{{ $season->id }}" class="mr-1"
-                  {{ in_array($season->id, $item->seasons->pluck('id')->toArray()) ? 'checked' : '' }}>
-                {{ __("season.$season->name") }}
-              </label>
-            @endforeach
+
+          <!-- 季節 -->
+          <div class="mb-6">
+            <legend class="block text-sm font-medium text-gray-700 mb-2">季節</legend>
+            <div class="flex flex-wrap gap-4">
+              @foreach ($seasons as $season)
+                <label class="inline-flex items-center">
+                  <input type="checkbox" name="seasons[]" value="{{ $season->id }}"
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    {{ in_array($season->id, $item->seasons->pluck('id')->toArray()) ? 'checked' : '' }}>
+                  <span class="ml-2 text-sm text-gray-700">{{ __("season.$season->name") }}</span>
+                </label>
+              @endforeach
+            </div>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="main_material" class="leading-7 text-sm text-gray-600 w-1/3">主素材</label>
+
+          <!-- 主素材 -->
+          <div class="mb-6">
+            <label for="main_material" class="block text-sm font-medium text-gray-700 mb-1">主素材</label>
             <select name="main_material" id="main_material"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
               <option value="" {{ $item->main_material_id == '' ? 'selected' : '' }}>素材を選択してください</option>
               @foreach ($materials as $material)
                 <option value="{{ $material->id }}" {{ $item->main_material_id == $material->id ? 'selected' : '' }}>
@@ -148,10 +201,12 @@
               @endforeach
             </select>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="sub_material" class="leading-7 text-sm text-gray-600 w-1/3">副素材</label>
+
+          <!-- 副素材 -->
+          <div class="mb-6">
+            <label for="sub_material" class="block text-sm font-medium text-gray-700 mb-1">副素材</label>
             <select name="sub_material" id="sub_material"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
               <option value="" {{ $item->sub_material_id == '' ? 'selected' : '' }}>素材を選択してください</option>
               @foreach ($materials as $material)
                 <option value="{{ $material->id }}" {{ $item->sub_material_id == $material->id ? 'selected' : '' }}>
@@ -160,121 +215,190 @@
               @endforeach
             </select>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="washability_option" class="leading-7 text-sm text-gray-600 w-1/3">家庭洗濯</label>
+
+          <!-- 家庭洗濯 -->
+          <div class="mb-6">
+            <label for="washability_option" class="block text-sm font-medium text-gray-700 mb-1">家庭洗濯</label>
             <select name="washability_option" id="washability_option"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
               <option value="" {{ $item->washability_option == null ? 'selected' : '' }}>選択してください</option>
               <option value="washable_machine"
-                {{ $item->washability_option == 'washable_machine' ? 'selected' : '' }}>
-                洗濯機可
+                {{ $item->washability_option == 'washable_machine' ? 'selected' : '' }}>洗濯機可</option>
+              <option value="washable_hand" {{ $item->washability_option == 'washable_hand' ? 'selected' : '' }}>手洗いOK
               </option>
-              <option value="washable_hand" {{ $item->washability_option == 'washable_hand' ? 'selected' : '' }}>
-                手洗いOK
-              </option>
-              <option value="not_washable" {{ $item->washability_option == 'not_washable' ? 'selected' : '' }}>
-                不可
+              <option value="not_washable" {{ $item->washability_option == 'not_washable' ? 'selected' : '' }}>不可
               </option>
             </select>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="purchased_date" class="leading-7 text-sm text-gray-600 w-1/3">購入日</label>
+
+          <!-- 購入日 -->
+          <div class="mb-6">
+            <label for="purchased_date" class="block text-sm font-medium text-gray-700 mb-1">購入日</label>
             <input type="date" name="purchased_date" id="purchased_date"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
               value="{{ $item->purchased_date }}">
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="price" class="leading-7 text-sm text-gray-600 w-1/3">金額</label>
-            <input type="number" name="price" id="price"
-              class="w-1/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              value="{{ number_format($item->price) }}">
-            <span class="w-1/3 inline ml-2">円</span>
+
+          <!-- 金額 -->
+          <div class="mb-6">
+            <label for="price" class="block text-sm font-medium text-gray-700 mb-1">金額</label>
+            <div class="mt-1 flex rounded-md shadow-sm">
+              <input type="number" name="price" id="price"
+                class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-l-md border-gray-300"
+                value="{{ $item->price }}">
+              <span
+                class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">円</span>
+            </div>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="purchased_at" class="leading-7 text-sm text-gray-600 w-1/3">購入場所</label>
+
+          <!-- 購入場所 -->
+          <div class="mb-6">
+            <label for="purchased_at" class="block text-sm font-medium text-gray-700 mb-1">購入場所</label>
             <input type="text" name="purchased_at" id="purchased_at"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
               maxlength="20" value="{{ $item->purchased_at }}">
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="memo" class="leading-7 text-sm text-gray-600 w-1/3">メモ</label>
-            <textarea name="memo" id="memo"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+
+          <!-- メモ -->
+          <div class="mb-6">
+            <label for="memo" class="block text-sm font-medium text-gray-700 mb-1">メモ</label>
+            <textarea name="memo" id="memo" rows="3"
+              class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full border-gray-300 rounded-md"
               maxlength="50">{{ $item->memo }}</textarea>
+            <p class="mt-1 text-xs text-gray-500">最大50文字</p>
           </div>
-          <h2 class='text-black'>衣類サイズ入力</h2>
-          <div class="flex justify-between pb-4">
-            <div class="top-item w-1/2 border">
-              <img src="{{ asset('images/topps.png') }}" class="w-full"alt="">
-            </div>
-            <div class="bottom-item w-1/2 border">
-              <img src="{{ asset('images/bottoms.png') }}"class="w-full" alt="">
-            </div>
-          </div>
-          <p>※体格測定日は最新の日付：{{ $bodyMeasurement->measured_at }}を元に判定します</p>
-          <table class="w-full whitespace-no-wrap">
-            <thead>
-              <tr>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">部位</th>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">あなたに合う衣類サイズ</th>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">衣類サイズ</th>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">判定</th>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">優先度</th>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">ガイド</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($fields as $field)
-                @php
-                  $fieldClass = in_array($field, [
-                      'neck_circumference',
-                      'shoulder_width',
-                      'yuki_length',
-                      'chest_circumference',
-                  ])
-                      ? 'top-item'
-                      : (in_array($field, ['waist', 'inseam', 'hip'])
-                          ? 'bottom-item'
-                          : '');
-                @endphp
-                <tr class="{{ $fieldClass }}">
-                  <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
-                  <td class="text-center px-2 py-2">
-                    {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
-                  </td>
-                  <td class="text-center px-2 py-2">
-                    <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1"
-                      value="{{ $item->$field }}" min="0.0" max="999.0" placeholder="40.0"
-                      class="text-black">
-                    <span class="ml-1">cm</span>
-                  </td>
-                  <td>
-                    <span id="{{ $field }}_result" class="font-semibold block">未評価</span>
-                  </td>
-                  <td class="text-center px-2 py-2">
-                    {{ $field == 'chest_circumference' || $field == 'hip' ? '低い' : '高い' }}</td>
-                  <td class="text-center px-2 py-2">
-                    <div class="img w-8 mx-auto ">
-                      <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
-                        class="hover:opacity-50 cursor-pointer">
-                    </div>
-                  </td>
-                </tr>
-              @endforeach
-
-            </tbody>
-          </table>
-
         </div>
-        <div class="flex justify-between mx-auto">
-          <button
-            class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">更新する</button>
+
+        <!-- 衣類サイズ入力 -->
+        <div class="mb-8">
+          <h2 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-6">衣類サイズ入力</h2>
+
+          <!-- 画像ガイド -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+              <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                <h3 class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
+              </div>
+              <div class="p-2">
+                <img src="{{ asset('images/topps.png') }}" class="w-full h-auto" alt="トップス測定ガイド">
+              </div>
+            </div>
+            <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+              <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
+              </div>
+              <div class="p-2">
+                <img src="{{ asset('images/bottoms.png') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- 注意書き -->
+          <div class="mb-6 bg-yellow-50 p-4 rounded-md">
+            <p class="text-sm text-yellow-700">
+              ※サイズ判定は最新の体格計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}を元に判定します</p>
+          </div>
+
+          <!-- サイズ入力テーブル -->
+          <div class="overflow-x-auto rounded-lg border border-gray-200 mb-6">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col"
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">部位</th>
+                  <th scope="col"
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">あなたに合う衣類サイズ
+                  </th>
+                  <th scope="col"
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">衣類サイズ</th>
+                  <th scope="col"
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">判定</th>
+                  <th scope="col"
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">優先度</th>
+                  <th scope="col"
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ガイド</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                @foreach ($fields as $field)
+                  @php
+                    $fieldClass = in_array($field, [
+                        'neck_circumference',
+                        'shoulder_width',
+                        'yuki_length',
+                        'chest_circumference',
+                    ])
+                        ? 'top-item'
+                        : (in_array($field, ['waist', 'inseam', 'hip'])
+                            ? 'bottom-item'
+                            : '');
+                  @endphp
+                  <tr class="{{ $fieldClass }} hover:bg-gray-50">
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {{ __("measurement.$field") }}
+                    </td>
+                    <td
+                      class="px-4 py-3 whitespace-nowrap text-sm font-semibold {{ $suitableSize[$field] ? 'text-green-600' : 'text-gray-700' }}">
+                      {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1"
+                          value="{{ $item->$field }}" min="0.0" max="999.0" placeholder="40.0"
+                          class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-20 text-sm border-gray-300 rounded-md">
+                        <span class="ml-2 text-sm text-gray-600">cm</span>
+                      </div>
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                      <span id="{{ $field }}_result"
+                        class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                        未評価
+                      </span>
+                    </td>
+                    <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
+                      {{ $field == 'chest_circumference' || $field == 'hip' ? '低い' : '高い' }}
+                    </td>
+                    <td class="px-1 py-3 whitespace-nowrap text-center">
+                      <button type="button" class="text-indigo-600 hover:text-indigo-900 focus:outline-none">
+                        <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
+                          class="w-5 h-5 hover:opacity-75 transition-opacity">
+                      </button>
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- アクションボタン -->
+        <div class="flex flex-wrap justify-between gap-4 pt-6 border-t border-gray-200">
+          <button type="submit"
+            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+              fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd" />
+            </svg>
+            更新する
+          </button>
+
           <button type="button"
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.show' : 'clothing-item.show', ['clothing_item' => $item->id]) }}'"
-            class=" text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">キャンセル</button>
+            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+              fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+            キャンセル
+          </button>
         </div>
-    </div>
-    </form>
+      </form>
     </div>
   </section>
 </x-app-layout>

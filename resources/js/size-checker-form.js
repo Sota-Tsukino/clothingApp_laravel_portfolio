@@ -1,7 +1,7 @@
 import { evaluateSize } from "./size-checker.js";
 
 export function setupSizeCheckerForm(container, tolerance, suitableSize) {
-    const colorClasses = ["text-green-600", "text-yellow-600", "text-red-600"];
+    const colorClasses = ["text-green-600", "text-yellow-500", "text-red-600"];
 
     for (let field in tolerance) {
         const inputEl = container.querySelector(`input[name="${field}"]`);

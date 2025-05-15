@@ -11,7 +11,9 @@ import "choices.js/public/assets/styles/choices.min.css";//CSSファイルをバ
 // });
 
 // Choices.js を使ってマルチセレクトを拡張　色
-const colorSelect = new Choices("#colors", {
+const colorSelectElement = document.querySelector('#colors');
+
+const colorSelect = new Choices(colorSelectElement, {
     removeItemButton: true,
     searchEnabled: true,
     placeholderValue: "色を選択",
@@ -64,10 +66,54 @@ const colorSelect = new Choices("#colors", {
 
 // Choices.js を使ってマルチセレクトを拡張　タグ
 const tagSelect = new Choices("#tags", {
-    removeItemButton: true, // タグごとに✕ボタンを表示する
-    searchEnabled: true, // 検索機能を有効にする（任意）
-    placeholderValue: "タグを選択",
+  removeItemButton: true,
+  searchEnabled: true,
+  placeholderValue: "タグを選択",
+  callbackOnCreateTemplates: function (template) {
+    return {
+      // 選択されたアイテムの見た目（画面上で選ばれたタグ）
+      item: (classNames, data) => {
+        return template(`
+          <div class="${classNames.item} ${
+          data.highlighted ? classNames.highlightedState : classNames.itemSelectable
+        } inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-2"
+               data-item data-id="${data.id}" data-value="${data.value}"
+               ${data.active ? 'aria-selected="true"' : ""}
+               ${data.disabled ? 'aria-disabled="true"' : ""}>
+            ${data.label}
+            <button type="button" class="${classNames.button}" data-button>✕</button>
+          </div>
+        `);
+      },
+
+      // 選択肢の見た目（セレクトボックスのドロップダウン内）
+      choice: (classNames, data) => {
+        return template(`
+          <div class="${classNames.item} ${classNames.itemChoice} ${
+          data.disabled ? classNames.itemDisabled : classNames.itemSelectable
+        }"
+            data-select-text="${this.config.itemSelectText}" data-choice
+            ${data.disabled ? 'data-choice-disabled aria-disabled="true"' : "data-choice-selectable"}
+            data-id="${data.id}" data-value="${data.value}"
+            ${data.groupId > 0 ? 'role="treeitem"' : 'role="option"}'}>
+            ${data.label}
+          </div>
+        `);
+      },
+    };
+  },
 });
+
+// フォーム送信前にバリデーションチェック
+document.querySelector('#form').addEventListener('submit', function (e) {
+    const selected = colorSelect.getValue();
+
+    if (selected.length === 0) {
+        e.preventDefault();
+        alert("色を1つ以上選択してください。");
+    }
+});
+
 
 //登録画像のプレビュー
 document.getElementById('file_name').addEventListener('change', function(event) {
