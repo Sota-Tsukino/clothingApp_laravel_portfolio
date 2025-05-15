@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* choice.js カスタムCSS */
+.choices__list--multiple .choices__item {
+    background-color: #0071BC;
+    border: 1px solid #0071BC;
+    border-radius: 10px;
+}
+
+.choices {
+    width: calc(2/3 * 100%);
+}
+
+.choices__input {
+    width: auto !important;
+}

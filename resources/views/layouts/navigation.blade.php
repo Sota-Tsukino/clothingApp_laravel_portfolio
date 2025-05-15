@@ -12,9 +12,35 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route(Auth::user()->role === 'admin' ? 'admin.dashboard' : 'dashboard')" :active="request()->routeIs('dashboard')">
+                    {{-- <x-nav-link :href="route(Auth::user()->role === 'admin' ? 'admin.dashboard' : 'dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
+                    </x-nav-link> --}}
+                    <x-nav-link
+                        :href="route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show')">
+                        {{ __('Profile') }}
                     </x-nav-link>
+                    <x-nav-link
+                        :href="route(Auth::user()->role === 'admin' ? 'admin.measurement.index' : 'measurement.index')">
+                        体格情報一覧
+                    </x-nav-link>
+                    <x-nav-link
+                        :href="route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index')">
+                        体格許容値
+                    </x-nav-link>
+                    <x-nav-link
+                        :href="route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')">
+                        衣類アイテム一覧
+                    </x-nav-link>
+                    <x-nav-link
+                        :href="route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index')">
+                        サイズチェッカー
+                    </x-nav-link>
+                    @if (Auth::user()->role === 'admin')
+                        <x-nav-link
+                            :href="route('admin.user.index')">
+                            ユーザー一覧
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -45,7 +71,11 @@
                         </x-dropdown-link>
                         <x-dropdown-link
                             :href="route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index')">
-                            体格許容値の表示
+                            体格許容値
+                        </x-dropdown-link>
+                        <x-dropdown-link
+                            :href="route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')">
+                            衣類アイテム一覧
                         </x-dropdown-link>
                         <x-dropdown-link
                             :href="route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index')">

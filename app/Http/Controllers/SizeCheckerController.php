@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\BodyMeasurement;
-use App\Models\BodyCorrection;
-use App\Models\FittingTolerance;
+use App\Services\BodyMeasurementService;
+use App\Services\BodyCorrectionService;
+use App\Services\FittingToleranceService;
+use App\Services\SizeCheckerService;
 
 class SizeCheckerController extends Controller
 {
@@ -18,33 +19,13 @@ class SizeCheckerController extends Controller
             session(['from_measurement_id' => $request->input('from_measurement_id')]);
         }
 
-        $bodyMeasurement = BodyMeasurement::where('user_id', Auth::id())
-            ->orderBy('measured_at', 'desc')->firstOrFail();
+        $userId = Auth::id();
+        $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
+        $bodyCorrection = BodyCorrectionService::getForUser($userId);
+        $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
+        $userTolerance = FittingToleranceService::getForUser($userId);
+        $fields = SizeCheckerService::getFields();
 
-        $bodyCorrection = BodyCorrection::findOrFail(Auth::id());
-        $fittingTolerance = FittingTolerance::where('user_id', Auth::id())->get();
-
-        $fields = [
-            'neck_circumference',
-            'yuki_length',
-            'chest_circumference',
-            'waist',
-            'inseam',
-            'hip',
-        ];
-        $suitableSize = [];
-        foreach($fields as $field) {
-            $suitableSize[$field] = $bodyMeasurement->$field + $bodyCorrection->$field;
-        }
-
-        $userTolerance = [];
-        foreach ($fittingTolerance as $tolerance) {
-            $userTolerance[$tolerance->body_part][$tolerance->tolerance_level] = [
-                'min_value' => $tolerance->min_value,
-                'max_value' => $tolerance->max_value,
-            ];
-        }
-        // dd($userTolerance);
         return view('sizechecker.index', compact('bodyMeasurement', 'suitableSize', 'fields', 'userTolerance'));
     }
 }

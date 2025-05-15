@@ -8,6 +8,7 @@ use App\Http\Controllers\BodyMeasurementController;
 use App\Http\Controllers\BodyCorrectionController;
 use App\Http\Controllers\FittingToleranceController;
 use App\Http\Controllers\SizeCheckerController;
+use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +48,10 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/tolerance/edit', [FittingToleranceController::class, 'edit'])->name('tolerance.edit');
     Route::put('/tolerance/update', [FittingToleranceController::class, 'update'])->name('tolerance.update');
 
+    Route::get('/size-checker', [SizeCheckerController::class, 'index'])->name('sizechecker.index');
+
+    Route::resource('/clothing-item', ItemController::class);
+
 
 });
 
@@ -74,6 +79,8 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::put('/tolerance/update', [FittingToleranceController::class, 'update'])->name('tolerance.update');
 
         Route::get('/size-checker', [SizeCheckerController::class, 'index'])->name('sizechecker.index');
+
+        Route::resource('/clothing-item', ItemController::class);
 
         //adminのみユーザー管理権原
         Route::get('/user', [UserController::class, 'index'])->name('user.index');

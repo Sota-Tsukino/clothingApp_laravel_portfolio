@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\FittingTolerance;
 
 class FittingToleranceService
 {
@@ -20,13 +21,25 @@ class FittingToleranceService
                 "min_value" => -2.0,
                 "max_value" => 3.0
             ],
+            'shoulder_width-just' => [
+                "min_value" => -1.0,
+                "max_value" => 2.0
+            ],
+            'shoulder_width-slight' => [
+                "min_value" => -2.0,
+                "max_value" => 4.0
+            ],
+            'shoulder_width-long_or_short' => [
+                "min_value" => -4.0,
+                "max_value" => 6.0
+            ],
             'yuki_length-just' => [
-                "min_value" => -1.5,
-                "max_value" => 1.5
+                "min_value" => -3.0,
+                "max_value" => 3.0
             ],
             'yuki_length-slight' => [
-                "min_value" => -5.0,
-                "max_value" => 5.0
+                "min_value" => -6.0,
+                "max_value" => 6.0
             ],
             'yuki_length-long_or_short' => [
                 "min_value" => -9.0,
@@ -93,5 +106,20 @@ class FittingToleranceService
         }
         // dd($rules);
         return $rules;
+    }
+
+    public static function getForUser($userId)
+    {
+        $raw = FittingTolerance::where('user_id', $userId)->get();
+        $userTolerance = [];
+
+        foreach ($raw as $tolerance) {
+            $userTolerance[$tolerance->body_part][$tolerance->tolerance_level] = [
+                'min_value' => $tolerance->min_value,
+                'max_value' => $tolerance->max_value,
+            ];
+        }
+
+        return $userTolerance;
     }
 }
