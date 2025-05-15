@@ -13,6 +13,8 @@ use App\Models\Material;
 use App\Models\Color;
 use App\Models\Season;
 use App\Models\Tag;
+use App\Constants\Common;
+
 
 class Item extends Model
 {
@@ -124,11 +126,11 @@ class Item extends Model
     public function scopeSortOrder($query, $sortOrder)
     {
         switch ($sortOrder) {
-            case 'purchased_date_desc':
+            case Common::SORT_ORDER['newItem']:
                 return $query->orderBy('purchased_date', 'desc');
-            case 'purchased_date_asc':
+            case Common::SORT_ORDER['oldItem']:
                 return $query->orderBy('purchased_date', 'asc');
-            case 'created_at_asc':
+            case Common::SORT_ORDER['oldRegisteredItem']:
                 return $query->orderBy('created_at', 'asc');
             default:
                 return $query->orderBy('created_at', 'desc');

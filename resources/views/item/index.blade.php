@@ -31,10 +31,10 @@
         <div>
           <label for="sort" class="block text-sm font-medium text-gray-700">表示順</label>
           <select name="sort" id="sort" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            <option value="">登録日が新しい(デフォルト)</option>
-            <option value="created_at_asc" @selected(request('sort') === 'created_at_asc')>登録日が古い</option>
-            <option value="purchased_date_desc" @selected(request('sort') === 'purchased_date_desc')>購入日が新しい</option>
-            <option value="purchased_date_asc" @selected(request('sort') === 'purchased_date_asc')>購入日が古い</option>
+            <option value="{{ \Constant::SORT_ORDER['latestRegisterItem'] }}" @selected(empty(request('sort')))>登録日が新しい(デフォルト)</option>
+            <option value="{{ \Constant::SORT_ORDER['oldRegisteredItem'] }}" @selected(request('sort') === \Constant::SORT_ORDER['oldRegisteredItem'])>登録日が古い</option>
+            <option value="{{ \Constant::SORT_ORDER['newItem'] }}" @selected(request('sort') === \Constant::SORT_ORDER['newItem'])>購入日が新しい</option>
+            <option value="{{ \Constant::SORT_ORDER['oldItem'] }}" @selected(request('sort') === \Constant::SORT_ORDER['oldItem'])>購入日が古い</option>
           </select>
         </div>
 
