@@ -13,6 +13,7 @@ use App\Models\Material;
 use App\Models\Color;
 use App\Models\Season;
 use App\Models\Tag;
+use App\Models\Coordinate;
 use App\Constants\Common;
 
 
@@ -98,6 +99,12 @@ class Item extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'item_tags')->withTimestamps();
+    }
+
+    //中間テーブル
+    public function coordinates()
+    {
+        return $this->belongsToMany(Coordinate::class, 'item_coordinates')->withTimestamps();
     }
 
     public function scopeOfUser($query, $userId)

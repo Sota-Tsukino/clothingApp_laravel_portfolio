@@ -76,4 +76,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(FittingTolerance::class);
     }
+
+    public function Coordinates()
+    {
+        return $this->hasMany(Coordinate::class);
+    }
+
+    public function CoordinateWearingLogs()
+    {
+        return $this->hasMany(CoordinateWearingLog::class);
+    }
 }
