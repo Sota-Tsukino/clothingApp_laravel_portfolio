@@ -9,6 +9,7 @@ use App\Http\Controllers\BodyCorrectionController;
 use App\Http\Controllers\FittingToleranceController;
 use App\Http\Controllers\SizeCheckerController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\CoordinateController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -81,6 +82,7 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::get('/size-checker', [SizeCheckerController::class, 'index'])->name('sizechecker.index');
 
         Route::resource('/clothing-item', ItemController::class);
+        Route::resource('/coordinate', CoordinateController::class);
 
         //adminのみユーザー管理権原
         Route::get('/user', [UserController::class, 'index'])->name('user.index');
