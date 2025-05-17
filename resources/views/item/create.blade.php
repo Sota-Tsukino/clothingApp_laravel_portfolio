@@ -10,7 +10,7 @@
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
-      <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.store' : 'clothing-item.store') }}"
+      <form id="form" action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.store' : 'clothing-item.store') }}"
         method="post" enctype="multipart/form-data">
         @csrf
         <div class="w-full mb-6 ">
@@ -83,7 +83,6 @@
             <select name="status" id="status"
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required>
-              <option value="" {{ old('status') == null ? 'selected' : '' }}>ステータスを選択してください</option>
               <option value="owned" {{ old('status') == 'owned' ? 'selected' : '' }}>
                 所持中
               </option>

@@ -22,12 +22,11 @@ class ItemController extends Controller
     {
         $userId = Auth::id();
         $params = $request->only(['category', 'status', 'sort', 'pagination']);
-        $pagination = $params['pagination'] ?? 8;
 
         //getにparamが含まれる（検索）場合、通常表示の場合
         $items = !empty(array_filter($params))// array_filter()は値が空でない要素のみ返す
-            ? ItemService::searchItemsByUser($userId, $params, $pagination)
-            : ItemService::getAllItemsByUserId($userId, $pagination);
+            ? ItemService::searchItemsByUser($userId, $params)
+            : ItemService::getAllItemsByUserId($userId, true);
         $categories = Category::with('subCategory')->get();
 
         return view('item.index', [
