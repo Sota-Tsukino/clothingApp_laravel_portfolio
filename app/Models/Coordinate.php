@@ -36,8 +36,7 @@ class Coordinate extends Model
     public function items()
     {
         return $this->belongsToMany(Item::class, 'item_coordinates')
-            ->withTimestamps()
-            ->withPivot('category_id');
+            ->withTimestamps();
     }
 
     public function CoordinateWearingLog()

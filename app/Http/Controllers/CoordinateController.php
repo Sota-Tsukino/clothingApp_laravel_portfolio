@@ -37,7 +37,7 @@ class CoordinateController extends Controller
             'items' => 'required|array|min:2', //$request->items = []; 最低２つ登録必須
             'items.*' => ['integer', 'distinct', new UserOwnItem], //各item_idが重複しないこと
             'sceneTag_id' => 'integer|required|exists:scene_tags,id',
-            'is_public' => 'boolean|required',// blade側の valueは0,1でOK（booleanにキャストされる）
+            'is_public' => 'boolean|required', // blade側の valueは0,1でOK（booleanにキャストされる）
             'is_favorite' => 'boolean|required',
             'memo' => 'string|nullable|max:50',
         ]);
@@ -61,5 +61,24 @@ class CoordinateController extends Controller
                 'message' => 'コーデを登録しました。',
                 'status' => 'info'
             ]);
+    }
+
+    public function show(string $id)
+    {
+        $userId = Auth::id();
+        $coordinate = Coordinate::with(['items.image', 'sceneTag'])->findOrFail($id);//Itemモデルにimage()リレーションが定義されていること
+        // dd($coordinate);
+        if ($coordinate->user_id !== $userId) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.create' : 'coordinate.create')
+                ->with([
+                    'message' => '他のユーザーのコーデ情報は参照できません。',
+                    'status' => 'alert'
+                ]);
+        }
+
+        return view('coordinate.show', [
+            'coordinate' => $coordinate,
+        ]);
     }
 }
