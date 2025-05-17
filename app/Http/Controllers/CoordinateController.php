@@ -66,7 +66,7 @@ class CoordinateController extends Controller
     public function show(string $id)
     {
         $userId = Auth::id();
-        $coordinate = Coordinate::with(['items.image', 'sceneTag'])->findOrFail($id);//Itemモデルにimage()リレーションが定義されていること
+        $coordinate = Coordinate::with(['items.image', 'sceneTag'])->findOrFail($id); //Itemモデルにimage()リレーションが定義されていること
         // dd($coordinate);
         if ($coordinate->user_id !== $userId) {
             return redirect()
@@ -79,6 +79,31 @@ class CoordinateController extends Controller
 
         return view('coordinate.show', [
             'coordinate' => $coordinate,
+        ]);
+    }
+
+    public function edit(string $id)
+    {
+        $userId = Auth::id();
+        $coordinate = Coordinate::with(['items.image', 'sceneTag'])->findOrFail($id);
+
+        if ($coordinate->user_id !== $userId) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.show' : 'coordinate.show', ['coordinate' => $id])
+                ->with([
+                    'message' => '他のユーザーのコーデ情報は編集できません。',
+                    'status' => 'alert'
+                ]);
+        }
+
+        //ユーザー登録済みの衣類アイテムを取得
+        $items = ItemService::getAllItemsByUserId($userId);
+        $sceneTags = SceneTag::all(); //マスタデータを取得
+
+        return view('coordinate.edit', [
+            'coordinate' => $coordinate,
+            'sceneTags' => $sceneTags,
+            'items' => $items,
         ]);
     }
 }
