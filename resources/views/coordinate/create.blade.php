@@ -24,7 +24,7 @@
               </button>
               <div class="w-2/3 mx-auto">
                 <img id="preview-main" class="mt-4 max-w-xs rounded shadow w-full" style="display: none;">
-                <input type="hidden" name="main_item_id" id="input-main">
+                <input type="hidden" name="items[]" id="input-main">
               </div>
             </div>
             <div class="sub1 w-1/3 text-center">
@@ -35,7 +35,7 @@
               </button>
               <div class="w-2/3 mx-auto">
                 <img id="preview-sub1" class="mt-4 max-w-xs rounded shadow w-full" style="display: none;">
-                <input type="hidden" name="sub1_item_id" id="input-sub1">
+                <input type="hidden" name="items[]" id="input-sub1">
               </div>
             </div>
             <div class="sub2 w-1/3 text-center">
@@ -46,7 +46,7 @@
               </button>
               <div class="w-2/3 mx-auto">
                 <img id="preview-sub2" class="mt-4 max-w-xs rounded shadow w-full" style="display: none;">
-                <input type="hidden" name="sub2_item_id" id="input-sub2">
+                <input type="hidden" name="items[]" id="input-sub2">
               </div>
             </div>
 
@@ -71,8 +71,8 @@
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required>
               {{-- DB上は型がbooleanになっているのでvalue= true/falseで管理する？ --}}
-              <option value="true" {{ old('is_public') == true ? 'selected' : '' }}>公開する</option>
-              <option value="false" {{ old('is_public') == false ? 'selected' : '' }}>公開しない</option>
+              <option value="1" {{ old('is_public') == 1 ? 'selected' : '' }}>公開する</option>
+              <option value="0" {{ old('is_public') == 0 ? 'selected' : '' }}>公開しない</option>
             </select>
           </div>
           <div class="flex mb-6 items-center">
@@ -81,8 +81,8 @@
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required>
               {{-- DB上は型がbooleanになっているのでvalue= true/falseで管理する？ --}}
-              <option value="true" {{ old('is_favorite') == true ? 'selected' : '' }}>登録する</option>
-              <option value="false" {{ old('is_favorite') == false ? 'selected' : '' }}>登録しない</option>
+              <option value="1" {{ old('is_favorite') == 1 ? 'selected' : '' }}>登録する</option>
+              <option value="0" {{ old('is_favorite') == 0 ? 'selected' : '' }}>登録しない</option>
             </select>
           </div>
 

@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\SubCategory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -29,6 +28,8 @@ class DatabaseSeeder extends Seeder
             SeasonSeeder::class,
             SubCategorySeeder::class,
             TagSeeder::class,
+            SceneTag::class,
+            WeatherTypeSeeder::class,
         ]);
 
         // \App\Models\User::factory(10)->create();
