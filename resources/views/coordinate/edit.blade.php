@@ -14,6 +14,7 @@
         action="{{ route(Auth::user()->role === 'admin' ? 'admin.coordinate.update' : 'coordinate.update', ['coordinate' => $coordinate->id]) }}"
         method="post" enctype="multipart/form-data">
         @csrf
+        @method('put')
         <div class="w-full mb-6 ">
           <h2 class='text-black'>必須入力</h2>
           <div class="flex mb-6 justify-between">
@@ -23,6 +24,8 @@
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="main">
                 衣類を選択
               </button>
+              <button type="button" id="cancel-main" class="mt-2 text-sm text-red-600 hover:underline cancel-button"
+                data-target="main" style="display: none;">✕ 選択をキャンセル</button>
               <div class="w-2/3 mx-auto">
                 <img id="preview-main" class="mt-4 max-w-xs rounded shadow w-full"
                   src="{{ asset('storage/items/' . $coordinate->items[0]->image->file_name) }}">
@@ -35,6 +38,8 @@
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="sub1">
                 衣類を選択
               </button>
+              <button type="button" id="cancel-sub1" class="mt-2 text-sm text-red-600 hover:underline cancel-button"
+                data-target="sub1" style="display: none;">✕ 選択をキャンセル</button>
               <div class="w-2/3 mx-auto">
                 <img id="preview-sub1" class="mt-4 max-w-xs rounded shadow w-full"
                   src="{{ asset('storage/items/' . $coordinate->items[1]->image->file_name) }}">
@@ -47,6 +52,8 @@
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="sub2">
                 衣類を選択
               </button>
+              <button type="button" id="cancel-sub2" class="mt-2 text-sm text-red-600 hover:underline cancel-button"
+                data-target="sub2" style="display: none;">✕ 選択をキャンセル</button>
               <div class="w-2/3 mx-auto">
                 @if (isset($coordinate->items[2]))
                   <img id="preview-sub2" class="mt-4 max-w-xs rounded shadow w-full"
@@ -56,7 +63,6 @@
                   <img id="preview-sub2" class="mt-4 max-w-xs rounded shadow w-full" style="display: none;">
                   <input type="hidden" name="items[]" id="input-sub2">
                 @endif
-
               </div>
             </div>
 
@@ -110,8 +116,7 @@
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.coordinate.show' : 'coordinate.show', ['coordinate' => $coordinate->id]) }}'"
             class=" text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">キャンセル</button>
         </div>
-    </div>
-    </form>
+      </form>
     </div>
   </section>
 </x-app-layout>

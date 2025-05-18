@@ -22,6 +22,8 @@
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="main">
                 衣類を選択
               </button>
+              <button type="button" id="cancel-main" class="mt-2 text-sm text-red-600 hover:underline cancel-button"
+                data-target="main" style="display: none;">✕ 選択をキャンセル</button>
               <div class="w-2/3 mx-auto">
                 <img id="preview-main" class="mt-4 max-w-xs rounded shadow w-full" style="display: none;">
                 <input type="hidden" name="items[]" id="input-main">
@@ -33,6 +35,8 @@
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="sub1">
                 衣類を選択
               </button>
+              <button type="button" id="cancel-sub1" class="mt-2 text-sm text-red-600 hover:underline cancel-button"
+                data-target="sub1" style="display: none;">✕ 選択をキャンセル</button>
               <div class="w-2/3 mx-auto">
                 <img id="preview-sub1" class="mt-4 max-w-xs rounded shadow w-full" style="display: none;">
                 <input type="hidden" name="items[]" id="input-sub1">
@@ -44,6 +48,8 @@
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="sub2">
                 衣類を選択
               </button>
+              <button type="button" id="cancel-sub2" class="mt-2 text-sm text-red-600 hover:underline cancel-button"
+                data-target="sub2" style="display: none;">✕ 選択をキャンセル</button>
               <div class="w-2/3 mx-auto">
                 <img id="preview-sub2" class="mt-4 max-w-xs rounded shadow w-full" style="display: none;">
                 <input type="hidden" name="items[]" id="input-sub2">
@@ -51,7 +57,7 @@
             </div>
 
           </div>
-          <x-modal-select-item :items="$items"/>
+          <x-modal-select-item :items="$items" />
           <div class="flex mb-6 items-center">
             <label for="sceneTag_id" class="leading-7 text-sm text-gray-600 w-1/3">シーンタグ</label>
             <select name="sceneTag_id" id="categorySelect"
@@ -92,7 +98,7 @@
             <label for="memo" class="leading-7 text-sm text-gray-600 w-1/3">メモ</label>
             <textarea name="memo" id="memo"
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              maxlength="50"  placeholder="50文字以内で入力">{{ old('memo') }}</textarea>
+              maxlength="50" placeholder="50文字以内で入力">{{ old('memo') }}</textarea>
           </div>
         </div>
         <div class="flex justify-between mx-auto">
