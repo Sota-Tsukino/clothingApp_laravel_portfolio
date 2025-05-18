@@ -125,7 +125,7 @@ class ItemController extends Controller
             $formDataWithItem = ItemService::getFormDataWithItem($id, $userId);
         } catch (\Exception $e) {
             return redirect()
-                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'measurement.index')
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')
                 ->with([
                     'message' => $e->getMessage(),
                     'status' => 'alert'

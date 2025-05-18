@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use App\Models\SceneTag;
 use App\Models\Coordinate;
-use App\Rules\UserOwnItem;
 use App\Services\ItemService;
+use App\Services\CoordinateService;
+use Exception;
+
 
 class CoordinateController extends Controller
 {
@@ -33,30 +34,18 @@ class CoordinateController extends Controller
         $items = array_filter($request->input('items', []), fn($item) => !empty($item));
         $request->merge(['items' => $items]);
 
-        $request->validate([
-            'items' => 'required|array|min:2', //$request->items = []; 最低２つ登録必須
-            'items.*' => ['integer', 'distinct', new UserOwnItem], //各item_idが重複しないこと
-            'sceneTag_id' => 'integer|required|exists:scene_tags,id',
-            'is_public' => 'boolean|required', // blade側の valueは0,1でOK（booleanにキャストされる）
-            'is_favorite' => 'boolean|required',
-            'memo' => 'string|nullable|max:50',
-        ]);
+        $request->validate(CoordinateService::getValidationRules());
 
-        DB::transaction(function () use ($request) {
-            $coordinate = Coordinate::create([
-                'user_id' => Auth::id(),
-                'scene_tag_id' => $request->sceneTag_id,
-                'is_public' => $request->is_public,
-                'is_favorite' => $request->is_favorite,
-                'memo' => $request->memo,
-            ]);
-
-            // 衣類アイテム_コーデ（中間テーブル）にデータ挿入
-            $coordinate->items()->attach($request->items); // items[]は複数選択された衣類IDの配列
-        });
+        try {
+            $coordinate = CoordinateService::saveCoordinate($request->all());
+        } catch (Exception $e) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.create' : 'coordinate.create')
+                ->with(['message' => $e->getMessage(), 'status' => 'alert']);
+        }
 
         return redirect()
-            ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.create' : 'coordinate.create')
+            ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.show' : 'coordinate.show', $coordinate->id)
             ->with([
                 'message' => 'コーデを登録しました。',
                 'status' => 'info'
@@ -66,13 +55,15 @@ class CoordinateController extends Controller
     public function show(string $id)
     {
         $userId = Auth::id();
-        $coordinate = Coordinate::with(['items.image', 'sceneTag'])->findOrFail($id); //Itemモデルにimage()リレーションが定義されていること
-        // dd($coordinate);
-        if ($coordinate->user_id !== $userId) {
-            return redirect()
+
+        try {
+            $coordinate = CoordinateService::getCoordinateById($id);
+            CoordinateService::isUserOwn($coordinate, $userId);
+        } catch (Exception $e) {
+            return redirect() //indexは未実装なので暫定でcreateにリダイレクト
                 ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.create' : 'coordinate.create')
                 ->with([
-                    'message' => '他のユーザーのコーデ情報は参照できません。',
+                    'message' => $e->getMessage(),
                     'status' => 'alert'
                 ]);
         }
@@ -85,20 +76,22 @@ class CoordinateController extends Controller
     public function edit(string $id)
     {
         $userId = Auth::id();
-        $coordinate = Coordinate::with(['items.image', 'sceneTag'])->findOrFail($id);
+        try {
+            $coordinate = CoordinateService::getCoordinateById($id);
+            CoordinateService::isUserOwn($coordinate, $userId);
 
-        if ($coordinate->user_id !== $userId) {
+            //ユーザー登録済みの衣類アイテムを取得
+            $items = ItemService::getAllItemsByUserId($userId);
+            $sceneTags = SceneTag::all(); //マスタデータを取得
+
+        } catch (Exception $e) {
             return redirect()
-                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.show' : 'coordinate.show', ['coordinate' => $id])
+                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index')
                 ->with([
-                    'message' => '他のユーザーのコーデ情報は編集できません。',
+                    'message' => $e->getMessage(),
                     'status' => 'alert'
                 ]);
         }
-
-        //ユーザー登録済みの衣類アイテムを取得
-        $items = ItemService::getAllItemsByUserId($userId);
-        $sceneTags = SceneTag::all(); //マスタデータを取得
 
         return view('coordinate.edit', [
             'coordinate' => $coordinate,
@@ -109,41 +102,21 @@ class CoordinateController extends Controller
 
     public function update(Request $request, string $id)
     {
-        // dd($request);
         // itemsの中身がnull,空文字列などを除外した上でバリデーション
         $items = array_filter($request->input('items', []), fn($item) => !empty($item));
         $request->merge(['items' => $items]);
+        $request->validate(CoordinateService::getValidationRules());
 
-        $request->validate([
-            'items' => 'required|array|min:2', //$request->items = []; 最低２つ登録必須
-            'items.*' => ['integer', 'distinct', new UserOwnItem], //各item_idが重複しないこと
-            'sceneTag_id' => 'integer|required|exists:scene_tags,id',
-            'is_public' => 'boolean|required', // blade側の valueは0,1でOK（booleanにキャストされる）
-            'is_favorite' => 'boolean|required',
-            'memo' => 'string|nullable|max:50',
-        ]);
-
-        $coordinate = Coordinate::findOrFail($id);
-        $userId = Auth::id();
-
-        if ($coordinate->user_id !== $userId) {
+        try {
+            $coordinate = Coordinate::findOrFail($id);
+            $userId = Auth::id();
+            CoordinateService::isUserOwn($coordinate, $userId);
+            CoordinateService::saveCoordinate($request->all(), $coordinate);
+        } catch (Exception $e) {
             return redirect()
-                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.edit' : 'coordinate.edit', ['coordinate' => $id]) // paramに$idを渡すのは適切か？ログインユーザーが所有してないコーデIDが渡ってきたらどうする？ sessionに持たせる方がいいのか？
-                ->with([
-                    'message' => '他のユーザーのコーデ情報は編集できません。',
-                    'status' => 'alert'
-                ]);
+                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.edit' : 'coordinate.edit', $id)
+                ->with(['message' => $e->getMessage(), 'status' => 'alert']);
         }
-
-        $coordinate->update([
-            'user_id' => $userId,
-            'scene_tag_id' => $request->sceneTag_id,
-            'is_public' => $request->is_public,
-            'is_favorite' => $request->is_favorite,
-            'memo' => $request->memo,
-        ]);
-
-        $coordinate->items()->sync($request->items ?? []);
 
         return redirect()
             ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.show' : 'coordinate.show', ['coordinate' => $id])
