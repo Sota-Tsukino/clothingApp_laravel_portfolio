@@ -78,6 +78,10 @@
                             衣類アイテム一覧
                         </x-dropdown-link>
                         <x-dropdown-link
+                            :href="route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index')">
+                            コーデ一覧
+                        </x-dropdown-link>
+                        <x-dropdown-link
                             :href="route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index')">
                             サイズチェッカー
                         </x-dropdown-link>

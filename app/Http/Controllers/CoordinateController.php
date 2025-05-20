@@ -13,6 +13,21 @@ use Exception;
 
 class CoordinateController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $userId = Auth::id();
+        $params = $request->only(['is_favorite', 'sort', 'pagination']);
+        $coordinates = !empty($params) // array_filter()は値が空でない要素のみ返す
+            ? CoordinateService::searchCoordinateByUser($userId, $params)
+            : CoordinateService::getAllCoordinateByUserId($userId, true);
+
+
+        return view('coordinate.index', [
+            'coordinates' => $coordinates,
+        ]);
+    }
+
     public function create()
     {
         $userId = Auth::id();
@@ -132,7 +147,7 @@ class CoordinateController extends Controller
             CoordinateService::isUserOwn($coordinate, $userId);
             $coordinate->delete();
 
-            return redirect()//暫定でcreateにリダイレクト
+            return redirect() //暫定でcreateにリダイレクト
                 ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.create' : 'coordinate.create')
                 ->with([
                     'message' => 'コーデを削除しました。',

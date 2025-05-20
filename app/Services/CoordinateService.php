@@ -76,13 +76,12 @@ class CoordinateService
         return $is_paginate ?  $coordinates->paginate(\Constant::DEFAULT_PAGINATION) : $coordinates->get();
     }
 
-    // public static function searchCoordinateByUser($userId, $filters = [])
-    // {
-    //     return Coordinate::ofUser($userId)
-    //         // ->category($filters['category'] ?? null)
-    //         // ->status($filters['status'] ?? null)
-    //         // ->sortOrder($filters['sort'] ?? null)
-    //         // ->paginate($filters['pagination'] ?? \Constant::DEFAULT_PAGINATION)
-    //         // ->appends($filters);
-    // }
+    public static function searchCoordinateByUser($userId, $filters = [])
+    {
+        return Coordinate::ofUser($userId)
+            ->isFavorite($filters['is_favorite'] ?? null)
+            ->sortOrder($filters['sort'] ?? null)
+            ->paginate($filters['pagination'] ?? \Constant::DEFAULT_PAGINATION)
+            ->appends($filters);
+    }
 }
