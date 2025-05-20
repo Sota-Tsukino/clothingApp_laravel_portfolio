@@ -24,7 +24,7 @@ class ItemController extends Controller
         $params = $request->only(['category', 'status', 'sort', 'pagination']);
 
         //getにparamが含まれる（検索）場合、通常表示の場合
-        $items = !empty(array_filter($params))// array_filter()は値が空でない要素のみ返す
+        $items = !empty(array_filter($params)) // array_filter()は値が空でない要素のみ返す
             ? ItemService::searchItemsByUser($userId, $params)
             : ItemService::getAllItemsByUserId($userId, true);
         $categories = Category::with('subCategory')->get();
@@ -179,11 +179,11 @@ class ItemController extends Controller
     public function destroy(string $id)
     {
         $userId = Auth::id();
-        $item = ItemService::getItemById($id);
-
-        ItemService::isUserOwn($item, $userId);
 
         try {
+            $item = ItemService::getItemById($id);
+            ItemService::isUserOwn($item, $userId);
+            ItemService::isUsedInCoordinates($item->id, $userId);
 
             if (!empty($item->image)) {
                 $filePath = $item->image->file_name;
@@ -206,7 +206,7 @@ class ItemController extends Controller
                 ]);
         } catch (Exception $e) {
             return redirect()
-                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.show' : 'clothing-item.show', ['clothing_item' => $item->id])
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')
                 ->with([
                     'message' => '削除処理に失敗しました: ' . $e->getMessage(),
                     'status' => 'alert'

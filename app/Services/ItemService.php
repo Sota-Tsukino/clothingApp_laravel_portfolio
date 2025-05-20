@@ -15,6 +15,7 @@ use App\Models\Color;
 use App\Models\Tag;
 use App\Models\Season;
 use App\Models\Material;
+use App\Models\Coordinate;
 use App\Services\BodyMeasurementService;
 use App\Services\BodyCorrectionService;
 use App\Services\FittingToleranceService;
@@ -109,6 +110,19 @@ class ItemService
             throw new Exception('他のユーザーの衣類情報は参照できません。');
         }
     }
+
+    public static function isUsedInCoordinates($itemId, $userId)
+    {
+        //中間テーブル coordinate_itemを使ってクエリで判定
+        $used = Coordinate::where('user_id', $userId)
+            ->whereHas('items', fn($q) => $q->where('items.id', $itemId))// itemsはリレーションメソッド名
+            ->exists();
+
+        if ($used) {
+            throw new Exception('コーデに使用されている為、この衣類アイテムは削除できません。');
+        }
+    }
+
 
     public static function saveItem(array $data, ?Item $item = null): Item
     {

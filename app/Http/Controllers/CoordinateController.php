@@ -122,4 +122,29 @@ class CoordinateController extends Controller
             ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.show' : 'coordinate.show', ['coordinate' => $id])
             ->with(['message' => 'コーデを更新しました。', 'status' => 'info']);
     }
+
+    public function destroy(string $id)
+    {
+        $userId = Auth::id();
+
+        try {
+            $coordinate = CoordinateService::getCoordinateById($id);
+            CoordinateService::isUserOwn($coordinate, $userId);
+            $coordinate->delete();
+
+            return redirect()//暫定でcreateにリダイレクト
+                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.create' : 'coordinate.create')
+                ->with([
+                    'message' => 'コーデを削除しました。',
+                    'status' => 'info'
+                ]);
+        } catch (Exception $e) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.create' : 'coordinate.create')
+                ->with([
+                    'message' => '削除処理に失敗しました: ' . $e->getMessage(),
+                    'status' => 'alert'
+                ]);
+        }
+    }
 }
