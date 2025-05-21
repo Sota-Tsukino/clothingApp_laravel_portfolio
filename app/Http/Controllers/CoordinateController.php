@@ -75,8 +75,8 @@ class CoordinateController extends Controller
             $coordinate = CoordinateService::getCoordinateById($id);
             CoordinateService::isUserOwn($coordinate, $userId);
         } catch (Exception $e) {
-            return redirect() //indexは未実装なので暫定でcreateにリダイレクト
-                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.create' : 'coordinate.create')
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index')
                 ->with([
                     'message' => $e->getMessage(),
                     'status' => 'alert'
@@ -147,8 +147,8 @@ class CoordinateController extends Controller
             CoordinateService::isUserOwn($coordinate, $userId);
             $coordinate->delete();
 
-            return redirect() //暫定でcreateにリダイレクト
-                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.create' : 'coordinate.create')
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index')
                 ->with([
                     'message' => 'コーデを削除しました。',
                     'status' => 'info'

@@ -16,7 +16,7 @@ function initCancelBtn() {
         const cancelBtn = document.getElementById(`cancel-${target}`);
         const input = document.getElementById(`input-${target}`);
         if (input && input.value) {
-            cancelBtn.style.display = "inline-block";
+            cancelBtn.style.display = "block";
         }
     });
 }
@@ -43,7 +43,7 @@ window.selectItem = function (itemId, imageUrl) {
     previewImg.src = imageUrl;
     previewImg.style.display = "block";
     input.value = itemId;
-    cancelBtn.style.display = "inline-block";
+    cancelBtn.style.display = "block";
 
     // モーダルを閉じる
     MicroModal.close("modal-item-list");
