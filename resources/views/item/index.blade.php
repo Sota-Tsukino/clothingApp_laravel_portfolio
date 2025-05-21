@@ -3,7 +3,7 @@
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
       衣類アイテム一覧
     </h2>
-    <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index') }}"
+    <form  action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index') }}"
       method="get" class="space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
@@ -41,8 +41,7 @@
         <div>
           <label for="pagination" class="block text-sm font-medium text-gray-700">表示件数</label>
           <select id="pagination" name="pagination" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            <option value="" @selected(empty(request('pagination')))>8件(デフォルト)</option>
-            <option value="12" @selected(request('pagination') === '12')>12件</option>
+            <option value="" @selected(empty(request('pagination')))>12件(デフォルト)</option>
             <option value="16" @selected(request('pagination') === '16')>16件</option>
             <option value="20" @selected(request('pagination') === '20')>20件</option>
           </select>

@@ -15,6 +15,7 @@ use App\Models\Color;
 use App\Models\Tag;
 use App\Models\Season;
 use App\Models\Material;
+use App\Models\Coordinate;
 use App\Services\BodyMeasurementService;
 use App\Services\BodyCorrectionService;
 use App\Services\FittingToleranceService;
@@ -110,6 +111,19 @@ class ItemService
         }
     }
 
+    public static function isUsedInCoordinates($itemId, $userId)
+    {
+        //中間テーブル coordinate_itemを使ってクエリで判定
+        $used = Coordinate::where('user_id', $userId)
+            ->whereHas('items', fn($q) => $q->where('items.id', $itemId))// itemsはリレーションメソッド名
+            ->exists();
+
+        if ($used) {
+            throw new Exception('コーデに使用されている為、この衣類アイテムは削除できません。');
+        }
+    }
+
+
     public static function saveItem(array $data, ?Item $item = null): Item
     {
         return DB::transaction(function () use ($data, $item) {
@@ -185,12 +199,13 @@ class ItemService
         });
     }
 
-    public static function getAllItemsByUserId($userId, $perPage = 8)
+    public static function getAllItemsByUserId($userId, bool $is_paginate = false)
     {
-        return Item::with(['image', 'category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])
+        $items = Item::with(['image', 'category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])
             ->where('user_id', $userId)
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
+            ->orderBy('created_at', 'desc');
+
+        return $is_paginate ?  $items->paginate(\Constant::DEFAULT_PAGINATION) : $items->get();
     }
 
     public static function searchItemsByUser($userId, $filters = [])
@@ -199,7 +214,7 @@ class ItemService
             ->category($filters['category'] ?? null)
             ->status($filters['status'] ?? null)
             ->sortOrder($filters['sort'] ?? null)
-            ->paginate($filters['pagination'] ?? 8)
+            ->paginate($filters['pagination'] ?? \Constant::DEFAULT_PAGINATION)
             ->appends($filters);
     }
 }
