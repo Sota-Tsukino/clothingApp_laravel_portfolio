@@ -28,13 +28,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 // user用ルート
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-    Route::get('/dashboard', [DashBoardController::class, 'index'])->name('index');
+    Route::get('/dashboard', [DashBoardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
@@ -59,7 +59,7 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
     ->prefix('admin') // URLの先頭にadminをつける
     ->name('admin.')
     ->group(function () {
-        Route::get('/dashboard', [DashBoardController::class, 'index'])->name('index');
+        Route::get('/dashboard', [DashBoardController::class, 'index'])->name('dashboard');
         Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');

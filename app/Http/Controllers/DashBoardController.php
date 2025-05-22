@@ -18,16 +18,14 @@ class DashBoardController extends Controller
     {
         //ユーザーの位置情報を取得
         $user = User::with(['prefecture', 'city'])->findOrFail(Auth::id());
-        $latitude = $user->city->latitude;
-        $longitude = $user->city->longitude;
-        // dd($latitude, $longitude);
+        $lat = $user->city->latitude;
+        $lon = $user->city->longitude;
 
-        $weather = WeatherService::getTodayWeather($latitude, $longitude);
+        //天気情報を取得
+        $weatherData = WeatherService::getTodayWeather($lat, $lon);
+        $weatherSummary = WeatherService::extractTodaysSummary($weatherData);
+        // dd($weatherSummary);
 
-
-        // $userId = Auth::id();
-        dd($weather);
-
-        // return view('fittingtolerance.index', compact('fittingTolerances', 'userId'));
+        return view('dashboard', compact('weatherSummary', 'user'));
     }
 }
