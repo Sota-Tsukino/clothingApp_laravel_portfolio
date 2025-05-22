@@ -17,20 +17,20 @@ class CitySeeder extends Seeder
             [
                 'prefecture_id' => '1',
                 'name' => '千代田区',
-                'latitude' => '35.694003',
-                'longitude' => '139.753595',
+                'latitude' => null,
+                'longitude' => null,
             ],
             [
                 'prefecture_id' => '1',
                 'name' => '中央区',
-                'latitude' => '35.670651',
-                'longitude' => '139.771861',
+                'latitude' => null,
+                'longitude' => null,
             ],
             [
                 'prefecture_id' => '1',
                 'name' => '港区',
-                'latitude' => '35.658067',
-                'longitude' => '139.751599',
+                'latitude' => null,
+                'longitude' => null,
             ],
             [
                 'prefecture_id' => '2',

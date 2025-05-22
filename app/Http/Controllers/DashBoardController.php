@@ -18,11 +18,26 @@ class DashBoardController extends Controller
     {
         //ユーザーの位置情報を取得
         $user = User::with(['prefecture', 'city'])->findOrFail(Auth::id());
-        $lat = $user->city->latitude;
-        $lon = $user->city->longitude;
+        $city = $user->city;
+
+        if (is_null($city->latitude) || is_null($city->longitude)) {
+            $coords = WeatherService::fetchCoordinatesByCityName($city->name);
+
+            if ($coords) {
+                $city->update([
+                    'latitude' => $coords['latitude'],
+                    'longitude' => $coords['longitude'],
+                ]);
+            } else {
+                // エラー処理：位置情報が取得できなかった場合
+                abort(400, '位置情報が取得できませんでした');
+            }
+        }
+
+
 
         //天気情報を取得
-        $weatherData = WeatherService::getTodayWeather($lat, $lon);
+        $weatherData = WeatherService::getTodayWeather($city->latitude, $city->longitude);
         $weatherSummary = WeatherService::extractTodaysSummary($weatherData);
         // dd($weatherSummary);
 

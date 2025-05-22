@@ -9,24 +9,55 @@
 
     <div
       class="container max-w-3xl px-4 sm:px-6 md:px-8 py-8 md:py-12 mx-auto bg-white rounded-lg my-6 md:my-16 shadow-lg">
-      <div class="date">{{ now()->format('Y年m月d日') }}</div>
-      @isset($weatherSummary)
-        <div class="weather flex items-center">
-          <div class="icon__img">
-            <img src="https://openweathermap.org/img/wn/{{ $weatherSummary['morning_icon'] }}@2x.png" class="w-16">
+      <div class="w-full mb-6">
+        <div class="date">{{ now()->format('Y年m月d日') }}</div>
+        <div>{{ $user->prefecture->name }}/{{ $user->city->name }}</div>
+        @isset($weatherSummary)
+          <div class="weather flex items-center">
+            @if (empty($weatherSummary['morning_icon']))
+              <div class="icon text-center">
+                <div class="icon__img">
+                  <img src="https://openweathermap.org/img/wn/{{ $weatherSummary['afternoon_icon'] }}@2x.png"
+                    class="w-16">
+                </div>
+                <span class="block">{{ $weatherSummary['afternoon_desc'] }}</span>
+              </div>
+            @elseif(empty($weatherSummary['afternoon_icon']))
+              <div class="icon text-center">
+                <div class="icon__img">
+                  <img src="https://openweathermap.org/img/wn/{{ $weatherSummary['morning_icon'] }}@2x.png"
+                    class="w-16">
+                </div>
+                <span class="block">{{ $weatherSummary['morning_desc'] }}</span>
+              </div>
+            @else
+              <div class="icon text-center">
+                <div class="icon__img">
+                  <img src="https://openweathermap.org/img/wn/{{ $weatherSummary['morning_icon'] }}@2x.png"
+                    class="w-16">
+                </div>
+                <span class="block">{{ $weatherSummary['morning_desc'] }}</span>
+              </div>
+              <span>/</span>
+              <div class="icon text-center">
+                <div class="icon__img">
+                  <img src="https://openweathermap.org/img/wn/{{ $weatherSummary['afternoon_icon'] }}@2x.png"
+                    class="w-16">
+                </div>
+                <span class="block">{{ $weatherSummary['afternoon_desc'] }}</span>
+              </div>
+            @endif
           </div>
-          <span>></span>
-          <div class="icon__img">
-            <img src="https://openweathermap.org/img/wn/{{ $weatherSummary['afternoon_icon'] }}@2x.png" class="w-16">
-          </div>
-        </div>
-        <div class="text-red-600 font-semibold">最高気温：{{ $weatherSummary['temp_max'] }}℃</div>
-        <div class=" text-blue-600 font-semibold">最低気温：{{ $weatherSummary['temp_min'] }}℃</div>
-        <div class="text-sky-400 font-semibold">湿度：{{ $weatherSummary['humidity'] }}%</div>
-      @else
-        <p>天気情報が取得できません</p>
-      @endisset
-      <div>場所：{{ $user->prefecture->name }}/{{ $user->city->name }}</div>
+          <div class="text-red-600 font-semibold">最高気温：{{ number_format($weatherSummary['temp_max'], 1) }}℃</div>
+          <div class=" text-blue-600 font-semibold">最低気温：{{ number_format($weatherSummary['temp_min'], 1) }}℃</div>
+          <div class="text-sky-400 font-semibold">湿度：{{ $weatherSummary['humidity'] }}%</div>
+        @else
+          <p>天気情報が取得できません</p>
+        @endisset
+      </div>
+      <div class="w-full mb-6">
+        ここにオススメのコーデを表示させたい→ロジックどうする？
+      </div>
     </div>
   </section>
 </x-app-layout>

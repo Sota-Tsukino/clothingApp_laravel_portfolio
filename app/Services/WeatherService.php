@@ -48,9 +48,47 @@ class WeatherService
         return [
             'morning_icon' => $morning['weather'][0]['icon'] ?? null,
             'afternoon_icon' => $afternoon['weather'][0]['icon'] ?? null,
+            'morning_desc' => $morning['weather'][0]['description'] ?? null,
+            'afternoon_desc' => $afternoon['weather'][0]['description'] ?? null,
             'temp_min' => $forecasts->min(fn($item) => $item['main']['temp_min']),
             'temp_max' => $forecasts->max(fn($item) => $item['main']['temp_max']),
-            'humidity' => $morning['main']['humidity'] ?? null,
+            'humidity' => $morning['main']['humidity'] ?? $afternoon['main']['humidity'] ?? null,
         ];
+    }
+
+    public static function fetchCoordinatesByCityName(string $cityName): ?array
+    {
+
+        $query_data = [
+            'format' => 'json',
+            'q' => $cityName,
+            'accept-language' => 'ja'
+        ];
+
+        $url = 'https://nominatim.openstreetmap.org/search';
+
+        //request headerにuser-agentを明示的に指定する
+        $response = Http::withHeaders([
+            'User-Agent' => 'ClothingApp/1.0 (rizhidashi@gmail.com)'
+        ])->get($url, $query_data);
+
+        if ($response->failed()) {
+            logger()->error('Nominatim API Error', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            return null;
+        }
+
+        $results = $response->json();
+
+        if (!empty($results)) {
+            return [
+                'latitude' => $results[0]['lat'],
+                'longitude' => $results[0]['lon'],
+            ];
+        }
+
+        return null;
     }
 }

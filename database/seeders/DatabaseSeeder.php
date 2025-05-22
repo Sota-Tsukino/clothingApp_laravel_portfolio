@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             SeasonSeeder::class,
             SubCategorySeeder::class,
             TagSeeder::class,
-            SceneTag::class,
+            SceneTagSeeder::class,
             WeatherTypeSeeder::class,
         ]);
 
