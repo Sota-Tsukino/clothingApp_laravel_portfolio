@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\WeatherService;
 use App\Models\User;
+use Exception;
 
 class DashBoardController extends Controller
 {
@@ -16,24 +17,15 @@ class DashBoardController extends Controller
      */
     public function index()
     {
-        //ユーザーの位置情報を取得
-        $user = User::with(['prefecture', 'city'])->findOrFail(Auth::id());
-        $city = $user->city;
 
-        if (is_null($city->latitude) || is_null($city->longitude)) {
-            $coords = WeatherService::fetchCoordinatesByCityName($city->name);
-
-            if ($coords) {
-                $city->update([
-                    'latitude' => $coords['latitude'],
-                    'longitude' => $coords['longitude'],
-                ]);
-            } else {
-                // エラー処理：位置情報が取得できなかった場合
-                abort(400, '位置情報が取得できませんでした');
-            }
+        try {
+            //ユーザーの位置情報を取得
+            $user = User::with(['prefecture', 'city'])->findOrFail(Auth::id());
+            $city = $user->city;
+            $city->ensureCoordinates();
+        } catch (Exception $e) {
+            abort(400, $e->getMessage());
         }
-
 
 
         //天気情報を取得
