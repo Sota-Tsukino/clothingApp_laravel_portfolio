@@ -31,8 +31,10 @@ class DashBoardController extends Controller
         //天気情報を取得
         $weatherData = WeatherService::getTodayWeather($city->latitude, $city->longitude);
         $weatherSummary = WeatherService::extractTodaysSummary($weatherData);
-        // dd($weatherSummary);
+        $weatherMessage = WeatherService::generateMessage($weatherSummary);
 
-        return view('dashboard', compact('weatherSummary', 'user'));
+        // dd($weatherMessage);
+
+        return view('dashboard', compact('weatherSummary', 'user', 'weatherMessage'));
     }
 }

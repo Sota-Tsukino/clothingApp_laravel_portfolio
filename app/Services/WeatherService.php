@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class WeatherService
 {
@@ -90,5 +91,71 @@ class WeatherService
         }
 
         return null;
+    }
+
+    public static function generateMessage(array $weatherSummary)
+    {
+        $tempMax = $weatherSummary['temp_max'] ?? null;
+        $tempMin = $weatherSummary['temp_min'] ?? null;
+        $humidity = $weatherSummary['humidity'] ?? null;
+        $descs = array_filter([
+            $weatherSummary['morning_desc'] ?? null,
+            $weatherSummary['afternoon_desc'] ?? null,
+        ]);
+        $descText = implode('・', array_unique($descs));
+
+        //msgTypeを判別して、blade側で色の変更
+        $msgs = [
+            'info' => [], //blue
+            'warning' => [], //yellow
+            'danger' => [], //red
+        ];
+
+        if (!$tempMax || !$tempMin) {
+            $msgs['warning'][] = '天気情報が一部取得できませんでした。';
+        }
+
+        // 気温差の条件
+        if ($tempMax >= 24 && $tempMin <= 15) {
+            $msgs['info'][] = '日中は暖かいですが、朝晩は冷えるので羽織りものがあると安心です。';
+        }
+
+        if ($tempMax <= 16) {
+            $msgs['info'][] = '気温が少し低いので、織物があると安心です。';
+        }
+
+        if ($tempMax - $tempMin >= 7) {
+            $msgs['warning'][] = '寒暖差が激しいので、体調管理にご注意を。';
+        }
+
+        // 湿度
+        if ($humidity >= 70 && $tempMax >= 24) {
+            $msgs['warning'][] = '湿度が高めなので、蒸し暑く感じるかもしれません。';
+        }
+
+        // 天気
+        if (Str::contains($descText, '雨')) {
+            $msgs['info'][] =  '雨の予報です。傘をお持ちください。';
+        }
+
+        if (Str::contains($descText, '雪')) {
+            $msgs['info'][] =  '雪の予報です。足元にご注意ください。';
+        }
+
+        if (Str::contains($descText, '雷')) {
+            $msgs['warning'][] =  '雷の可能性があります。外出にはご注意ください。';
+        }
+
+        if ($tempMax >= 30) {
+            $msgs['danger'][] =  '非常に暑くなる予報です。水分補給をこまめに。';
+        }
+
+
+        if (empty($msgs['info']) && empty($msgs['warning']) && empty($msgs['danger'])) {
+            $msgs['info'][] = '穏やかな天気が予想されています。気持ちの良い一日になりそうです。';
+        }
+
+        //  dd($msgs);
+        return $msgs;
     }
 }

@@ -1,5 +1,11 @@
 @php
   $sameDesc = $weatherSummary['morning_desc'] === $weatherSummary['afternoon_desc'];
+  $msgTypes = ['info', 'warning', 'danger'];
+  $alertClasses = [
+      'info' => 'bg-blue-100 text-blue-800',
+      'warning' => 'bg-yellow-100 text-yellow-800',
+      'danger' => 'bg-red-100 text-red-800',
+  ];
 @endphp
 
 <x-app-layout>
@@ -36,6 +42,17 @@
               <div class="text-sky-400 font-semibold">湿度：{{ $weatherSummary['humidity'] }}%</div>
             </div>
           </div>
+          @if (isset($weatherMessage))
+            @foreach ($msgTypes as $type)
+              @if (!empty($weatherMessage[$type]))
+                <ul class="my-4 p-4 rounded {{ $alertClasses[$type] }}">
+                  @foreach ($weatherMessage[$type] as $msg)
+                    <li>{{ $msg }}</li>
+                  @endforeach
+                </ul>
+              @endif
+            @endforeach
+          @endif
         @else
           <p>天気情報が取得できません</p>
         @endisset
