@@ -15,6 +15,9 @@ class BrandSeeder extends Seeder
     {
         DB::table('brands')->insert([
             [
+                'name' => '不明',
+            ],
+            [
                 'name' => 'UNIQLO',
             ],
             [

@@ -24,10 +24,58 @@ class MaterialSeeder extends Seeder
                 'name' => 'silk',
             ],
             [
+                'name' => 'wool',
+            ],
+            [
+                'name' => 'cashmere',
+            ],
+            [
+                'name' => 'alpaca',
+            ],
+            [
+                'name' => 'angora',
+            ],
+            [
+                'name' => 'camel',
+            ],
+            [
                 'name' => 'polyester',
             ],
             [
                 'name' => 'nylon',
+            ],
+            [
+                'name' => 'acrylic',
+            ],
+            [
+                'name' => 'polyurethane',
+            ],
+            [
+                'name' => 'rayon',
+            ],
+            [
+                'name' => 'polynosic',
+            ],
+            [
+                'name' => 'cupra',
+            ],
+            [
+                'name' => 'acetate',
+            ],
+            [
+                'name' => 'triacetate',
+            ],
+            [
+                'name' => 'promix',
+            ],
+            [
+                'name' => 'modal', //モダール
+            ],
+            [
+                'name' => 'lyocell', //リヨセル
+            ],
+            [
+                'name' => 'tencel', //テンセル
             ],
         ]);
     }
