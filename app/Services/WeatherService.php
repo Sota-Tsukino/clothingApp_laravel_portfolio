@@ -111,51 +111,63 @@ class WeatherService
             'danger' => [], //red
         ];
 
+        // 気温帯に応じた体感と衣類のマッピング
+        $tempBands = [
+            ['min' => 30, 'feel' => '暑い', 'clothes' => '半袖', 'type' => 'danger'],
+            ['min' => 25, 'feel' => 'やや暑い', 'clothes' => '半袖シャツ', 'type' => 'info'],
+            ['min' => 21, 'feel' => '温かい', 'clothes' => '長袖シャツ、ロングTシャツ', 'type' => 'info'],
+            ['min' => 17, 'feel' => '涼しい', 'clothes' => 'カーディガン、ストールなどの薄手の織物', 'type' => 'info'],
+            ['min' => 13, 'feel' => 'やや肌寒い', 'clothes' => 'セーター、トレーナー、パーカー', 'type' => 'info'],
+            ['min' => 9,  'feel' => '肌寒い', 'clothes' => '厚手のトップス、トレンチコート', 'type' => 'warning'],
+            ['min' => 6,  'feel' => '冬の寒さ', 'clothes' => '冬物コート', 'type' => 'warning'],
+            ['min' => -99, 'feel' => '本格的な冬の寒さ', 'clothes' => 'ダウンコート、マフラー、手袋などの防寒', 'type' => 'danger'],
+        ];
+
+        //日中気温の推奨衣類
+        if ($tempMax !== null && $tempMin !== null) {
+            foreach ($tempBands as $band) {
+                if ($tempMax >= $band['min']) {
+                    $msgs[$band['type']][] = "日中は{$band['feel']}と感じられそうです。{$band['clothes']}などがおすすめです。";
+                    break;
+                }
+            }
+        }
+
+        // 寒暖差によるアドバイス
+        if ($tempMax !== null && $tempMin !== null) {
+            $diff = $tempMax - $tempMin;
+            if ($diff >= 7) {
+                $msgs['warning'][] = '寒暖差が激しいので、体温調節できる服装を心がけましょう。';
+            }
+        }
+
+        // 湿度
+        if ($humidity !== null && $humidity >= 70 && $tempMax >= 24) {
+            $msgs['warning'][] = '湿度が高めなので、蒸し暑く感じるかもしれません。';
+        }
+
+        // 天気の状態から
+        if (Str::contains($descText, '雨')) {
+            $msgs['info'][] = '雨の予報です。傘をお忘れなく。';
+        }
+        if (Str::contains($descText, '雪')) {
+            $msgs['info'][] = '雪の予報です。滑りやすいので足元にご注意ください。';
+        }
+        if (Str::contains($descText, '雷')) {
+            $msgs['warning'][] = '雷の可能性があります。外出の際はご注意ください。';
+        }
+
+        // 情報が不足している場合
         if (!$tempMax || !$tempMin) {
             $msgs['warning'][] = '天気情報が一部取得できませんでした。';
         }
 
-        // 気温差の条件
-        if ($tempMax >= 24 && $tempMin <= 15) {
-            $msgs['info'][] = '日中は暖かいですが、朝晩は冷えるので羽織りものがあると安心です。';
-        }
 
-        if ($tempMax <= 16) {
-            $msgs['info'][] = '気温が少し低いので、織物があると安心です。';
-        }
-
-        if ($tempMax - $tempMin >= 7) {
-            $msgs['warning'][] = '寒暖差が激しいので、体調管理にご注意を。';
-        }
-
-        // 湿度
-        if ($humidity >= 70 && $tempMax >= 24) {
-            $msgs['warning'][] = '湿度が高めなので、蒸し暑く感じるかもしれません。';
-        }
-
-        // 天気
-        if (Str::contains($descText, '雨')) {
-            $msgs['info'][] =  '雨の予報です。傘をお持ちください。';
-        }
-
-        if (Str::contains($descText, '雪')) {
-            $msgs['info'][] =  '雪の予報です。足元にご注意ください。';
-        }
-
-        if (Str::contains($descText, '雷')) {
-            $msgs['warning'][] =  '雷の可能性があります。外出にはご注意ください。';
-        }
-
-        if ($tempMax >= 30) {
-            $msgs['danger'][] =  '非常に暑くなる予報です。水分補給をこまめに。';
-        }
-
-
+        //どれにも当てはまらない場合
         if (empty($msgs['info']) && empty($msgs['warning']) && empty($msgs['danger'])) {
             $msgs['info'][] = '穏やかな天気が予想されています。気持ちの良い一日になりそうです。';
         }
 
-        //  dd($msgs);
         return $msgs;
     }
 }
