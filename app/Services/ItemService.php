@@ -115,7 +115,7 @@ class ItemService
     {
         //中間テーブル coordinate_itemを使ってクエリで判定
         $used = Coordinate::where('user_id', $userId)
-            ->whereHas('items', fn($q) => $q->where('items.id', $itemId))// itemsはリレーションメソッド名
+            ->whereHas('items', fn($q) => $q->where('items.id', $itemId)) // itemsはリレーションメソッド名
             ->exists();
 
         if ($used) {
@@ -216,5 +216,21 @@ class ItemService
             ->sortOrder($filters['sort'] ?? null)
             ->paginate($filters['pagination'] ?? \Constant::DEFAULT_PAGINATION)
             ->appends($filters);
+    }
+
+    public static function getRecommendedItems(array $subCategoryIds, $userId)
+    {
+        //itemsに紐づくcategories_table, sub_categories_tableを取得
+        //userId→対象のカテゴリー→オススメのサブカテゴリーの順番にソートしてDBを取得しランダムにアイテムを１つピックアップ
+        $subCategoryIds = [1,2,8];
+        $items = Item::with(['image', 'category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])
+            ->where('user_id', $userId)
+            ->whereIn('sub_category_id', $subCategoryIds)
+            ->orderBy('created_at', 'desc')
+            ->get(); // 必要ならランダムや1件だけ取得も可能
+
+        dd($items);
+
+        return $items;
     }
 }

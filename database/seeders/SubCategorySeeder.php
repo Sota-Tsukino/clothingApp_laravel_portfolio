@@ -129,11 +129,23 @@ class SubCategorySeeder extends Seeder
             ],
             [
                 'category_id' => '4',
+                'name' => 'denim-jacket',//デニムジャケット
+            ],
+            [
+                'category_id' => '4',
+                'name' => 'tailored-jacket',//テーラードジャケット
+            ],
+            [
+                'category_id' => '4',
                 'name' => 'down-jacket',//ダウンジャケット
             ],
             [
                 'category_id' => '4',
-                'name' => 'fleece-jacket',//ボアジャケット
+                'name' => 'fleece',//フリース
+            ],
+            [
+                'category_id' => '4',
+                'name' => 'boa-jacket',//ボアジャケット
             ],
             [
                 'category_id' => '4',
@@ -150,6 +162,34 @@ class SubCategorySeeder extends Seeder
             [
                 'category_id' => '4',
                 'name' => 'coat',
+            ],
+            [
+                'category_id' => '4',
+                'name' => 'trench-coat',
+            ],
+            [
+                'category_id' => '4',
+                'name' => 'mods-coat',
+            ],
+            [
+                'category_id' => '4',
+                'name' => 'chester-coat',
+            ],
+            [
+                'category_id' => '4',
+                'name' => 'balmacaan-coat',//ステンカラーコート
+            ],
+            [
+                'category_id' => '4',
+                'name' => 'duffle-coat',//ダッフルコート
+            ],
+            [
+                'category_id' => '4',
+                'name' => 'pea-coat',//Pコート
+            ],
+            [
+                'category_id' => '4',
+                'name' => 'down-coat',
             ],
             [
                 'category_id' => '4',
