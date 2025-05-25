@@ -33,20 +33,21 @@ class DashBoardController extends Controller
 
         //天気情報を取得
         $weatherData = WeatherService::getTodayWeather($city->latitude, $city->longitude);
+        // dd($weatherData);
         $weatherSummary = WeatherService::extractTodaysSummary($weatherData);
         $weatherMessage = WeatherService::generateMessage($weatherSummary);
 
         // dd($weatherSummary);
         //オススメ衣類アイテム
-        $recommendedCategories = ItemRecommendationService::recommendByTemperature($weatherSummary['temp_max']);
+        $recommendedSubCategories = ItemRecommendationService::recommendByTemperature($weatherSummary['temp_max']);
 
-        // dd($recommendedCategories['tops']);
-        $topsItems = ItemService::getRecommendedItems($recommendedCategories['tops'], $userId);
-        $bottomsItems = ItemService::getRecommendedItems($recommendedCategories['bottoms'], $userId);
-        $outerItems = ItemService::getRecommendedItems($recommendedCategories['outer'], $userId);
+        // dd($recommendedSubCategories);
+        $topsItem = ItemService::getRecommendedItems($recommendedSubCategories['tops'], $userId);
+        $bottomsItem = ItemService::getRecommendedItems($recommendedSubCategories['bottoms'], $userId);
+        $outerItem = ItemService::getRecommendedItems($recommendedSubCategories['outers'], $userId);
 
-        // dd($weatherMessage);
+        // dd($topsItem, $bottomsItem, $outerItem);
 
-        return view('dashboard', compact('weatherSummary', 'user', 'weatherMessage'));
+        return view('dashboard', compact('weatherSummary', 'user', 'weatherMessage', 'topsItem', 'bottomsItem', 'outerItem'));
     }
 }

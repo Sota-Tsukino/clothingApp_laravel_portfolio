@@ -17,7 +17,7 @@
 
   <section class="text-gray-600 body-font overflow-hidden">
     <div
-      class="container max-w-3xl px-4 sm:px-6 md:px-8 py-8 md:py-12 mx-auto bg-white rounded-lg my-6 md:my-16 shadow-lg">
+      class="container px-5 py-8 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <div class="w-full mb-6">
         <span class="date inline-block">{{ now()->isoFormat('YYYY年MM月DD日(ddd)') }}</span>
         <span class="inline-block ml-3">{{ $user->prefecture->name }}/{{ $user->city->name }}</span>
@@ -57,14 +57,23 @@
           <p>天気情報が取得できません</p>
         @endisset
         <div class="w-full mb-6">
-          {{-- ここにオススメのコーデを表示させたい
-        天気、気温に合わせてコーデ提案できるか？
-        コーデデータ
-            -シーンタグ
-        衣類アイテムのデータ
-            -素材
-            ―季節
-            - --}}
+          <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2">今日のオススメ衣類</h2>
+          @if (!empty($topsItem) || !empty($bottomsItem) || !empty($outerItem))
+            <div class="flex flex-wrap justify-between">
+              @if (!empty($topsItem))
+                <x-item-card :item="$topsItem" />
+              @endif
+              @if (!empty($bottomsItem))
+                <x-item-card :item="$bottomsItem" />
+              @endif
+              @if (!empty($outerItem))
+                <x-item-card :item="$outerItem" />
+              @endif
+            </div>
+          @else
+            <p class="mt-4 text-md font-medium text-gray-700 border-gray-200 pb-2">衣類アイテムが登録されていません。</p>
+          @endif
+
         </div>
       </div>
   </section>

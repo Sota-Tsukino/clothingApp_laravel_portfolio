@@ -222,15 +222,13 @@ class ItemService
     {
         //itemsに紐づくcategories_table, sub_categories_tableを取得
         //userId→対象のカテゴリー→オススメのサブカテゴリーの順番にソートしてDBを取得しランダムにアイテムを１つピックアップ
-        $subCategoryIds = [1,2,8];
-        $items = Item::with(['image', 'category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])
+        // $subCategoryIds = [1,2,8];
+        $item = Item::with(['image', 'category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])
             ->where('user_id', $userId)
             ->whereIn('sub_category_id', $subCategoryIds)
-            ->orderBy('created_at', 'desc')
-            ->get(); // 必要ならランダムや1件だけ取得も可能
+            ->inRandomOrder()//ランダム順に並び替え
+            ->first(); // 最初の要素を取得
 
-        dd($items);
-
-        return $items;
+        return $item;
     }
 }

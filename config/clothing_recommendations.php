@@ -2,45 +2,45 @@
 
 return [
     'temperature_ranges' => [
-        '30+' => [//topsではなくcategory_idをキーにした方がいい（DBよりデータを取得する場合の都合上）？
-            'tops' => ['polo-shirt', 'shirt', 't-shirt', 'tanktop'],//itemsテーブルのcategory_id = 1
-            'bottoms' => ['slacks', 'short-pants'],//itemsテーブルのcategory_id = 2
-            'outers' => [],//itemsテーブルのcategory_id = 3
+        '30+' => [
+            'tops' => [4, 3, 2, 1], //sub_category_idで指定
+            'bottoms' => [18, 11],
+            'outers' => [],
         ],
         '25-29' => [
-            'tops' => ['polo-shirt', 'shirt', 't-shirt'],
-            'bottoms' => ['slacks', 'jeans', 'jogger-pants', 'short-pants'],
+            'tops' => [4, 3, 2],
+            'bottoms' => [18, 13, 15, 11],
             'outers' => [],
         ],
         '21-24' => [
-            'tops' => ['shirt', 't-shirt'],
-            'bottoms' => ['slacks', 'jeans', 'jogger-pants', 'cropped-pants'],
-            'outers' => ['shirt', 'cardigan', 'denim-jacket', 'fleece', 'mountain-parka'],
+            'tops' => [3, 2],
+            'bottoms' => [18, 13, 15, 22],
+            'outers' => [28, 26, 29, 32, 36],
         ],
         '17-20' => [
-            'tops' => ['shirt', 'T-shirt', 'sweatshirt'],
-            'bottoms' => ['chino-pants', 'jeans', 'knit-trousers', 'cargo-pants', 'slacks'],
-            'outers' => ['cardigan', 'jacket', 'denim-jacket', 'tailored-jacket', 'fleece', 'blouson', 'mountain-parka', 'mods-coat', 'vest'],
+            'tops' => [3, 2, 5],
+            'bottoms' => [19, 13, 17, 20, 18],
+            'outers' => [26, 28, 29, 30, 32, 34, 36, 39, 27],
         ],
         '13-16' => [
-            'tops' => ['shirt', 't-shirt', 'knitwear', 'hoodie', 'pullover-sweater'],
-            'bottoms' => ['chino-pants', 'jeans', 'knit-trousers', 'cargo-pants', 'slacks'],
-            'outers' => ['boa-jacket',  'blouson', 'fleece', 'mountain-parka', 'mods-coat', 'tailored-jacket', 'chester-coat', 'balmacaan-coat', 'trench-coat'],
+            'tops' => [3, 2, 8, 6, 7],
+            'bottoms' => [19, 13, 17, 20, 18],
+            'outers' => [33, 34, 32, 36, 39, 30, 40, 41, 38],
         ],
         '9-12' => [
-            'tops' => ['shirt', 't-shirt', 'knitwear', 'hoodie', 'pullover-sweater'],
-            'bottoms' => ['chino-pants', 'jeans', 'knit-trousers', 'slacks'],
-            'outers' => ['down-jacket', 'boa-jacket', 'duffle-coat', 'chester-coat', 'balmacaan-coat', 'pea-coat', 'mods-coat', 'mountain-parka', 'fleece', 'boa-coat', 'blouson', 'trench-coat'],
+            'tops' => [3, 2, 8, 6, 7],
+            'bottoms' => [19, 13, 17, 18],
+            'outers' => [31, 33, 42, 40, 41, 43, 39, 36, 32, 33, 34, 38],
         ],
         '6-8' => [
-            'tops' => ['shirt', 't-shirt', 'knitwear', 'hoodie', 'pullover-sweater'],
-            'bottoms' => ['chino-pants', 'jeans', 'knit-trousers', 'slacks'],
-            'outers' => ['down-jacket', 'duffle-coat',  'boa-jacket', 'chester-coat', 'balmacaan-coat', 'pea-coat', 'down-coat', 'boa-coat', 'trench-coat'],
+            'tops' => [3, 2, 8, 6, 7],
+            'bottoms' => [19, 13, 17, 18],
+            'outers' => [31, 42,  33, 40, 41, 43, 44, 33, 38],
         ],
         'under5' => [
-            'tops' => ['shirt', 't-shirt', 'knitwear', 'hoodie', 'pullover-sweater'],
-            'bottoms' => ['chino-pants', 'jeans', 'knit-trousers', 'slacks'],
-            'outers' => ['down-jacket', 'duffle-coat',  'boa-jacket', 'chester-coat', 'balmacaan-coat', 'pea-coat', 'down-coat', 'boa-coat', 'trench-coat'],
+            'tops' => [3, 2, 8, 6, 7],
+            'bottoms' => [19, 13, 17, 18],
+            'outers' => [31, 42,  33, 40, 41, 43, 44, 33, 38],
         ],
     ],
 ];
