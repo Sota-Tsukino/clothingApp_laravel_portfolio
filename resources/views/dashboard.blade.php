@@ -17,7 +17,7 @@
 
   <section class="text-gray-600 body-font overflow-hidden">
     <div
-      class="container px-5 py-8 mx-auto bg-white rounded-lg my-24 shadow-lg">
+      class="container p-6 md:p-8 mx-auto max-w-3xl bg-white rounded-lg my-24 shadow-lg">
       <div class="w-full mb-6">
         <span class="date inline-block">{{ now()->isoFormat('YYYY年MM月DD日(ddd)') }}</span>
         <span class="inline-block ml-3">{{ $user->prefecture->name }}/{{ $user->city->name }}</span>
@@ -59,15 +59,15 @@
         <div class="w-full mb-6">
           <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2">今日のオススメ衣類</h2>
           @if (!empty($topsItem) || !empty($bottomsItem) || !empty($outerItem))
-            <div class="flex flex-wrap justify-between">
+            <div class="sm:flex sm:flex-wrap sm:justify-between">
               @if (!empty($topsItem))
-                <x-item-card :item="$topsItem" />
+                <x-item-card :item="$topsItem" class="sm:w-1/3" />
               @endif
               @if (!empty($bottomsItem))
-                <x-item-card :item="$bottomsItem" />
+                <x-item-card :item="$bottomsItem" class="sm:w-1/3" />
               @endif
               @if (!empty($outerItem))
-                <x-item-card :item="$outerItem" />
+                <x-item-card :item="$outerItem" class="sm:w-1/3" />
               @endif
             </div>
           @else

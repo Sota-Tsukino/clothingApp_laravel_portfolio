@@ -220,13 +220,13 @@ class ItemService
 
     public static function getRecommendedItems(array $subCategoryIds, $userId)
     {
-        //itemsに紐づくcategories_table, sub_categories_tableを取得
-        //userId→対象のカテゴリー→オススメのサブカテゴリーの順番にソートしてDBを取得しランダムにアイテムを１つピックアップ
-        // $subCategoryIds = [1,2,8];
+        if (empty($subCategoryIds)) {
+            return null;
+        }
         $item = Item::with(['image', 'category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])
             ->where('user_id', $userId)
             ->whereIn('sub_category_id', $subCategoryIds)
-            ->inRandomOrder()//ランダム順に並び替え
+            ->inRandomOrder() //ランダム順に並び替え
             ->first(); // 最初の要素を取得
 
         return $item;

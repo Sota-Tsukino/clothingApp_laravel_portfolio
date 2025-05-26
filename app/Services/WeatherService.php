@@ -45,6 +45,7 @@ class WeatherService
         //substr($item['dt_txt'], 11)で時刻のみ切り出す
         $morning = $forecasts->first(fn($item) => in_array(substr($item['dt_txt'], 11), $morningHours));
         $afternoon = $forecasts->first(fn($item) => in_array(substr($item['dt_txt'], 11), $afternoonHours));
+        // dd($afternoon);
 
         return [
             'morning_icon' => $morning['weather'][0]['icon'] ?? null,
@@ -113,21 +114,25 @@ class WeatherService
 
         // 気温帯に応じた体感と衣類のマッピング
         $tempBands = [
-            ['min' => 30, 'feel' => '暑い', 'clothes' => '半袖', 'type' => 'danger'],
-            ['min' => 25, 'feel' => 'やや暑い', 'clothes' => '半袖シャツ', 'type' => 'info'],
-            ['min' => 21, 'feel' => '温かい', 'clothes' => '長袖シャツ、ロングTシャツ', 'type' => 'info'],
-            ['min' => 17, 'feel' => '涼しい', 'clothes' => 'カーディガン、ストールなどの薄手の織物', 'type' => 'info'],
-            ['min' => 13, 'feel' => 'やや肌寒い', 'clothes' => 'セーター、トレーナー、パーカー', 'type' => 'info'],
-            ['min' => 9,  'feel' => '肌寒い', 'clothes' => '厚手のトップス、トレンチコート', 'type' => 'warning'],
-            ['min' => 6,  'feel' => '冬の寒さ', 'clothes' => '冬物コート', 'type' => 'warning'],
-            ['min' => -99, 'feel' => '本格的な冬の寒さ', 'clothes' => 'ダウンコート、マフラー、手袋などの防寒', 'type' => 'danger'],
+            ['min' => 29.5, 'feel' => '暑く', 'material' => '通気性・吸湿性の良い麻（リネン）、綿（コットン）', 'clothes' => '半袖シャツ、ポロシャツ', 'type' => 'danger'],
+            ['min' => 24.5, 'feel' => 'やや暑く', 'material' => '麻（リネン）、綿（コットン）',  'clothes' => '半袖シャツ、ポロシャツ', 'type' => 'warning'],
+            ['min' => 20.5, 'feel' => '温かく', 'material' => '綿（コットン）ポリエステル', 'clothes' => '長袖シャツ、ロングTシャツ', 'type' => 'info'],
+            ['min' => 16.5, 'feel' => '涼しく', 'material' => '綿（コットン）ポリエステル', 'clothes' => 'カーディガン、ストールなどの薄手の織物', 'type' => 'info'],
+            ['min' => 12.5, 'feel' => 'やや肌寒く', 'material' => '軽いアクリル、ウール', 'clothes' => 'セーター、トレーナー、パーカー', 'type' => 'info'],
+            ['min' => 8.5,  'feel' => '肌寒く', 'material' => 'アクリル、ウール', 'clothes' => 'フリース、ボア', 'type' => 'info'],
+            ['min' => 5.5,  'feel' => '冬の寒さを', 'material' => '厚手のアクリル、ウール', 'clothes' => '冬物コート', 'type' => 'info'],
+            ['min' => -99, 'feel' => '本格的な冬の寒さを', 'material' => '厚手のアクリル、ウール、キャメル', 'clothes' => 'ダウン、ボア、マフラー、手袋などの防寒', 'type' => 'info'],
         ];
+
+        $tempMax= 26;
+        $tempMin= 23;
 
         //日中気温の推奨衣類
         if ($tempMax !== null && $tempMin !== null) {
             foreach ($tempBands as $band) {
                 if ($tempMax >= $band['min']) {
-                    $msgs[$band['type']][] = "日中は{$band['feel']}と感じられそうです。{$band['clothes']}などがおすすめです。";
+                    $msgs[$band['type']][] = "日中は{$band['feel']}感じられそうです。";
+                    $msgs[$band['type']][] = "{$band['material']}素材の{$band['clothes']}がおすすめです。";
                     break;
                 }
             }
@@ -148,7 +153,7 @@ class WeatherService
 
         // 天気の状態から
         if (Str::contains($descText, '雨')) {
-            $msgs['info'][] = '雨の予報です。傘をお忘れなく。';
+            $msgs['info'][] = '雨の予報です。傘をお忘れなく。ナイロン素材のウィンドブレーカーもおすすめ。';
         }
         if (Str::contains($descText, '雪')) {
             $msgs['info'][] = '雪の予報です。滑りやすいので足元にご注意ください。';

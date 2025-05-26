@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\ItemService;
 use App\Services\ItemRecommendationService;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DashBoardController extends Controller
 {
@@ -26,8 +27,12 @@ class DashBoardController extends Controller
             $user = User::with(['prefecture', 'city'])->findOrFail($userId);
             $city = $user->city;
             $city->ensureCoordinates();
+        } catch (ModelNotFoundException $e) {//開発環境以外ではユーザーに詳細エラーは出さない
+            Log::warning("ユーザーが見つかりません: " . $e->getMessage());
+            abort(404, 'ユーザー情報が見つかりません。');
         } catch (Exception $e) {
-            abort(400, $e->getMessage());
+            Log::error($e);
+            abort(500, '内部エラーが発生しました。');
         }
 
 
@@ -40,6 +45,7 @@ class DashBoardController extends Controller
         // dd($weatherSummary);
         //オススメ衣類アイテム
         $recommendedSubCategories = ItemRecommendationService::recommendByTemperature($weatherSummary['temp_max']);
+        // dd($recommendedSubCategories);
 
         // dd($recommendedSubCategories);
         $topsItem = ItemService::getRecommendedItems($recommendedSubCategories['tops'], $userId);
