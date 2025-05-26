@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\WeatherService;
 use App\Models\User;
+use App\Models\Material;
+use App\Models\SubCategory;
 use App\Services\ItemService;
 use App\Services\ItemRecommendationService;
+
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -40,14 +43,18 @@ class DashBoardController extends Controller
         $weatherData = WeatherService::getTodayWeather($city->latitude, $city->longitude);
         // dd($weatherData);
         $weatherSummary = WeatherService::extractTodaysSummary($weatherData);
-        $weatherMessage = WeatherService::generateMessage($weatherSummary);
 
-        // dd($weatherSummary);
+        //天気予報に応じたメッセージの生成
+        $materialMap = Material::pluck('name', 'id')->toArray();//pluck()のみだとcollection型
+        $subCategoryMap = SubCategory::pluck('name', 'id')->toArray();
+
+        $weatherMessage = WeatherService::generateMessage($weatherSummary, $materialMap, $subCategoryMap);
+
+        // dd($weatherMessage);
         //オススメ衣類アイテム
         $recommendedSubCategories = ItemRecommendationService::recommendByTemperature($weatherSummary['temp_max']);
         // dd($recommendedSubCategories);
 
-        // dd($recommendedSubCategories);
         $topsItem = ItemService::getRecommendedItems($recommendedSubCategories['tops'], $userId);
         $bottomsItem = ItemService::getRecommendedItems($recommendedSubCategories['bottoms'], $userId);
         $outerItem = ItemService::getRecommendedItems($recommendedSubCategories['outers'], $userId);

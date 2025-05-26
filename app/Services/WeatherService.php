@@ -94,7 +94,7 @@ class WeatherService
         return null;
     }
 
-    public static function generateMessage(array $weatherSummary)
+    public static function generateMessage(array $weatherSummary, array $materialMap, array $subCategoryMap)
     {
         $tempMax = $weatherSummary['temp_max'] ?? null;
         $tempMin = $weatherSummary['temp_min'] ?? null;
@@ -107,32 +107,41 @@ class WeatherService
 
         //msgTypeを判別して、blade側で色の変更
         $msgs = [
-            'info' => [], //blue
-            'warning' => [], //yellow
-            'danger' => [], //red
+            'red' => [],
+            'yellow' => [],
+            'green' => [],
+            // 'teal' => [],//tailwind cssでうまく反映されない…
+            // 'cyan' => [],
+            // 'sky' => [],
+            'blue' => [],
         ];
 
-        // 気温帯に応じた体感と衣類のマッピング
-        $tempBands = [
-            ['min' => 29.5, 'feel' => '暑く', 'material' => '通気性・吸湿性の良い麻（リネン）、綿（コットン）', 'clothes' => '半袖シャツ、ポロシャツ', 'type' => 'danger'],
-            ['min' => 24.5, 'feel' => 'やや暑く', 'material' => '麻（リネン）、綿（コットン）',  'clothes' => '半袖シャツ、ポロシャツ', 'type' => 'warning'],
-            ['min' => 20.5, 'feel' => '温かく', 'material' => '綿（コットン）ポリエステル', 'clothes' => '長袖シャツ、ロングTシャツ', 'type' => 'info'],
-            ['min' => 16.5, 'feel' => '涼しく', 'material' => '綿（コットン）ポリエステル', 'clothes' => 'カーディガン、ストールなどの薄手の織物', 'type' => 'info'],
-            ['min' => 12.5, 'feel' => 'やや肌寒く', 'material' => '軽いアクリル、ウール', 'clothes' => 'セーター、トレーナー、パーカー', 'type' => 'info'],
-            ['min' => 8.5,  'feel' => '肌寒く', 'material' => 'アクリル、ウール', 'clothes' => 'フリース、ボア', 'type' => 'info'],
-            ['min' => 5.5,  'feel' => '冬の寒さを', 'material' => '厚手のアクリル、ウール', 'clothes' => '冬物コート', 'type' => 'info'],
-            ['min' => -99, 'feel' => '本格的な冬の寒さを', 'material' => '厚手のアクリル、ウール、キャメル', 'clothes' => 'ダウン、ボア、マフラー、手袋などの防寒', 'type' => 'info'],
-        ];
-
-        $tempMax= 26;
-        $tempMin= 23;
+        // $tempMax = 11;
+        // $tempMin = 9;
 
         //日中気温の推奨衣類
-        if ($tempMax !== null && $tempMin !== null) {
-            foreach ($tempBands as $band) {
-                if ($tempMax >= $band['min']) {
-                    $msgs[$band['type']][] = "日中は{$band['feel']}感じられそうです。";
-                    $msgs[$band['type']][] = "{$band['material']}素材の{$band['clothes']}がおすすめです。";
+        if ($tempMax !== null) {
+            foreach (config('clothing_recommendations.temperature_ranges') as $range) {
+                if (
+                    ($range['min'] === null || $tempMax >= $range['min']) &&
+                    ($range['max'] === null || $tempMax < $range['max'])
+                ) {
+                    $msgs[$range['color']][] = "日中は{$range['feel']}感じられそうです。";
+
+                    // material_id → name
+                    $materialNames = collect($range['materials'])
+                        ->map(fn($id) => $materialMap[$id] ?? null)
+                        ->filter()//これは必要？これの意味とは？
+                        ->implode('、');
+
+                    // tops の sub_category_id → name
+                    $topsNames = collect($range['tops'])
+                        ->map(fn($id) => $subCategoryMap[$id] ?? null)
+                        ->filter()
+                        ->implode('、');
+                    // dd($materialNames, $topsNames);
+
+                    $msgs[$range['color']][] = "{$materialNames}素材の{$topsNames}などがおすすめです。";
                     break;
                 }
             }
@@ -142,35 +151,29 @@ class WeatherService
         if ($tempMax !== null && $tempMin !== null) {
             $diff = $tempMax - $tempMin;
             if ($diff >= 7) {
-                $msgs['warning'][] = '寒暖差が激しいので、体温調節できる服装を心がけましょう。';
+                $msgs['yellow'][] = '寒暖差が激しいので、体温調節できる服装を心がけましょう。';
             }
         }
 
         // 湿度
         if ($humidity !== null && $humidity >= 70 && $tempMax >= 24) {
-            $msgs['warning'][] = '湿度が高めなので、蒸し暑く感じるかもしれません。';
+            $msgs['yellow'][] = '湿度が高めなので、蒸し暑く感じるかもしれません。';
         }
 
         // 天気の状態から
         if (Str::contains($descText, '雨')) {
-            $msgs['info'][] = '雨の予報です。傘をお忘れなく。ナイロン素材のウィンドブレーカーもおすすめ。';
+            $msgs['blue'][] = '雨の予報です。傘をお忘れなく。ナイロン素材のウィンドブレーカーもおすすめ。';
         }
         if (Str::contains($descText, '雪')) {
-            $msgs['info'][] = '雪の予報です。滑りやすいので足元にご注意ください。';
+            $msgs['blue'][] = '雪の予報です。滑りやすいので足元にご注意ください。';
         }
         if (Str::contains($descText, '雷')) {
-            $msgs['warning'][] = '雷の可能性があります。外出の際はご注意ください。';
+            $msgs['yellow'][] = '雷の可能性があります。外出の際はご注意ください。';
         }
 
         // 情報が不足している場合
         if (!$tempMax || !$tempMin) {
-            $msgs['warning'][] = '天気情報が一部取得できませんでした。';
-        }
-
-
-        //どれにも当てはまらない場合
-        if (empty($msgs['info']) && empty($msgs['warning']) && empty($msgs['danger'])) {
-            $msgs['info'][] = '穏やかな天気が予想されています。気持ちの良い一日になりそうです。';
+            $msgs['yellow'][] = '天気情報が一部取得できませんでした。';
         }
 
         return $msgs;

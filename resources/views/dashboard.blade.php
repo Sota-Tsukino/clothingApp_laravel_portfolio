@@ -1,11 +1,5 @@
 @php
   $sameDesc = $weatherSummary['morning_desc'] === $weatherSummary['afternoon_desc'];
-  $msgTypes = ['info', 'warning', 'danger'];
-  $alertClasses = [
-      'info' => 'bg-blue-100 text-blue-800',
-      'warning' => 'bg-yellow-100 text-yellow-800',
-      'danger' => 'bg-red-100 text-red-800',
-  ];
 @endphp
 
 <x-app-layout>
@@ -16,8 +10,7 @@
   </x-slot>
 
   <section class="text-gray-600 body-font overflow-hidden">
-    <div
-      class="container p-6 md:p-8 mx-auto max-w-3xl bg-white rounded-lg my-24 shadow-lg">
+    <div class="container p-6 md:p-8 mx-auto max-w-3xl bg-white rounded-lg my-24 shadow-lg">
       <div class="w-full mb-6">
         <span class="date inline-block">{{ now()->isoFormat('YYYY年MM月DD日(ddd)') }}</span>
         <span class="inline-block ml-3">{{ $user->prefecture->name }}/{{ $user->city->name }}</span>
@@ -43,13 +36,13 @@
             </div>
           </div>
           @if (isset($weatherMessage))
-            @foreach ($msgTypes as $type)
-              @if (!empty($weatherMessage[$type]))
-                <ul class="my-4 p-4 rounded {{ $alertClasses[$type] }}">
-                  @foreach ($weatherMessage[$type] as $msg)
-                    <li>{{ $msg }}</li>
+            @foreach ($weatherMessage as $color => $msgs)
+              @if (count($msgs))
+                <div class="p-4 mb-4 rounded-lg bg-{{ $color }}-100 text-{{ $color }}-800">
+                  @foreach ($msgs as $msg)
+                    <p>{{ $msg }}</p>
                   @endforeach
-                </ul>
+                </div>
               @endif
             @endforeach
           @endif
