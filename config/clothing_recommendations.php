@@ -6,10 +6,10 @@ return [
             'min' => 29.5,
             'max' => null,
             'feel' => '暑く',
-            'tops' => [4, 3, 2, 1], //sub_category_idなので、 subCategory->nameで取得してメッセージ表示できるか？
+            'tops' => [4, 3, 2, 1],
             'bottoms' => [12, 13, 14, 18, 15, 11],
             'outers' => [],
-            'materials' => [1, 2], //リネン、コットン ※material_idなのでmaterials->nameを取得して表示できるか？
+            'materials' => [1, 2], //リネン、コットン ※マスターテーブルidカラム参照
             'color' => 'red',
         ],
         [
@@ -40,7 +40,7 @@ return [
             'bottoms' => [19, 12, 13, 14, 16, 17, 20, 18],
             'outers' => [26, 28, 29, 30, 32, 34, 36, 39, 27],
             'materials' => [1, 11], //コットン、ポリエステル
-            'color' => 'green',
+            'color' => 'teal',
         ],
         [
             'min' => 12.5,
@@ -50,7 +50,7 @@ return [
             'bottoms' => [19, 12, 13, 14, 16, 17, 20, 18],
             'outers' => [28, 33, 34, 32, 36, 39, 30, 40, 41, 38],
             'materials' => [11, 4], //薄手のウール、アクリル
-            'color' => 'blue',
+            'color' => 'cyan',
         ],
         [
             'min' => 8.5,
@@ -60,7 +60,7 @@ return [
             'bottoms' => [19, 12, 13, 14, 16,  17, 18],
             'outers' => [31, 33, 42, 40, 41, 43, 39, 36, 32, 33, 34, 38],
             'materials' => [11, 4], //ウール、アクリル
-            'color' => 'blue',
+            'color' => 'sky',
         ],
         [
             'min' => 5.5,

@@ -110,14 +110,15 @@ class WeatherService
             'red' => [],
             'yellow' => [],
             'green' => [],
-            // 'teal' => [],//tailwind cssでうまく反映されない…
-            // 'cyan' => [],
-            // 'sky' => [],
+            'teal' => [],
+            'cyan' => [],
+            'sky' => [],
             'blue' => [],
         ];
 
-        // $tempMax = 11;
-        // $tempMin = 9;
+        //メッセージ表示テスト用
+        // $tempMax = 4;
+        // $tempMin = 2;
 
         //日中気温の推奨衣類
         if ($tempMax !== null) {
@@ -130,16 +131,17 @@ class WeatherService
 
                     // material_id → name
                     $materialNames = collect($range['materials'])
-                        ->map(fn($id) => $materialMap[$id] ?? null)
-                        ->filter()//これは必要？これの意味とは？
+                        ->map(fn($id) => isset($materialMap[$id]) ? __('material.' . $materialMap[$id]) : null)
+                        ->filter()//$materialMap[$id]が存在しない場合にnullが返るので取り除く
                         ->implode('、');
+
 
                     // tops の sub_category_id → name
                     $topsNames = collect($range['tops'])
-                        ->map(fn($id) => $subCategoryMap[$id] ?? null)
+                        ->map(fn($id) => isset($subCategoryMap[$id]) ? __('subcategory.' . $subCategoryMap[$id]) : null)
                         ->filter()
                         ->implode('、');
-                    // dd($materialNames, $topsNames);
+
 
                     $msgs[$range['color']][] = "{$materialNames}素材の{$topsNames}などがおすすめです。";
                     break;
