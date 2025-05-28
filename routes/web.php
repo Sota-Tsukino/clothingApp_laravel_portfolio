@@ -10,6 +10,7 @@ use App\Http\Controllers\FittingToleranceController;
 use App\Http\Controllers\SizeCheckerController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CoordinateController;
+use App\Http\Controllers\DashBoardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,15 +28,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 // user用ルート
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashBoardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
@@ -52,8 +51,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/size-checker', [SizeCheckerController::class, 'index'])->name('sizechecker.index');
 
     Route::resource('/clothing-item', ItemController::class);
-
-
+    Route::resource('/coordinate', CoordinateController::class);
 });
 
 // admin用ルート
@@ -61,9 +59,7 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
     ->prefix('admin') // URLの先頭にadminをつける
     ->name('admin.')
     ->group(function () {
-        Route::get('/dashboard', function () {
-            return view('dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [DashBoardController::class, 'index'])->name('dashboard');
         Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
@@ -88,12 +84,11 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::get('/user', [UserController::class, 'index'])->name('user.index');
         Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
         Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
-
     });
 
-    Route::get('/phpinfo', function() {
-        phpinfo();
-    });
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
 
 // Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
 // Route::get('/component-test2', [ComponentTestController::class, 'showComponent2']);
@@ -101,4 +96,4 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
 // Route::get('/serviceprovidertest', [LifeCycleTestController::class, 'showServiceProviderTest']);
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -22,7 +22,7 @@
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="main">
                 衣類を選択
               </button>
-              <button type="button" id="cancel-main" class="mt-2 text-sm text-red-600 hover:underline cancel-button"
+              <button type="button" id="cancel-main" class="mt-2 mx-auto text-sm text-red-600 hover:underline cancel-button"
                 data-target="main" style="display: none;">✕ 選択をキャンセル</button>
               <div class="w-2/3 mx-auto">
                 <img id="preview-main" class="mt-4 max-w-xs rounded shadow w-full" style="display: none;">
@@ -35,7 +35,7 @@
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="sub1">
                 衣類を選択
               </button>
-              <button type="button" id="cancel-sub1" class="mt-2 text-sm text-red-600 hover:underline cancel-button"
+              <button type="button" id="cancel-sub1" class="mt-2 mx-auto text-sm text-red-600 hover:underline cancel-button"
                 data-target="sub1" style="display: none;">✕ 選択をキャンセル</button>
               <div class="w-2/3 mx-auto">
                 <img id="preview-sub1" class="mt-4 max-w-xs rounded shadow w-full" style="display: none;">
@@ -48,7 +48,7 @@
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="sub2">
                 衣類を選択
               </button>
-              <button type="button" id="cancel-sub2" class="mt-2 text-sm text-red-600 hover:underline cancel-button"
+              <button type="button" id="cancel-sub2" class="mt-2 mx-auto text-sm text-red-600 hover:underline cancel-button"
                 data-target="sub2" style="display: none;">✕ 選択をキャンセル</button>
               <div class="w-2/3 mx-auto">
                 <img id="preview-sub2" class="mt-4 max-w-xs rounded shadow w-full" style="display: none;">

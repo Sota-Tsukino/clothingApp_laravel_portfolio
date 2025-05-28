@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('colors', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('hex_code');//#FFFFFF, #EEEEEE, etc
+            $table->string('name')->unique();
+            $table->string('hex_code')->unique();//#FFFFFF, #EEEEEE, etc
             $table->timestamps();
         });
     }

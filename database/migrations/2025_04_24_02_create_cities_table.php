@@ -17,7 +17,7 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->decimal('latitude', 10, 6)->nullable()->default(null);
             $table->decimal('longitude', 10, 6)->nullable()->default(null);
             $table->timestamps();
