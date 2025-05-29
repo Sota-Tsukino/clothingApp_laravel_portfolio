@@ -144,12 +144,12 @@
 
           <!-- コーデ提案 -->
           <div class="mb-6">
-            <label for="is_coordinate_suggest" class="block text-sm font-medium text-gray-700 mb-1">コーデ提案に</label>
-            <select name="is_coordinate_suggest" id="is_coordinate_suggest"
+            <label for="is_item_suggest" class="block text-sm font-medium text-gray-700 mb-1">コーデ提案に</label>
+            <select name="is_item_suggest" id="is_item_suggest"
               class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
               required>
-              <option value="1" {{ $item->is_coordinate_suggest == '1' ? 'selected' : '' }}>使用する</option>
-              <option value="0" {{ $item->is_coordinate_suggest == '0' ? 'selected' : '' }}>使用しない</option>
+              <option value="1" {{ $item->is_item_suggest == '1' ? 'selected' : '' }}>使用する</option>
+              <option value="0" {{ $item->is_item_suggest == '0' ? 'selected' : '' }}>使用しない</option>
             </select>
           </div>
         </div>

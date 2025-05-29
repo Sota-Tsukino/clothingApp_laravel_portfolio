@@ -34,7 +34,7 @@ class ItemRequest extends FormRequest
     //         'colors.*' => 'integer|exists:colors,id',
     //         'status' => [Rule::in(['owned', 'cleaning', 'discarded'])],
     //         'is_public' => 'integer|required',
-    //         'is_coordinate_suggest' => 'integer|required|between:0,1',
+    //         'is_item_suggest' => 'integer|required|between:0,1',
     //         'tags' => 'nullable|array',
     //         'tags.*' => 'integer|exists:tags,id',
     //         'seasons' => 'nullable|array',

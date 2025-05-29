@@ -11,6 +11,7 @@ class SizeCheckerService
             'neck_circumference',
             'shoulder_width',
             'yuki_length',
+            'sleeve_length',
             'chest_circumference',
             'waist',
             'inseam',

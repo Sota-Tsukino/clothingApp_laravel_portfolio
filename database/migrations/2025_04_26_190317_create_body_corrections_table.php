@@ -20,9 +20,10 @@ return new class extends Migration
             $table->decimal('head_circumference', 2, 1)->default(2.0)->unsigned()->nullable();
             $table->decimal('neck_circumference', 2, 1)->default(2.0)->unsigned()->nullable();
             $table->decimal('shoulder_width', 2, 1)->default(2.0)->unsigned()->nullable();
-            $table->decimal('chest_circumference', 2, 1)->default(3.0)->unsigned()->nullable();
-            $table->decimal('waist', 2, 1)->default(2.0)->unsigned()->nullable();
-            $table->decimal('hip', 2, 1)->default(2.0)->unsigned()->nullable();
+            $table->decimal('chest_circumference', 2, 1)->default(6.0)->unsigned()->nullable();
+            $table->decimal('armpit_to_armpit_width', 2, 1)->default(3.0)->unsigned()->nullable();
+            $table->decimal('waist', 2, 1)->default(3.0)->unsigned()->nullable();
+            $table->decimal('hip', 2, 1)->default(3.0)->unsigned()->nullable();
             $table->decimal('sleeve_length', 2, 1)->default(0.0)->unsigned()->nullable();
             $table->decimal('yuki_length', 2, 1)->default(0.0)->unsigned()->nullable();
             $table->decimal('inseam', 2, 1)->default(0.0)->unsigned()->nullable();

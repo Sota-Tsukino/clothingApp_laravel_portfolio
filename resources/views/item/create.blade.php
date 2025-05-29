@@ -104,12 +104,12 @@
             </select>
           </div>
           <div class="flex mb-6 items-center">
-            <label for="is_coordinate_suggest" class="leading-7 text-sm text-gray-600 w-1/3">コーデ提案に</label>
-            <select name="is_coordinate_suggest" id="is_coordinate_suggest"
+            <label for="is_item_suggest" class="leading-7 text-sm text-gray-600 w-1/3">コーデ提案に</label>
+            <select name="is_item_suggest" id="is_item_suggest"
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required>
-              <option value="1" {{ old('is_coordinate_suggest') == '1' ? 'selected' : '' }}>使用する</option>
-              <option value="0" {{ old('is_coordinate_suggest') == '0' ? 'selected' : '' }}>使用しない</option>
+              <option value="1" {{ old('is_item_suggest') == '1' ? 'selected' : '' }}>使用する</option>
+              <option value="0" {{ old('is_item_suggest') == '0' ? 'selected' : '' }}>使用しない</option>
             </select>
           </div>
           <hr class="my-6">

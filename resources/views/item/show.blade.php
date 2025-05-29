@@ -94,8 +94,8 @@
               <span class="text-sm font-medium text-gray-600 w-1/3">コーデ提案に</span>
               <span
                 class="text-sm font-semibold
-                       {{ $item->is_coordinate_suggest == '1' ? 'text-green-600' : 'text-gray-600' }}">
-                {{ $item->is_coordinate_suggest == '1' ? '使用する' : '使用しない' }}
+                       {{ $item->is_item_suggest == '1' ? 'text-green-600' : 'text-gray-600' }}">
+                {{ $item->is_item_suggest == '1' ? '使用する' : '使用しない' }}
               </span>
             </div>
 

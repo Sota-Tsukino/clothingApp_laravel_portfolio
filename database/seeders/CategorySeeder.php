@@ -26,9 +26,6 @@ class CategorySeeder extends Seeder
             [
                 'name' => 'outer',
             ],
-            [
-                'name' => 'others',
-            ],
         ]);
     }
 }
