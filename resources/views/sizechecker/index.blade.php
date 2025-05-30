@@ -13,10 +13,10 @@
 
       <div class="flex justify-between pb-4">
         <div class="w-1/2 border">
-          <img src="{{ asset('images/topps.png') }}" class="w-full"alt="">
+          <img src="{{ asset('images/measurements/tops.svg') }}" class="w-full"alt="">
         </div>
         <div class="w-1/2 border">
-          <img src="{{ asset('images/bottoms.png') }}"class="w-full" alt="">
+          <img src="{{ asset('images/measurements/bottoms.svg') }}"class="w-full" alt="">
         </div>
       </div>
       @php

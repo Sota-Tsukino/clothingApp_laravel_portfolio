@@ -22,6 +22,7 @@ class BodyMeasurement extends Model
         'neck_circumference',
         'shoulder_width',
         'chest_circumference',
+        'armpit_to_armpit_width',
         'waist',
         'hip',
         'sleeve_length',

@@ -17,6 +17,8 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->decimal('total_length', 2, 1)->default(0.0)->unsigned()->nullable();
+            $table->decimal('kitake_length', 2, 1)->default(0.0)->unsigned()->nullable();
             $table->decimal('head_circumference', 2, 1)->default(2.0)->unsigned()->nullable();
             $table->decimal('neck_circumference', 2, 1)->default(2.0)->unsigned()->nullable();
             $table->decimal('shoulder_width', 2, 1)->default(2.0)->unsigned()->nullable();

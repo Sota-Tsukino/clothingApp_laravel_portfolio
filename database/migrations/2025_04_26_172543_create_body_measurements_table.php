@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('neck_circumference', 4, 1)->unsigned()->nullable();
             $table->decimal('shoulder_width', 4, 1)->unsigned()->nullable();
             $table->decimal('chest_circumference', 4, 1)->unsigned()->nullable();
+            $table->decimal('armpit_to_armpit_width', 4, 1)->unsigned()->nullable();
             $table->decimal('waist', 4, 1)->unsigned()->nullable();
             $table->decimal('hip', 4, 1)->unsigned()->nullable();
             $table->decimal('sleeve_length', 4, 1)->unsigned()->nullable();

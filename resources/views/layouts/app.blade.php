@@ -25,6 +25,9 @@
             Request::routeIs('admin.clothing-item.show') ? 'resources/js/init-size-checker-display.js' : '',
             Request::routeIs('admin.sizechecker.index') ? 'resources/js/init-size-checker.js' : '',
             Request::routeIs('admin.profile.edit') ? 'resources/js/init-pref-city-select.js' : '',
+
+            Request::routeIs('admin.measurement.edit') ? 'resources/js/calc-armpits-width.js' : '',
+            Request::routeIs('admin.measurement.create') ? 'resources/js/calc-armpits-width.js' : '',
             //↓一般ユーザー用
             Request::routeIs('profile.edit') ? 'resources/js/init-pref-city-select.js' : '',
             Request::routeIs('clothing-item.create') ? 'resources/js/clothing-item.js' : '',

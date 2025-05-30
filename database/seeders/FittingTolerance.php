@@ -100,6 +100,27 @@ class FittingTolerance extends Seeder
             ],
             [
                 'user_id' => '1',
+                'body_part' => 'armpit_to_armpit_width',
+                'tolerance_level' => 'just',
+                "min_value" => -1.5,
+                "max_value" => 3.0
+            ],
+            [
+                'user_id' => '1',
+                'body_part' => 'armpit_to_armpit_width',
+                'tolerance_level' => 'slight',
+                "min_value" => -3.0,
+                "max_value" => 6.0
+            ],
+            [
+                'user_id' => '1',
+                'body_part' => 'armpit_to_armpit_width',
+                'tolerance_level' => 'long_or_short',
+                "min_value" => -5.0,
+                "max_value" => 9.0
+            ],
+            [
+                'user_id' => '1',
                 'body_part' => 'waist',
                 'tolerance_level' => 'just',
                 "min_value" => -0.5,

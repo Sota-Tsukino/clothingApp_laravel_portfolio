@@ -38,12 +38,19 @@
               <tr>
                 <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
                 <td class="text-center px-2 py-2">
-                  <input type="number" name="{{ $field }}" step="0.1" value="{{ $bodyMeasurement->$field }}" min="0.0" max="999.9">
+                  @if ($field === 'armpit_to_armpit_width')
+                    <span id='display_{{$field}}'>{{ $bodyMeasurement->$field ?? '胸囲 / 2'}}</span>
+                    <input id='{{$field}}' type="hidden" name="{{$field}}" value="{{ $bodyMeasurement->$field ?? ''}}">
+                  @else
+                    <input id="{{ $field }}" type="number" name="{{ $field }}" step="0.1"
+                      value="{{ $bodyMeasurement->$field }}" min="0.0" max="999.9">
+                  @endif
                   <span class="ml-1">cm</span>
                 </td>
                 <td class="text-center px-2 py-2">
                   <div class="img w-8 mx-auto ">
-                    <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像" class="hover:opacity-50 cursor-pointer">
+                    <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
+                      class="hover:opacity-50 cursor-pointer">
                   </div>
                 </td>
               </tr>

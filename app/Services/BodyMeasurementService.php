@@ -16,6 +16,7 @@ class BodyMeasurementService
             'yuki_length',
             'sleeve_length',
             'chest_circumference',
+            'armpit_to_armpit_width',
             'waist',
             'hip',
             'inseam',

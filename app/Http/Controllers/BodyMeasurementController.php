@@ -207,7 +207,6 @@ class BodyMeasurementController extends Controller
                 ]);
         }
 
-        // dd('destroy');
         $bodyMeasurement->delete();
         return redirect()
             ->route(Auth::user()->role === 'admin' ? 'admin.measurement.index' : 'measurement.index')
