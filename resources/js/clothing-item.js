@@ -166,23 +166,135 @@ function toggleFields(categoryName) {
     }
 }
 
-function toggleClothingImg(subCategoryName) {}
+function switchItemImg(categoryName, subCategoryName) {
+    const topsImgEl = document.querySelector("#tops-img");
+    const bottomsImgEl = document.querySelector("#bottoms-img");
+    const basePath = "/images/measurements/";
+
+    // サブカテゴリー未選択の場合の仮画像表示（任意）
+    if (!subCategoryName) {
+        if (categoryName === "tops") {
+            topsImgEl.src = `${basePath}shirt-common.svg`;
+        } else if (categoryName === "outer") {
+            topsImgEl.src = `${basePath}jacket-common.svg`;
+        } else if (categoryName === "bottoms") {
+            bottomsImgEl.src = `${basePath}slacks-common.svg`;
+        } else if (categoryName === "setup") {
+            topsImgEl.src = `${basePath}jacket-common.svg`;
+            bottomsImgEl.src = `${basePath}slacks-common.svg`;
+        }
+        return;
+    }
+
+    const parkaGroup = ["hoodie", "pull-over", "knitwear", "blouson"];
+    const fleeceGroup = ["fleece", "jumper"];
+    const tShirtGroup = ["t-shirt", "tunic"];
+    const shirtGroup = ["shirt", "blouse", "other"];
+    const jacketGroup = ["jacket", "other"];
+    const slacksGroup = [
+        "slacks",
+        "jeans",
+        "jogger-pants",
+        "knit-trousers",
+        "chino-pants",
+        "sweat-pants",
+        "cropped-pants",
+        "wide-pants",
+        "other",
+    ];
+    const camisoleGroup = ["camisole", "bustier"];
+    if (categoryName === "tops" || categoryName === "outer") {
+        if (subCategoryName === "down-vest") {
+            topsImgEl.src = `${basePath}vest.svg`;
+        } else if (parkaGroup.includes(subCategoryName)) {
+            topsImgEl.src = `${basePath}parka-common.svg`;
+        } else if (fleeceGroup.includes(subCategoryName)) {
+            topsImgEl.src = `${basePath}fleece-common.svg`;
+        } else if (tShirtGroup.includes(subCategoryName)) {
+            topsImgEl.src = `${basePath}t-shirt-common.svg`;
+        } else if (shirtGroup.includes(subCategoryName)) {
+            topsImgEl.src = `${basePath}shirt-common.svg`;
+        } else if (jacketGroup.includes(subCategoryName)) {
+            topsImgEl.src = `${basePath}jacket-common.svg`;
+        } else if (camisoleGroup.includes(subCategoryName)) {
+            topsImgEl.src = `${basePath}camisole-common.svg`;
+        } else {
+            topsImgEl.src = `${basePath}${subCategoryName}.svg`;
+        }
+    } else if (categoryName === "bottoms") {
+        if (slacksGroup.includes(subCategoryName)) {
+            bottomsImgEl.src = `${basePath}slacks-common.svg`;
+        } else {
+            bottomsImgEl.src = `${basePath}${subCategoryName}.svg`;
+        }
+    }
+}
+
+function toggleImgTitle(categoryName) {
+    const upperTitleEl = document.querySelector("#upper-img-title");
+    const translations = {
+        tops: "トップス",
+        setup: "トップス",
+        outer: "アウター",
+    };
+
+    upperTitleEl.innerHTML = `${translations[categoryName]}測定ガイド`;
+}
 
 subCategorySelect.addEventListener("change", function () {
-    const selected = subCategorySelect.options[subCategorySelect.selectedIndex];
-    const subCategoryName = selected.getAttribute("data-type");
-    toggleClothingImg(subCategoryName);
+    const categorySelected =
+        categorySelect.options[categorySelect.selectedIndex];
+    const categoryName = categorySelected.getAttribute("data-type");
+    const childSelected =
+        subCategorySelect.options[subCategorySelect.selectedIndex];
+    const subCategoryName = childSelected.getAttribute("data-type");
+
+    switchItemImg(categoryName, subCategoryName);
 });
 
 categorySelect.addEventListener("change", function () {
-    const selected = categorySelect.options[categorySelect.selectedIndex];
-    const categoryName = selected.getAttribute("data-type");
+    const selectedCategory =
+        categorySelect.options[categorySelect.selectedIndex];
+    const selectedSubCategory =
+        subCategorySelect.options[subCategorySelect.selectedIndex];
+
+    const categoryName = selectedCategory?.getAttribute("data-type");
+    const subCategoryName = selectedSubCategory?.getAttribute("data-type");
+
+    if (!categoryName) return; // 未選択なら何もしない
+
     toggleFields(categoryName);
+    toggleImgTitle(categoryName);
+
+    // サブカテゴリーが選択されている場合だけ画像切り替え
+    if (subCategoryName) {
+        switchItemImg(categoryName, subCategoryName);
+    } else {
+        // サブカテゴリ未選択でも仮画像を出す（任意）
+        switchItemImg(categoryName, null); // null渡して中で処理させる
+    }
 });
 
 // 初期化（画面ロード時に実行）
-const initialCategoryName =
-    categorySelect.options[categorySelect.selectedIndex]?.getAttribute(
-        "data-type"
-    );
-toggleFields(initialCategoryName);
+window.addEventListener("DOMContentLoaded", () => {
+    const selectedCategory =
+        categorySelect.options[categorySelect.selectedIndex];
+    const selectedSubCategory =
+        subCategorySelect.options[subCategorySelect.selectedIndex];
+
+    const categoryName = selectedCategory?.getAttribute("data-type");
+    const subCategoryName = selectedSubCategory?.getAttribute("data-type");
+
+    if (!categoryName) return; // 未選択なら何もしない
+
+    toggleFields(categoryName);
+    toggleImgTitle(categoryName);
+
+    // サブカテゴリーが選択されている場合だけ画像切り替え
+    if (subCategoryName) {
+        switchItemImg(categoryName, subCategoryName);
+    } else {
+        // サブカテゴリ未選択でも仮画像を出す（任意）
+        switchItemImg(categoryName, null); // null渡して中で処理させる
+    }
+});

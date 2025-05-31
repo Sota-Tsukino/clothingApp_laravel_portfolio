@@ -10,11 +10,12 @@
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
-      <form id="form" action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.store' : 'clothing-item.store') }}"
+      <form id="form"
+        action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.store' : 'clothing-item.store') }}"
         method="post" enctype="multipart/form-data">
         @csrf
         <div class="w-full mb-6 ">
-          <h2 class='text-black'>必須入力</h2>
+          <h2 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-6">必須入力</h2>
           <div class="flex flex-col mb-6">
             <label for="file_name" class="mb-2 text-gray-700">衣類アイテム画像を選択</label>
             <input type="file" id="file_name" name="file_name" accept="image/jpg, image/jpeg, image/png"
@@ -200,79 +201,112 @@
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               maxlength="50">{{ old('memo') }}</textarea>
           </div>
-          <h2 class='text-black'>衣類サイズ入力</h2>
-          <div class="flex justify-between pb-4">
-            <div class="top-item w-1/2 border">
-              <img src="{{ asset('images/topps.png') }}" class="w-full"alt="">
+          <div class="mb-8">
+            <h2 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-6">衣類サイズ入力</h2>
+            <!-- 画像ガイド -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                  <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
+                </div>
+                <div class="p-2">
+                  <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}"
+                    class="w-full h-auto" alt="トップス測定ガイド">
+                </div>
+              </div>
+              <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                  <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
+                </div>
+                <div class="p-2">
+                  <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}"
+                    class="w-full h-auto" alt="ボトムス測定ガイド">
+                </div>
+              </div>
             </div>
-            <div class="bottom-item w-1/2 border">
-              <img src="{{ asset('images/bottoms.png') }}"class="w-full" alt="">
+            <!-- 注意書き -->
+            <div class="mb-6 bg-yellow-50 p-4 rounded-md">
+              <p class="text-sm text-yellow-700">
+                ※サイズ判定は最新の体格計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}を元に判定します</p>
+            </div>
+            <div class="overflow-x-auto rounded-lg border border-gray-200 mb-6">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">部位</th>
+                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">あなたに合う衣類サイズ</th>
+                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">衣類サイズ</th>
+                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">判定</th>
+                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">優先度</th>
+                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">ガイド</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach ($fields as $field)
+                    @php
+                      $fieldClass = in_array($field, [
+                          'total_length',
+                          'kitake_length',
+                          'neck_circumference',
+                          'shoulder_width',
+                          'yuki_length',
+                          'sleeve_length',
+                          'chest_circumference',
+                          'armpit_to_armpit_width',
+                      ])
+                          ? 'top-item'
+                          : (in_array($field, ['waist', 'inseam', 'hip'])
+                              ? 'bottom-item'
+                              : '');
+                    @endphp
+                    <tr class="{{ $fieldClass }}  hover:bg-gray-50">
+                      <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {{ __("measurement.$field") }}
+                      </td>
+                      <td
+                        class="px-4 py-3 whitespace-nowrap text-sm font-semibold {{ $suitableSize[$field] ? 'text-green-600' : 'text-gray-700' }}">
+                        {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
+                      </td>
+                      <td class="px-4 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1"
+                            value="{{ old($field) }}" min="0.0" max="999.0" placeholder="40.0"
+                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-20 text-sm border-gray-300 rounded-md">
+                          <span class="ml-2 text-sm text-gray-600">cm</span>
+                        </div>
+                      </td>
+                      <td class="px-4 py-3 whitespace-nowrap">
+                        <span id="{{ $field }}_result"
+                          class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                          未評価
+                        </span>
+                      </td>
+                      <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
+                        {{ $field == 'chest_circumference' || $field == 'hip' ? '低い' : '高い' }}
+                      </td>
+                      <td class="px-1 py-3 whitespace-nowrap text-center">
+                        <button type="button" class="text-indigo-600 hover:text-indigo-900 focus:outline-none">
+                          <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
+                            class="w-5 h-5 hover:opacity-75 transition-opacity">
+                        </button>
+                      </td>
+                    </tr>
+                  @endforeach
+
+                </tbody>
+              </table>
             </div>
           </div>
-          <p>※体格測定日は最新の日付：{{ $bodyMeasurement->measured_at }}を元に判定します</p>
-          <table class="w-full whitespace-no-wrap">
-            <thead>
-              <tr>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">部位</th>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">あなたに合う衣類サイズ</th>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">衣類サイズ</th>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">判定</th>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">優先度</th>
-                <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">ガイド</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($fields as $field)
-                @php
-                  $fieldClass = in_array($field, [
-                      'neck_circumference',
-                      'shoulder_width',
-                      'yuki_length',
-                      'chest_circumference',
-                  ])
-                      ? 'top-item'
-                      : (in_array($field, ['waist', 'inseam', 'hip'])
-                          ? 'bottom-item'
-                          : '');
-                @endphp
-                <tr class="{{ $fieldClass }}">
-                  <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
-                  <td class="text-center px-2 py-2">
-                    {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
-                  </td>
-                  <td class="text-center px-2 py-2">
-                    <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1"
-                      value="{{ old($field) }}" min="0.0" max="999.0" placeholder="40.0"
-                      class="text-black">
-                    <span class="ml-1">cm</span>
-                  </td>
-                  <td>
-                    <span id="{{ $field }}_result" class="font-semibold block">未評価</span>
-                  </td>
-                  <td class="text-center px-2 py-2">
-                    {{ $field == 'chest_circumference' || $field == 'hip' ? '低い' : '高い' }}</td>
-                  <td class="text-center px-2 py-2">
-                    <div class="img w-8 mx-auto ">
-                      <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
-                        class="hover:opacity-50 cursor-pointer">
-                    </div>
-                  </td>
-                </tr>
-              @endforeach
-
-            </tbody>
-          </table>
-
         </div>
-        <div class="flex justify-between mx-auto">
+        <div class="flex flex-wrap justify-between gap-4 pt-6 border-t border-gray-200">
           <button
-            class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">登録する</button>
+            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">登録する</button>
           <button type="button"
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index') }}'"
-            class=" text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">キャンセル</button>
+            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">キャンセル</button>
         </div>
+      </form>
     </div>
-    </form>
     </div>
   </section>
 </x-app-layout>
