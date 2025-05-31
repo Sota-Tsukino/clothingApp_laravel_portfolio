@@ -1,5 +1,6 @@
 import Choices from "choices.js"; // choices.jsライブラリから、デフォルトエクスポート（＝本体） を Choicesという名前で受け取る
 import "choices.js/public/assets/styles/choices.min.css"; //CSSファイルをバンドルに含める
+import { switchItemImg, toggleImgTitle } from "./itemImageSwitcher";
 
 //　通常の記述
 // const multiSelects = document.querySelectorAll("#colors, #tags");
@@ -166,81 +167,6 @@ function toggleFields(categoryName) {
     }
 }
 
-function switchItemImg(categoryName, subCategoryName) {
-    const topsImgEl = document.querySelector("#tops-img");
-    const bottomsImgEl = document.querySelector("#bottoms-img");
-    const basePath = "/images/measurements/";
-
-    // サブカテゴリー未選択の場合の仮画像表示（任意）
-    if (!subCategoryName) {
-        if (categoryName === "tops") {
-            topsImgEl.src = `${basePath}shirt-common.svg`;
-        } else if (categoryName === "outer") {
-            topsImgEl.src = `${basePath}jacket-common.svg`;
-        } else if (categoryName === "bottoms") {
-            bottomsImgEl.src = `${basePath}slacks-common.svg`;
-        } else if (categoryName === "setup") {
-            topsImgEl.src = `${basePath}jacket-common.svg`;
-            bottomsImgEl.src = `${basePath}slacks-common.svg`;
-        }
-        return;
-    }
-
-    const parkaGroup = ["hoodie", "pull-over", "knitwear", "blouson"];
-    const fleeceGroup = ["fleece", "jumper"];
-    const tShirtGroup = ["t-shirt", "tunic"];
-    const shirtGroup = ["shirt", "blouse", "other"];
-    const jacketGroup = ["jacket", "other"];
-    const slacksGroup = [
-        "slacks",
-        "jeans",
-        "jogger-pants",
-        "knit-trousers",
-        "chino-pants",
-        "sweat-pants",
-        "cropped-pants",
-        "wide-pants",
-        "other",
-    ];
-    const camisoleGroup = ["camisole", "bustier"];
-    if (categoryName === "tops" || categoryName === "outer") {
-        if (subCategoryName === "down-vest") {
-            topsImgEl.src = `${basePath}vest.svg`;
-        } else if (parkaGroup.includes(subCategoryName)) {
-            topsImgEl.src = `${basePath}parka-common.svg`;
-        } else if (fleeceGroup.includes(subCategoryName)) {
-            topsImgEl.src = `${basePath}fleece-common.svg`;
-        } else if (tShirtGroup.includes(subCategoryName)) {
-            topsImgEl.src = `${basePath}t-shirt-common.svg`;
-        } else if (shirtGroup.includes(subCategoryName)) {
-            topsImgEl.src = `${basePath}shirt-common.svg`;
-        } else if (jacketGroup.includes(subCategoryName)) {
-            topsImgEl.src = `${basePath}jacket-common.svg`;
-        } else if (camisoleGroup.includes(subCategoryName)) {
-            topsImgEl.src = `${basePath}camisole-common.svg`;
-        } else {
-            topsImgEl.src = `${basePath}${subCategoryName}.svg`;
-        }
-    } else if (categoryName === "bottoms") {
-        if (slacksGroup.includes(subCategoryName)) {
-            bottomsImgEl.src = `${basePath}slacks-common.svg`;
-        } else {
-            bottomsImgEl.src = `${basePath}${subCategoryName}.svg`;
-        }
-    }
-}
-
-function toggleImgTitle(categoryName) {
-    const upperTitleEl = document.querySelector("#upper-img-title");
-    const translations = {
-        tops: "トップス",
-        setup: "トップス",
-        outer: "アウター",
-    };
-
-    upperTitleEl.innerHTML = `${translations[categoryName]}測定ガイド`;
-}
-
 subCategorySelect.addEventListener("change", function () {
     const categorySelected =
         categorySelect.options[categorySelect.selectedIndex];
@@ -288,7 +214,13 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!categoryName) return; // 未選択なら何もしない
 
     toggleFields(categoryName);
-    toggleImgTitle(categoryName);
+    if (
+        categoryName === "tops" ||
+        categoryName === "outer" ||
+        categoryName === "setup"
+    ) {
+        toggleImgTitle(categoryName);
+    }
 
     // サブカテゴリーが選択されている場合だけ画像切り替え
     if (subCategoryName) {

@@ -23,6 +23,7 @@
             Request::routeIs('admin.clothing-item.edit') ? 'resources/js/clothing-item.js' : '',
             Request::routeIs('admin.clothing-item.edit') ? 'resources/js/init-size-checker.js' : '',
             Request::routeIs('admin.clothing-item.show') ? 'resources/js/init-size-checker-display.js' : '',
+            Request::routeIs('admin.clothing-item.show') ? 'resources/js/init-item-image-display.js' : '',
             Request::routeIs('admin.sizechecker.index') ? 'resources/js/init-size-checker.js' : '',
             Request::routeIs('admin.profile.edit') ? 'resources/js/init-pref-city-select.js' : '',
 
