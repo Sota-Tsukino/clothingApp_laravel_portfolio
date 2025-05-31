@@ -80,7 +80,7 @@
               @foreach ($categories as $category)
                 @foreach ($category->subCategory as $subCategory)
                   <option value="{{ $subCategory->id }}"
-                    {{ $item->sub_category_id == $subCategory->id ? 'selected' : '' }}>
+                    {{ $item->sub_category_id == $subCategory->id ? 'selected' : '' }} data-type="{{ $subCategory->name }}">
                     {{ __("subcategory.$subCategory->name") }}
                   </option>
                 @endforeach
@@ -280,7 +280,7 @@
                 <h3 class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
               </div>
               <div class="p-2">
-                <img src="{{ asset('images/topps.png') }}" class="w-full h-auto" alt="トップス測定ガイド">
+                <img src="{{ asset('images/measurements/tops.svg') }}" class="w-full h-auto" alt="トップス測定ガイド">
               </div>
             </div>
             <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
@@ -288,7 +288,7 @@
                 <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
               </div>
               <div class="p-2">
-                <img src="{{ asset('images/bottoms.png') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
+                <img src="{{ asset('images/measurements/bottoms.svg') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
               </div>
             </div>
           </div>
@@ -325,10 +325,14 @@
                 @foreach ($fields as $field)
                   @php
                     $fieldClass = in_array($field, [
+                        'total_length',
+                        'kitake_length',
                         'neck_circumference',
                         'shoulder_width',
                         'yuki_length',
+                        'sleeve_length',
                         'chest_circumference',
+                        'armpit_to_armpit_width',
                     ])
                         ? 'top-item'
                         : (in_array($field, ['waist', 'inseam', 'hip'])
