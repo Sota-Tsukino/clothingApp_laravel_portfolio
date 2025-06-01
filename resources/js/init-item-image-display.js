@@ -1,25 +1,24 @@
-import { switchItemImg, toggleImgTitle } from "./itemImageSwitcher";
+import {
+    createItemImageSwitcher,
+    getSelectedCategoryTypes,
+    toggleImgTitle,
+} from "./itemImageSwitcher";
 
 window.addEventListener("DOMContentLoaded", () => {
     const categorySelect = document.getElementById("categorySelect");
     const subCategorySelect = document.getElementById("sub_category_id");
 
-    const categoryName = categorySelect?.getAttribute("data-type");
-    const subCategoryName = subCategorySelect?.getAttribute("data-type");
+    const { categoryName, subCategoryName } = getSelectedCategoryTypes(
+        categorySelect,
+        subCategorySelect
+    );
+    const { switchItemImg } = createItemImageSwitcher(); // DOM要素をキャッシュ
 
     if (!categoryName) return; // 未選択なら何もしない
 
-    if (
-        categoryName === "tops" ||
-        categoryName === "outer" ||
-        categoryName === "setup"
-    ) {
+    if (["tops", "outer", "setup"].includes(categoryName)) {
         toggleImgTitle(categoryName);
     }
 
-    if (subCategoryName) {
-        switchItemImg(categoryName, subCategoryName);
-    } else {
-        switchItemImg(categoryName, null); // null渡して中で処理させる
-    }
+    switchItemImg(categoryName, subCategoryName || null);
 });

@@ -1,6 +1,10 @@
 import Choices from "choices.js"; // choices.jsライブラリから、デフォルトエクスポート（＝本体） を Choicesという名前で受け取る
 import "choices.js/public/assets/styles/choices.min.css"; //CSSファイルをバンドルに含める
-import { switchItemImg, toggleImgTitle } from "./itemImageSwitcher";
+import {
+    createItemImageSwitcher,
+    getSelectedCategoryTypes,
+    toggleImgTitle,
+} from "./itemImageSwitcher";
 
 //　通常の記述
 // const multiSelects = document.querySelectorAll("#colors, #tags");
@@ -149,6 +153,7 @@ document
 //カテゴリーの選択に応じた、衣類サイズ入力項目の表示切替
 const categorySelect = document.getElementById("categorySelect");
 const subCategorySelect = document.getElementById("sub_category_id");
+const { switchItemImg } = createItemImageSwitcher(); // DOM要素をキャッシュ
 
 function toggleFields(categoryName) {
     const topItems = document.querySelectorAll(".top-item");
@@ -168,65 +173,42 @@ function toggleFields(categoryName) {
 }
 
 subCategorySelect.addEventListener("change", function () {
-    const categorySelected =
-        categorySelect.options[categorySelect.selectedIndex];
-    const categoryName = categorySelected.getAttribute("data-type");
-    const childSelected =
-        subCategorySelect.options[subCategorySelect.selectedIndex];
-    const subCategoryName = childSelected.getAttribute("data-type");
-
+    const { categoryName, subCategoryName } = getSelectedCategoryTypes(
+        categorySelect,
+        subCategorySelect
+    );
     switchItemImg(categoryName, subCategoryName);
 });
 
 categorySelect.addEventListener("change", function () {
-    const selectedCategory =
-        categorySelect.options[categorySelect.selectedIndex];
-    const selectedSubCategory =
-        subCategorySelect.options[subCategorySelect.selectedIndex];
-
-    const categoryName = selectedCategory?.getAttribute("data-type");
-    const subCategoryName = selectedSubCategory?.getAttribute("data-type");
+    const { categoryName, subCategoryName } = getSelectedCategoryTypes(
+        categorySelect,
+        subCategorySelect
+    );
 
     if (!categoryName) return; // 未選択なら何もしない
 
     toggleFields(categoryName);
     toggleImgTitle(categoryName);
 
-    // サブカテゴリーが選択されている場合だけ画像切り替え
-    if (subCategoryName) {
-        switchItemImg(categoryName, subCategoryName);
-    } else {
-        // サブカテゴリ未選択でも仮画像を出す（任意）
-        switchItemImg(categoryName, null); // null渡して中で処理させる
-    }
+    // サブカテゴリ未選択でも仮画像を出す
+    switchItemImg(categoryName, subCategoryName || null);
 });
 
 // 初期化（画面ロード時に実行）
 window.addEventListener("DOMContentLoaded", () => {
-    const selectedCategory =
-        categorySelect.options[categorySelect.selectedIndex];
-    const selectedSubCategory =
-        subCategorySelect.options[subCategorySelect.selectedIndex];
-
-    const categoryName = selectedCategory?.getAttribute("data-type");
-    const subCategoryName = selectedSubCategory?.getAttribute("data-type");
+    const { categoryName, subCategoryName } = getSelectedCategoryTypes(
+        categorySelect,
+        subCategorySelect
+    );
 
     if (!categoryName) return; // 未選択なら何もしない
 
     toggleFields(categoryName);
-    if (
-        categoryName === "tops" ||
-        categoryName === "outer" ||
-        categoryName === "setup"
-    ) {
+    if (["tops", "outer", "setup"].includes(categoryName)) {
         toggleImgTitle(categoryName);
     }
 
-    // サブカテゴリーが選択されている場合だけ画像切り替え
-    if (subCategoryName) {
-        switchItemImg(categoryName, subCategoryName);
-    } else {
-        // サブカテゴリ未選択でも仮画像を出す（任意）
-        switchItemImg(categoryName, null); // null渡して中で処理させる
-    }
+    // サブカテゴリ未選択でも仮画像を出す
+    switchItemImg(categoryName, subCategoryName || null);
 });
