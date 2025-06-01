@@ -45,6 +45,9 @@
                   @if ($field === 'armpit_to_armpit_width')
                     <span id='display_{{ $field }}'>胸囲 / 2</span>
                     <input id='{{ $field }}' type="hidden" name="{{ $field }}" value="">
+                  @elseif($field === 'kitake_length')
+                    <span id='display_{{ $field }}'>身長 × 0.42</span>
+                    <input id='{{ $field }}' type="hidden" name="{{ $field }}" value="">
                   @else
                     <input id="{{ $field }}" type="number" name="{{ $field }}" step="0.1"
                       value="{{ old($field) }}" min="0.0" max="999.9">

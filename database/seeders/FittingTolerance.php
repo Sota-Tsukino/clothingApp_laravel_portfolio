@@ -16,6 +16,27 @@ class FittingTolerance extends Seeder
         DB::table('fitting_tolerances')->insert([
             [
                 'user_id' => '1',
+                'body_part' => 'kitake_length',
+                'tolerance_level' => 'just',
+                "min_value" => -4.0,
+                "max_value" => 4.0
+            ],
+            [
+                'user_id' => '1',
+                'body_part' => 'kitake_length',
+                'tolerance_level' => 'slight',
+                "min_value" => -8.0,
+                "max_value" => 8.0
+            ],
+            [
+                'user_id' => '1',
+                'body_part' => 'kitake_length',
+                'tolerance_level' => 'long_or_short',
+                "min_value" => -12.0,
+                "max_value" => 12.0
+            ],
+            [
+                'user_id' => '1',
                 'body_part' => 'neck_circumference',
                 'tolerance_level' => 'just',
                 "min_value" => -0.5,

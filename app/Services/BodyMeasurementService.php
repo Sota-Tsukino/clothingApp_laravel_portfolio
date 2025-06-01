@@ -10,6 +10,7 @@ class BodyMeasurementService
     {
         return [
             'height',
+            'kitake_length',
             'head_circumference',
             'neck_circumference',
             'shoulder_width',

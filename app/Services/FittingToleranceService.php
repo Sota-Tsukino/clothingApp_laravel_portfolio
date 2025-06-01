@@ -9,6 +9,18 @@ class FittingToleranceService
     public static function getDefaultValues(): array
     {
         return [
+            'kitake_length-just' => [
+                "min_value" => -4.0,
+                "max_value" => 4.0
+            ],
+            'kitake_length-slight' => [
+                "min_value" => -8.0,
+                "max_value" => 8.0
+            ],
+            'kitake_length-long_or_short' => [
+                "min_value" => -12.0,
+                "max_value" => 12.0
+            ],
             'neck_circumference-just' => [
                 "min_value" => -0.5,
                 "max_value" => 1.0

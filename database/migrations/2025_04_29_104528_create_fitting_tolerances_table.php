@@ -17,7 +17,7 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->enum('body_part', ['yuki_length', 'sleeve_length', 'neck_circumference', 'shoulder_width', 'chest_circumference', 'armpit_to_armpit_width', 'waist', 'inseam', 'hip']);
+            $table->enum('body_part', ['kitake_length','yuki_length', 'sleeve_length', 'neck_circumference', 'shoulder_width', 'chest_circumference', 'armpit_to_armpit_width', 'waist', 'inseam', 'hip']);
             $table->enum('tolerance_level', ['just', 'slight', 'long_or_short']);
             $table->decimal('min_value', 3, 1);
             $table->decimal('max_value', 3, 1);

@@ -29,6 +29,8 @@
 
             Request::routeIs('admin.measurement.edit') ? 'resources/js/calc-armpits-width.js' : '',
             Request::routeIs('admin.measurement.create') ? 'resources/js/calc-armpits-width.js' : '',
+            Request::routeIs('admin.measurement.edit') ? 'resources/js/calc-kitake-length.js' : '',
+            Request::routeIs('admin.measurement.create') ? 'resources/js/calc-kitake-length.js' : '',
             //↓一般ユーザー用
             Request::routeIs('profile.edit') ? 'resources/js/init-pref-city-select.js' : '',
             Request::routeIs('clothing-item.create') ? 'resources/js/init-item-category-select.js' : '',

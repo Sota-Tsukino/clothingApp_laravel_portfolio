@@ -39,8 +39,12 @@
                 <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
                 <td class="text-center px-2 py-2">
                   @if ($field === 'armpit_to_armpit_width')
-                    <span id='display_{{$field}}'>{{ $bodyMeasurement->$field ?? '胸囲 / 2'}}</span>
-                    <input id='{{$field}}' type="hidden" name="{{$field}}" value="{{ $bodyMeasurement->$field ?? ''}}">
+                    <span id='display_{{ $field }}'>{{ $bodyMeasurement->$field ?? '胸囲 / 2' }}</span>
+                    <input id='{{ $field }}' type="hidden" name="{{ $field }}"
+                      value="{{ $bodyMeasurement->$field ?? '' }}">
+                  @elseif($field === 'kitake_length')
+                    <span id='display_{{ $field }}'>身長 × 0.42</span>
+                    <input id='{{ $field }}' type="hidden" name="{{ $field }}" value="">
                   @else
                     <input id="{{ $field }}" type="number" name="{{ $field }}" step="0.1"
                       value="{{ $bodyMeasurement->$field }}" min="0.0" max="999.9">

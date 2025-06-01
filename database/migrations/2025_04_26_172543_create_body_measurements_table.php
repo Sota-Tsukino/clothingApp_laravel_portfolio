@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('measured_at');
             $table->decimal('height', 4, 1)->unsigned()->nullable();// float精度が劣るのでdecimal()を使用
             $table->decimal('head_circumference', 4, 1)->unsigned()->nullable();// 99.9まで　小数点以下の桁数1
+            $table->decimal('kitake_length', 4, 1)->unsigned()->nullable();
             $table->decimal('neck_circumference', 4, 1)->unsigned()->nullable();
             $table->decimal('shoulder_width', 4, 1)->unsigned()->nullable();
             $table->decimal('chest_circumference', 4, 1)->unsigned()->nullable();
