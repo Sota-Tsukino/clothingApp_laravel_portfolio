@@ -63,6 +63,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $request->validate(ItemService::getValidationRules());
 
         try {
@@ -154,6 +155,7 @@ class ItemController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request);
         $request->validate(ItemService::getValidationRules(true));
         $userId = Auth::id();
 

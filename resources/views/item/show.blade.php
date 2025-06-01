@@ -12,9 +12,9 @@
       </div>
 
       <div class="p-6 md:p-8">
-          <!-- バリデーションエラーとフラッシュメッセージ -->
-          <x-auth-validation-errors class="mb-4" :errors="$errors" />
-          <x-flash-message status="session('status')" />
+        <!-- バリデーションエラーとフラッシュメッセージ -->
+        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        <x-flash-message status="session('status')" />
         <!-- 画像とプライマリ情報のグリッド -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <!-- 左側: 画像 -->
@@ -33,13 +33,14 @@
             <div class="grid grid-cols-1 gap-3">
               <div class="flex items-center py-2 border-b border-gray-200">
                 <span class="text-sm font-medium text-gray-600 w-1/3">カテゴリー</span>
-                <span id="categorySelect" class="text-sm text-gray-900 font-semibold" data-type="{{ $item->category->name }}">{{ __("category.{$item->category->name}") }}</span>
+                <span id="categorySelect" class="text-sm text-gray-900 font-semibold"
+                  data-type="{{ $item->category->name }}">{{ __("category.{$item->category->name}") }}</span>
               </div>
 
               <div class="flex items-center py-2 border-b border-gray-200">
                 <span class="text-sm font-medium text-gray-600 w-1/3">サブカテゴリー</span>
-                <span id="sub_category_id"
-                  class="text-sm text-gray-900 font-semibold" data-type="{{ $item->subCategory->name }}">{{ __("subcategory.{$item->subCategory->name}") ?? '未登録' }}</span>
+                <span id="sub_category_id" class="text-sm text-gray-900 font-semibold"
+                  data-type="{{ $item->subCategory->name }}">{{ __("subcategory.{$item->subCategory->name}") ?? '未登録' }}</span>
               </div>
 
               <div class="flex items-center py-2 border-b border-gray-200">
@@ -197,7 +198,8 @@
                   <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
                 </div>
                 <div class="p-2">
-                  <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full h-auto" alt="トップス測定ガイド">
+                  <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full h-auto"
+                    alt="トップス測定ガイド">
                 </div>
               </div>
             @elseif($item->category->name == 'bottoms')
@@ -206,7 +208,8 @@
                   <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
                 </div>
                 <div class="p-2">
-                  <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
+                  <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}"
+                    class="w-full h-auto" alt="ボトムス測定ガイド">
                 </div>
               </div>
             @else
@@ -215,7 +218,8 @@
                   <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
                 </div>
                 <div class="p-2">
-                  <img id="tops-img" src="{{ asset('images/measurements/jacket-common.svg') }}" class="w-full h-auto" alt="トップス測定ガイド">
+                  <img id="tops-img" src="{{ asset('images/measurements/jacket-common.svg') }}"
+                    class="w-full h-auto" alt="トップス測定ガイド">
                 </div>
               </div>
               <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
@@ -223,7 +227,8 @@
                   <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
                 </div>
                 <div class="p-2">
-                  <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
+                  <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}"
+                    class="w-full h-auto" alt="ボトムス測定ガイド">
                 </div>
               </div>
             @endif
@@ -252,18 +257,29 @@
                   $categoryName = $item->category->name;
                   if ($categoryName === 'setup') {
                       $fields = [
+                          'total_length',
                           'kitake_length',
                           'neck_circumference',
                           'shoulder_width',
                           'yuki_length',
                           'sleeve_length',
                           'chest_circumference',
+                          'armpit_to_armpit_width',
                           'waist',
                           'inseam',
                           'hip',
                       ];
                   } elseif (in_array($categoryName, ['tops', 'outer'])) {
-                      $fields = ['total_length', 'kitake_length','neck_circumference',  'shoulder_width', 'yuki_length', 'chest_circumference', 'armpit_to_armpit_width'];
+                      $fields = [
+                          'total_length',
+                          'kitake_length',
+                          'neck_circumference',
+                          'shoulder_width',
+                          'yuki_length',
+                          'sleeve_length',
+                          'chest_circumference',
+                          'armpit_to_armpit_width',
+                      ];
                   } elseif ($categoryName === 'bottoms') {
                       $fields = ['waist', 'inseam', 'hip'];
                   }
