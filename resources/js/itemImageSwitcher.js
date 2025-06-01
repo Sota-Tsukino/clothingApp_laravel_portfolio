@@ -71,20 +71,25 @@ export function createItemImageSwitcher() {
 }
 
 export function getSelectedCategoryTypes(categorySelect, subCategorySelect) {
-    let categoryName, subCategoryName;
-    if (categorySelect.matches("span") && subCategorySelect.matches("span")) {
-        //selectorがspanタグの場合
-        categoryName = categorySelect?.getAttribute("data-type") || null;
-        subCategoryName = subCategorySelect?.getAttribute("data-type") || null;
-    } else if (
-        categorySelect.matches("select") &&
-        subCategorySelect.matches("select")
-    ) {
-        //selectorがselectタグの場合
+    let categoryName = null;
+    let subCategoryName = null;
+
+    const isSpan =
+        categorySelect?.tagName === "SPAN" &&
+        subCategorySelect?.tagName === "SPAN";
+    const isSelect =
+        categorySelect?.tagName === "SELECT" &&
+        subCategorySelect?.tagName === "SELECT";
+
+    if (isSpan) {
+        categoryName = categorySelect.getAttribute("data-type");
+        subCategoryName = subCategorySelect.getAttribute("data-type");
+    } else if (isSelect) {
         const selectedCategory =
-            categorySelect?.options[categorySelect.selectedIndex];
+            categorySelect.options[categorySelect.selectedIndex];
         const selectedSubCategory =
-            subCategorySelect?.options[subCategorySelect.selectedIndex];
+            subCategorySelect.options[subCategorySelect.selectedIndex];
+
         categoryName = selectedCategory?.getAttribute("data-type") || null;
         subCategoryName =
             selectedSubCategory?.getAttribute("data-type") || null;
