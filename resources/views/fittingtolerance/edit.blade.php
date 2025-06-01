@@ -17,10 +17,10 @@
         @method('put')
         <div class="flex justify-between pb-4">
           <div class="w-1/2 border">
-            <img src="{{ asset('images/topps.png') }}" class="w-full" alt="">
+            <img src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full" alt="">
           </div>
           <div class="w-1/2 border">
-            <img src="{{ asset('images/bottoms.png') }}" class="w-full" alt="">
+            <img src="{{ asset('images/measurements/slacks-common.svg') }}" class="w-full" alt="">
           </div>
         </div>
         <table class="w-full whitespace-no-wrap">
@@ -46,7 +46,7 @@
                 @elseif ($fittingTolerance->tolerance_level === 'slight')
                   <span class="text-yellow-500 font-semibold">△ やや合わない</span>
                 @elseif ($fittingTolerance->tolerance_level === 'long_or_short')
-                  <span class="text-red-600 font-semibold">✕ 大きく合わない</span>
+                  <span class="text-red-600 font-semibold">✕ 合わない</span>
                 @endif
               </td>
               <td class="text-center px-2 py-2">

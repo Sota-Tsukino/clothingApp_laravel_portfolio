@@ -45,9 +45,21 @@ class FittingToleranceService
                 "min_value" => -9.0,
                 "max_value" => 9.0
             ],
+            'sleeve_length-just' => [
+                "min_value" => -3.0,
+                "max_value" => 3.0
+            ],
+            'sleeve_length-slight' => [
+                "min_value" => -6.0,
+                "max_value" => 6.0
+            ],
+            'sleeve_length-long_or_short' => [
+                "min_value" => -9.0,
+                "max_value" => 9.0
+            ],
             'chest_circumference-just' => [
-                "min_value" => -2.0,
-                "max_value" => 2.0
+                "min_value" => -3.0,
+                "max_value" => 3.0
             ],
             'chest_circumference-slight' => [
                 "min_value" => -6.0,
@@ -57,28 +69,28 @@ class FittingToleranceService
                 "min_value" => -9.0,
                 "max_value" => 6.0
             ],
-            'armpit_to_armpit-just' => [
-                "min_value" => -1.0,
-                "max_value" => 1.0
+            'armpit_to_armpit_width-just' => [
+                "min_value" => -1.5,
+                "max_value" => 1.5
             ],
-            'armpit_to_armpit-slight' => [
+            'armpit_to_armpit_width-slight' => [
                 "min_value" => -3.0,
                 "max_value" => 2.0
             ],
-            'armpit_to_armpit-long_or_short' => [
+            'armpit_to_armpit_width-long_or_short' => [
                 "min_value" => -4.5,
                 "max_value" => 3.0
             ],
             'waist-just' => [
-                "min_value" => -0.5,
+                "min_value" => -1.0,
                 "max_value" => 1.0
             ],
             'waist-slight' => [
-                "min_value" => -2.0,
+                "min_value" => -3.0,
                 "max_value" => 3.0
             ],
             'waist-long_or_short' => [
-                "min_value" => -4.0,
+                "min_value" => -5.0,
                 "max_value" => 5.0
             ],
             'inseam-just' => [
@@ -94,8 +106,8 @@ class FittingToleranceService
                 "max_value" => 5.0
             ],
             'hip-just' => [
-                "min_value" => -1.5,
-                "max_value" => 1.5
+                "min_value" => -1.0,
+                "max_value" => 1.0
             ],
             'hip-slight' => [
                 "min_value" => -3.0,
