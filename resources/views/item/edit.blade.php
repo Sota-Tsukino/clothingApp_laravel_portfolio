@@ -80,7 +80,7 @@
               @foreach ($categories as $category)
                 @foreach ($category->subCategory as $subCategory)
                   <option value="{{ $subCategory->id }}"
-                    {{ $item->sub_category_id == $subCategory->id ? 'selected' : '' }}>
+                    {{ $item->sub_category_id == $subCategory->id ? 'selected' : '' }} data-type="{{ $subCategory->name }}">
                     {{ __("subcategory.$subCategory->name") }}
                   </option>
                 @endforeach
@@ -144,12 +144,12 @@
 
           <!-- コーデ提案 -->
           <div class="mb-6">
-            <label for="is_coordinate_suggest" class="block text-sm font-medium text-gray-700 mb-1">コーデ提案に</label>
-            <select name="is_coordinate_suggest" id="is_coordinate_suggest"
+            <label for="is_item_suggest" class="block text-sm font-medium text-gray-700 mb-1">コーデ提案に</label>
+            <select name="is_item_suggest" id="is_item_suggest"
               class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
               required>
-              <option value="1" {{ $item->is_coordinate_suggest == '1' ? 'selected' : '' }}>使用する</option>
-              <option value="0" {{ $item->is_coordinate_suggest == '0' ? 'selected' : '' }}>使用しない</option>
+              <option value="1" {{ $item->is_item_suggest == '1' ? 'selected' : '' }}>使用する</option>
+              <option value="0" {{ $item->is_item_suggest == '0' ? 'selected' : '' }}>使用しない</option>
             </select>
           </div>
         </div>
@@ -277,10 +277,10 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
             <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
               <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
-                <h3 class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
+                <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
               </div>
               <div class="p-2">
-                <img src="{{ asset('images/topps.png') }}" class="w-full h-auto" alt="トップス測定ガイド">
+                <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full h-auto" alt="トップス測定ガイド">
               </div>
             </div>
             <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
@@ -288,7 +288,7 @@
                 <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
               </div>
               <div class="p-2">
-                <img src="{{ asset('images/bottoms.png') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
+                <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
               </div>
             </div>
           </div>
@@ -325,10 +325,14 @@
                 @foreach ($fields as $field)
                   @php
                     $fieldClass = in_array($field, [
+                        'total_length',
+                        'kitake_length',
                         'neck_circumference',
                         'shoulder_width',
                         'yuki_length',
+                        'sleeve_length',
                         'chest_circumference',
+                        'armpit_to_armpit_width',
                     ])
                         ? 'top-item'
                         : (in_array($field, ['waist', 'inseam', 'hip'])

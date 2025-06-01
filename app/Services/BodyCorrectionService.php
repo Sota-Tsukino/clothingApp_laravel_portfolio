@@ -7,12 +7,15 @@ use App\Models\BodyCorrection;
 class BodyCorrectionService
 {
     public static array $fieldsDefaultValues = [
+        'total_length' => 0.0,
+        'kitake_length' => 0.0,
         'head_circumference' => 2.0,
         'neck_circumference' => 2.0,
         'shoulder_width' => 2.0,
-        'chest_circumference' => 3.0,
-        'waist' => 2.0,
-        'hip' => 2.0,
+        'chest_circumference' => 6.0,
+        'armpit_to_armpit_width' => 3.0,
+        'waist' => 3.0,
+        'hip' => 3.0,
         'sleeve_length' => 0.0,
         'yuki_length' => 0.0,
         'inseam' => 0.0,

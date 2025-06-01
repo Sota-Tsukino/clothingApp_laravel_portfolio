@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             SceneTagSeeder::class,
             WeatherTypeSeeder::class,
+            ImageSeeder::class,
+            ItemSeeder::class,
         ]);
 
         // \App\Models\User::factory(10)->create();

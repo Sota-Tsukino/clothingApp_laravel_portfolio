@@ -26,7 +26,7 @@
           <label for="measured_at" class="block text-sm font-medium text-gray-700">計測日</label>
           <input type="date" name="measured_at" id="measured_at"
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-            value="{{ old('measured_at', Carbon\Carbon::now()->format('Y/m/d')) }}" >
+            value="{{ old('measured_at', Carbon\Carbon::now()->format('Y/m/d')) }}">
         </div>
 
         <table class="w-full whitespace-no-wrap">
@@ -42,8 +42,13 @@
               <tr>
                 <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
                 <td class="text-center px-2 py-2">
-                  <input type="number" name="{{ $field }}" step="0.1" value="{{ old($field) }}"
-                    min="0.0" max="999.9">
+                  @if ($field === 'armpit_to_armpit_width')
+                    <span id='display_{{ $field }}'>胸囲 / 2</span>
+                    <input id='{{ $field }}' type="hidden" name="{{ $field }}" value="">
+                  @else
+                    <input id="{{ $field }}" type="number" name="{{ $field }}" step="0.1"
+                      value="{{ old($field) }}" min="0.0" max="999.9">
+                  @endif
                   <span class="ml-1">cm</span>
                 </td>
                 <td class="text-center px-2 py-2">

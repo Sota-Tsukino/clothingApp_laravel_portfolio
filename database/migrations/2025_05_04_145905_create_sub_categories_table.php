@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('sub_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')//categories tableに紐づけ
+            $table->foreignId('category_id') //categories tableに紐づけ
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('name');//トップス、ボトムズ、アウター、etc
+            $table->string('name'); //トップス、ボトムズ、アウター、etc
+            $table->enum('gender', ['male', 'female', 'unisex'])->default('unisex');
             $table->timestamps();
         });
     }

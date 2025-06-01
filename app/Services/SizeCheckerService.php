@@ -8,10 +8,14 @@ class SizeCheckerService
     public static function getFields()
     {
         return [
+            'total_length',
+            'kitake_length',
             'neck_circumference',
             'shoulder_width',
             'yuki_length',
+            'sleeve_length',
             'chest_circumference',
+            'armpit_to_armpit_width',
             'waist',
             'inseam',
             'hip',

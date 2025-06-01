@@ -9,10 +9,13 @@ return [
      |--------------------------------------------------------------------------
      */
     'height' => '身長',
+    'total_length' => '総丈',
+    'kitake_length' => '着丈',
     'head_circumference' => '頭回り',
     'neck_circumference' => '首回り',
     'shoulder_width' => '肩幅',
     'chest_circumference' => '胸囲',
+    'armpit_to_armpit_width' => '身幅',
     'waist' => 'ウエスト',
     'hip' => 'ヒップ',
     'sleeve_length' => '袖丈',

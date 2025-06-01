@@ -29,7 +29,7 @@ class Item extends Model
         'brand_id',
         'status',
         'is_public',
-        'is_coordinate_suggest',
+        'is_item_suggest',
         'main_material_id',
         'sub_material_id', //materials_table →sub_materials_tableで紐づけしてるが必要？
         'washability_option',

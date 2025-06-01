@@ -33,13 +33,13 @@
             <div class="grid grid-cols-1 gap-3">
               <div class="flex items-center py-2 border-b border-gray-200">
                 <span class="text-sm font-medium text-gray-600 w-1/3">カテゴリー</span>
-                <span class="text-sm text-gray-900 font-semibold">{{ __("category.{$item->category->name}") }}</span>
+                <span id="categorySelect" class="text-sm text-gray-900 font-semibold" data-type="{{ $item->category->name }}">{{ __("category.{$item->category->name}") }}</span>
               </div>
 
               <div class="flex items-center py-2 border-b border-gray-200">
                 <span class="text-sm font-medium text-gray-600 w-1/3">サブカテゴリー</span>
-                <span
-                  class="text-sm text-gray-900 font-semibold">{{ __("subcategory.{$item->subCategory->name}") ?? '未登録' }}</span>
+                <span id="sub_category_id"
+                  class="text-sm text-gray-900 font-semibold" data-type="{{ $item->subCategory->name }}">{{ __("subcategory.{$item->subCategory->name}") ?? '未登録' }}</span>
               </div>
 
               <div class="flex items-center py-2 border-b border-gray-200">
@@ -94,8 +94,8 @@
               <span class="text-sm font-medium text-gray-600 w-1/3">コーデ提案に</span>
               <span
                 class="text-sm font-semibold
-                       {{ $item->is_coordinate_suggest == '1' ? 'text-green-600' : 'text-gray-600' }}">
-                {{ $item->is_coordinate_suggest == '1' ? '使用する' : '使用しない' }}
+                       {{ $item->is_item_suggest == '1' ? 'text-green-600' : 'text-gray-600' }}">
+                {{ $item->is_item_suggest == '1' ? '使用する' : '使用しない' }}
               </span>
             </div>
 
@@ -191,13 +191,13 @@
         <div class="mb-8">
           <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2 mb-4">サイズ情報</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            @if ($item->category->name == 'topps')
+            @if ($item->category->name == 'tops' || $item->category->name == 'outer')
               <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                 <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
-                  <h3 class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
+                  <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
                 </div>
                 <div class="p-2">
-                  <img src="{{ asset('images/topps.png') }}" class="w-full h-auto" alt="トップス測定ガイド">
+                  <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full h-auto" alt="トップス測定ガイド">
                 </div>
               </div>
             @elseif($item->category->name == 'bottoms')
@@ -206,16 +206,16 @@
                   <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
                 </div>
                 <div class="p-2">
-                  <img src="{{ asset('images/bottoms.png') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
+                  <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
                 </div>
               </div>
             @else
               <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                 <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
-                  <h3 class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
+                  <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
                 </div>
                 <div class="p-2">
-                  <img src="{{ asset('images/topps.png') }}" class="w-full h-auto" alt="トップス測定ガイド">
+                  <img id="tops-img" src="{{ asset('images/measurements/jacket-common.svg') }}" class="w-full h-auto" alt="トップス測定ガイド">
                 </div>
               </div>
               <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
@@ -223,7 +223,7 @@
                   <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
                 </div>
                 <div class="p-2">
-                  <img src="{{ asset('images/bottoms.png') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
+                  <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
                 </div>
               </div>
             @endif
@@ -252,16 +252,18 @@
                   $categoryName = $item->category->name;
                   if ($categoryName === 'setup') {
                       $fields = [
+                          'kitake_length',
                           'neck_circumference',
                           'shoulder_width',
                           'yuki_length',
+                          'sleeve_length',
                           'chest_circumference',
                           'waist',
                           'inseam',
                           'hip',
                       ];
-                  } elseif (in_array($categoryName, ['topps', 'outer'])) {
-                      $fields = ['neck_circumference', 'shoulder_width', 'yuki_length', 'chest_circumference'];
+                  } elseif (in_array($categoryName, ['tops', 'outer'])) {
+                      $fields = ['total_length', 'kitake_length','neck_circumference',  'shoulder_width', 'yuki_length', 'chest_circumference', 'armpit_to_armpit_width'];
                   } elseif ($categoryName === 'bottoms') {
                       $fields = ['waist', 'inseam', 'hip'];
                   }

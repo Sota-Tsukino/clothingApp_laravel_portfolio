@@ -7,7 +7,7 @@ const user = JSON.parse(el.dataset.user);
 setupDependentSelect({
     parentSelector: "prefecture_id",
     childSelector: "city_id",
-    data: prefectures,
+    parentCategories: prefectures,
     userSelectedChildId: user.city_id,
     childProperty: "city",
     childLabelKey: "name",
