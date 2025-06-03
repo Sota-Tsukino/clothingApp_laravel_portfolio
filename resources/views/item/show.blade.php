@@ -306,13 +306,10 @@
                       </span>
                     </td>
                     <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
-                      {{ $field == 'chest_circumference' || $field == 'hip' ? '低い' : '高い' }}
+                      <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
                     </td>
-                    <td class="px-1 py-3 whitespace-nowrap text-center">
-                      <button type="button" class="text-indigo-600 hover:text-indigo-900 focus:outline-none">
-                        <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
-                          class="w-5 h-5 hover:opacity-75 transition-opacity">
-                      </button>
+                    <td x-data="{ show: false }" class="relative text-center">
+                      <x-popup-guide :field="$field" :guides="$guides" />
                     </td>
                   </tr>
                 @endforeach

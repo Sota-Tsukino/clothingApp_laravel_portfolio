@@ -53,13 +53,11 @@
               <td>
                 <span id="{{ $field }}_result" class="font-semibold block">未評価</span>
               </td>
-              <td class="text-center px-2 py-2">{{ $field == 'chest_circumference' || $field == 'hip' ? '低い' : '高い' }}
+              <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
+                <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
               </td>
-              <td class="text-center px-2 py-2">
-                <div class="img w-8 mx-auto ">
-                  <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
-                    class="hover:opacity-50 cursor-pointer">
-                </div>
+              <td x-data="{ show: false }" class="relative text-center">
+                <x-popup-guide :field="$field" :guides="$guides" />
               </td>
             </tr>
           @endforeach

@@ -341,11 +341,6 @@
                         : (in_array($field, ['waist', 'inseam', 'hip'])
                             ? 'bottom-item'
                             : '');
-                    $priorityBadgeClass = [
-                        'high' => 'text-red-600 font-bold bg-red-100',
-                        'middle' => 'text-yellow-600 bg-yellow-100',
-                        'low' => 'text-gray-600 bg-gray-100',
-                    ];
                   @endphp
                   <tr class="{{ $fieldClass }} hover:bg-gray-50">
                     <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -370,24 +365,11 @@
                       </span>
                     </td>
                     <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
-                      <span
-                        class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $priorityBadgeClass[$priorityMap[$field]] }}">{{ __("priority.$priorityMap[$field]") }}</span>
+                      <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
                     </td>
                     <td x-data="{ show: false }" class="relative text-center">
-                      <button type="button" @mouseenter="show = true" @mouseleave="show = false"
-                        @click.away="show = false" @click="show = !show" class="focus:outline-none">
-                        <img src="{{ asset('images/question.png') }}" alt="ガイド"
-                          class="w-5 h-5 inline hover:opacity-75">
-                      </button>
-
-                      <!-- ポップアップ -->
-                      <div x-show="show" x-transition
-                        class="absolute bottom-1/2 right-1/2 mb-2 w-64 text-sm text-blue-600 bg-blue-100 border border-gray-300 rounded-lg shadow-md p-2 z-10"
-                        style="display: none;" {{-- Alpine.js の初期状態に必要 --}}>
-                        {{ $guides[$field] ?? '説明は準備中です。' }}
-                      </div>
+                      <x-popup-guide :field="$field" :guides="$guides" />
                     </td>
-
                   </tr>
                 @endforeach
               </tbody>

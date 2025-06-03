@@ -99,6 +99,8 @@ class ItemController extends Controller
             $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
             $userTolerance = FittingToleranceService::getForUser($userId);
             $fields = SizeCheckerService::getFields();
+            $priorityMap = SizeCheckerService::getPriorityMap();
+            $guides = SizeCheckerService::getGuide();
         } catch (\Exception $e) {
             return redirect()
                 ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')
@@ -113,6 +115,8 @@ class ItemController extends Controller
             'fields' => $fields,
             'suitableSize' => $suitableSize,
             'userTolerance' => $userTolerance,
+            'priorityMap' => $priorityMap,
+            'guides' => $guides,
         ]);
     }
 

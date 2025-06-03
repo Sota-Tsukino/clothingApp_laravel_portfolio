@@ -138,6 +138,7 @@ class BodyMeasurementController extends Controller
     {
 
         $bodyMeasurement = BodyMeasurement::findOrFail($id);
+        $guides = BodyMeasurementService::getGuide();
 
         //参照する体格情報が、ログインユーザー所有のものか？を判定
         if ($bodyMeasurement->user_id !== Auth::id()) {
@@ -152,7 +153,9 @@ class BodyMeasurementController extends Controller
         // return view('bodymeasurement.edit', compact('bodyMeasurement', 'fields'));
         return view('bodymeasurement.edit', [
             'bodyMeasurement' => $bodyMeasurement,
-            'fields' => BodyMeasurementService::getFields(),//compact()を使うとクラスのプライベート変数を渡せない？
+            'fields' => BodyMeasurementService::getFields(),
+            'guides' => $guides,
+
         ]);
     }
 

@@ -26,7 +26,8 @@ class SizeCheckerController extends Controller
         $userTolerance = FittingToleranceService::getForUser($userId);
         $fields = SizeCheckerService::getFields();
         $guides = SizeCheckerService::getGuide();
+        $priorityMap =SizeCheckerService::getPriorityMap();
 
-        return view('sizechecker.index', compact('bodyMeasurement', 'suitableSize', 'fields', 'userTolerance', 'guides'));
+        return view('sizechecker.index', compact('bodyMeasurement', 'suitableSize', 'fields', 'userTolerance', 'guides', 'priorityMap'));
     }
 }
