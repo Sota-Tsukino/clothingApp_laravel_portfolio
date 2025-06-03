@@ -25,7 +25,8 @@ class SizeCheckerController extends Controller
         $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
         $userTolerance = FittingToleranceService::getForUser($userId);
         $fields = SizeCheckerService::getFields();
+        $guides = SizeCheckerService::getGuide();
 
-        return view('sizechecker.index', compact('bodyMeasurement', 'suitableSize', 'fields', 'userTolerance'));
+        return view('sizechecker.index', compact('bodyMeasurement', 'suitableSize', 'fields', 'userTolerance', 'guides'));
     }
 }

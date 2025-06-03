@@ -124,6 +124,8 @@ class ItemController extends Controller
         $userId = Auth::id();
         try {
             $formDataWithItem = ItemService::getFormDataWithItem($id, $userId);
+            $priorityMap = SizeCheckerService::getPriorityMap();
+            $guides = SizeCheckerService::getGuide();
         } catch (\Exception $e) {
             return redirect()
                 ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')
@@ -147,6 +149,8 @@ class ItemController extends Controller
             'suitableSize' => $formDataWithItem['suitableSize'],
             'fields' => $formDataWithItem['fields'],
             'userTolerance' => $formDataWithItem['userTolerance'],
+            'priorityMap' => $priorityMap,
+            'guides' => $guides,
         ]);
     }
 

@@ -80,7 +80,8 @@
               @foreach ($categories as $category)
                 @foreach ($category->subCategory as $subCategory)
                   <option value="{{ $subCategory->id }}"
-                    {{ $item->sub_category_id == $subCategory->id ? 'selected' : '' }} data-type="{{ $subCategory->name }}">
+                    {{ $item->sub_category_id == $subCategory->id ? 'selected' : '' }}
+                    data-type="{{ $subCategory->name }}">
                     {{ __("subcategory.$subCategory->name") }}
                   </option>
                 @endforeach
@@ -280,7 +281,8 @@
                 <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
               </div>
               <div class="p-2">
-                <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full h-auto" alt="トップス測定ガイド">
+                <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full h-auto"
+                  alt="トップス測定ガイド">
               </div>
             </div>
             <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
@@ -288,7 +290,8 @@
                 <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
               </div>
               <div class="p-2">
-                <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
+                <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}"
+                  class="w-full h-auto" alt="ボトムス測定ガイド">
               </div>
             </div>
           </div>
@@ -338,6 +341,11 @@
                         : (in_array($field, ['waist', 'inseam', 'hip'])
                             ? 'bottom-item'
                             : '');
+                    $priorityBadgeClass = [
+                        'high' => 'text-red-600 font-bold bg-red-100',
+                        'middle' => 'text-yellow-600 bg-yellow-100',
+                        'low' => 'text-gray-600 bg-gray-100',
+                    ];
                   @endphp
                   <tr class="{{ $fieldClass }} hover:bg-gray-50">
                     <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -362,14 +370,24 @@
                       </span>
                     </td>
                     <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
-                      {{ $field == 'chest_circumference' || $field == 'hip' ? '低い' : '高い' }}
+                      <span
+                        class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $priorityBadgeClass[$priorityMap[$field]] }}">{{ __("priority.$priorityMap[$field]") }}</span>
                     </td>
-                    <td class="px-1 py-3 whitespace-nowrap text-center">
-                      <button type="button" class="text-indigo-600 hover:text-indigo-900 focus:outline-none">
-                        <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
-                          class="w-5 h-5 hover:opacity-75 transition-opacity">
+                    <td x-data="{ show: false }" class="relative text-center">
+                      <button type="button" @mouseenter="show = true" @mouseleave="show = false"
+                        @click.away="show = false" @click="show = !show" class="focus:outline-none">
+                        <img src="{{ asset('images/question.png') }}" alt="ガイド"
+                          class="w-5 h-5 inline hover:opacity-75">
                       </button>
+
+                      <!-- ポップアップ -->
+                      <div x-show="show" x-transition
+                        class="absolute bottom-1/2 right-1/2 mb-2 w-64 text-sm text-blue-600 bg-blue-100 border border-gray-300 rounded-lg shadow-md p-2 z-10"
+                        style="display: none;" {{-- Alpine.js の初期状態に必要 --}}>
+                        {{ $guides[$field] ?? '説明は準備中です。' }}
+                      </div>
                     </td>
+
                   </tr>
                 @endforeach
               </tbody>
