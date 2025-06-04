@@ -137,8 +137,8 @@ class FittingToleranceService
         $rules = [];
         foreach (self::getDefaultValues() as $key => $values) {
             // .記法でネストされたキーを指定する
-            $rules["tolerances.$key.min_value"] = 'required|numeric|between:-10.0,10.0';
-            $rules["tolerances.$key.max_value"] = 'required|numeric|between:-10.0,10.0';
+            $rules["tolerances.$key.min_value"] = 'required|numeric|between:-15.0,15.0';
+            $rules["tolerances.$key.max_value"] = 'required|numeric|between:-15.0,15.0';
         }
         // dd($rules);
         return $rules;

@@ -12,13 +12,17 @@ chestInputEl.addEventListener("input", function () {
         return;
     }
     const armpitVal = inputVal / 2;
+    const roundedArmpitVal = armpitVal.toFixed(1);
 
-    armpitInputEl.value = armpitVal;
-    displayArmpitEl.innerText = armpitVal;
+    armpitInputEl.value = roundedArmpitVal;
+    displayArmpitEl.innerText = roundedArmpitVal;
 });
 
 //初期レンダリング時の表示
-if(chestInputEl.value && !armpitInputEl.value) {
-    displayArmpitEl.innerText = chestInputEl.value / 2;
-     armpitInputEl.value = chestInputEl.value / 2;
+if (chestInputEl.value && !armpitInputEl.value) {
+    const armpitVal = chestInputEl.value / 2;
+    const roundedArmpitVal = armpitVal.toFixed(1);
+
+    displayArmpitEl.innerText = roundedArmpitVal;
+    armpitInputEl.value = roundedArmpitVal;
 }

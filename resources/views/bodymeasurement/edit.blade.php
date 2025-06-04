@@ -11,15 +11,27 @@
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
 
-      <div class="flex justify-between pb-4">
-        <div class="w-1/2 border">
-          <img src="{{ asset('images/body.png') }}" alt="">
+      <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2 mb-4">体格寸法測定ガイド</h2>
+      <!-- 画像ガイド -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+          <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+            <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">体格測定ガイド</h3>
+          </div>
+          <div class="p-2">
+            <img id="tops-img" src="{{ asset('images/body.png') }}" class="w-full h-auto" alt="体格測定ガイド">
+          </div>
         </div>
-        <div class="w-1/2 border">
-          <img src="{{ asset('images/foot.png') }}" alt="">
+        <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+          <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+            <h3 class="text-sm font-medium text-gray-700">足サイズ測定ガイド</h3>
+          </div>
+          <div class="p-2">
+            <img id="bottoms-img" src="{{ asset('images/foot.png') }}" class="w-full h-auto" alt="足サイズ測定ガイド">
+          </div>
         </div>
       </div>
-      <h3 class="font-semibold text-sm text-gray-800 leading-tight">計測日：{{ $bodyMeasurement->measured_at }}</h3>
+      <h3 class="font-semibold text-sm text-gray-800 leading-tight">計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}</h3>
       <form
         action="{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.update' : 'measurement.update', ['measurement' => $bodyMeasurement->id]) }}"
         method="post">

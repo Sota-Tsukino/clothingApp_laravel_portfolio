@@ -296,8 +296,6 @@
             </div>
           </div>
 
-
-
           <!-- 注意書き -->
           <div class="mb-6 bg-yellow-50 p-4 rounded-md">
             <p class="text-sm text-yellow-700">
