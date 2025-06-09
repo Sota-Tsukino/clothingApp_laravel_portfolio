@@ -10,28 +10,48 @@
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
-      {{-- onsubmit="return validateForm()" とは? returnの記載が必要？--}}
+      {{-- onsubmit="return validateForm()" とは? returnの記載が必要？ --}}
       <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.update' : 'tolerance.update') }}"
         method="post" onsubmit="return validateForm()">
         @csrf
         @method('put')
-        <div class="flex justify-between pb-4">
-          <div class="w-1/2 border">
-            <img src="{{ asset('images/topps.png') }}" class="w-full" alt="">
+        <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2 mb-4">衣類サイズ測定ガイド</h2>
+        <!-- 画像ガイド -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+              <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
+            </div>
+            <div class="p-2">
+              <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full h-auto"
+                alt="トップス測定ガイド">
+            </div>
           </div>
-          <div class="w-1/2 border">
-            <img src="{{ asset('images/bottoms.png') }}" class="w-full" alt="">
+          <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+              <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
+            </div>
+            <div class="p-2">
+              <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}" class="w-full h-auto"
+                alt="ボトムス測定ガイド">
+            </div>
           </div>
+        </div>
+        <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2 mb-4">体格許容値とは？</h2>
+        <!-- ガイド -->
+        <div class="mb-6 bg-green-50 p-4 rounded-md">
+          <p class="text-sm text-green-700">
+            サイズチェッカー機能で、衣類サイズがユーザーの体格寸法に合っているかどうか判定する際に使用されます。例えば、首回り:36cmの場合で下限値:-0.5cm, 上限値:1.0cmの場合は
+            35.5cm~37cmの範囲が「✅ちょどいい」判定となります。</p>
         </div>
         <table class="w-full whitespace-no-wrap">
           <thead>
             <tr>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">部位</th>
-              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">評価</th>
+              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">判定</th>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">下限値</th>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100"></th>
               <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">上限値</th>
-              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">ガイド</th>
             </tr>
           </thead>
           @foreach ($fittingTolerances as $index => $fittingTolerance)
@@ -46,13 +66,13 @@
                 @elseif ($fittingTolerance->tolerance_level === 'slight')
                   <span class="text-yellow-500 font-semibold">△ やや合わない</span>
                 @elseif ($fittingTolerance->tolerance_level === 'long_or_short')
-                  <span class="text-red-600 font-semibold">✕ 大きく合わない</span>
+                  <span class="text-red-600 font-semibold">✕ 合わない</span>
                 @endif
               </td>
               <td class="text-center px-2 py-2">
                 <input type="number" id="min_value_{{ $key }}"
                   name="tolerances[{{ $key }}][min_value]" value="{{ $fittingTolerance->min_value }}"
-                  step="0.1" min="-10.0" max="10.0">
+                  step="0.1" min="-15.0" max="15.0">
                 <span class="ml-1">cm</span>
                 <div id="error-message-min-{{ $key }}" style="color: red;"></div>
               </td>
@@ -61,15 +81,9 @@
               <td class="text-center px-2 py-2">
                 <input type="number" id="max_value_{{ $key }}"
                   name="tolerances[{{ $key }}][max_value]" value="{{ $fittingTolerance->max_value }}"
-                  step="0.1" min="-10.0" max="10.0">
+                  step="0.1" min="-15.0" max="15.0">
                 <span class="ml-1">cm</span>
                 <div id="error-message-max-{{ $key }}" style="color: red;"></div>
-              </td>
-              <td class="text-center px-2 py-2">
-                <div class="img w-8 mx-auto ">
-                  <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
-                    class="hover:opacity-50 cursor-pointer">
-                </div>
               </td>
             </tr>
           @endforeach
@@ -112,16 +126,16 @@
       @php
         $key = $fittingTolerance->body_part . '-' . $fittingTolerance->tolerance_level;
       @endphp
-        (function() {//なぜ即時関数を使う？
+        (function() { //なぜ即時関数を使う？
           const minInput = document.getElementById('min_value_{{ $key }}');
           const maxInput = document.getElementById('max_value_{{ $key }}');
           const errorDivMin = document.getElementById('error-message-min-{{ $key }}');
           const errorDivMax = document.getElementById('error-message-max-{{ $key }}');
 
-          const min = parseFloat(minInput.value);//文字列をfloat型に変換している？
+          const min = parseFloat(minInput.value); //文字列をfloat型に変換している？
           const max = parseFloat(maxInput.value);
 
-          if (!isNaN(min) && !isNaN(max) && min > max) {//minとmaxの変数が空かどうか判定？
+          if (!isNaN(min) && !isNaN(max) && min > max) { //minとmaxの変数が空かどうか判定？
             errorDivMin.textContent = "下限値は上限値以下にしてください。";
             errorDivMax.textContent = "上限値は下限値以上にしてください。";
             isValid = false;

@@ -12,6 +12,7 @@ class BodyCorrection extends Model
 
     protected $fillable = [
         'user_id',
+        'kitake_length',
         'head_circumference',
         'neck_circumference',
         'shoulder_width',

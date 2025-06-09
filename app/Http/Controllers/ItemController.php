@@ -63,6 +63,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $request->validate(ItemService::getValidationRules());
 
         try {
@@ -98,6 +99,8 @@ class ItemController extends Controller
             $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
             $userTolerance = FittingToleranceService::getForUser($userId);
             $fields = SizeCheckerService::getFields();
+            $priorityMap = SizeCheckerService::getPriorityMap();
+            $guides = SizeCheckerService::getGuide();
         } catch (\Exception $e) {
             return redirect()
                 ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')
@@ -112,6 +115,8 @@ class ItemController extends Controller
             'fields' => $fields,
             'suitableSize' => $suitableSize,
             'userTolerance' => $userTolerance,
+            'priorityMap' => $priorityMap,
+            'guides' => $guides,
         ]);
     }
 
@@ -123,6 +128,8 @@ class ItemController extends Controller
         $userId = Auth::id();
         try {
             $formDataWithItem = ItemService::getFormDataWithItem($id, $userId);
+            $priorityMap = SizeCheckerService::getPriorityMap();
+            $guides = SizeCheckerService::getGuide();
         } catch (\Exception $e) {
             return redirect()
                 ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')
@@ -146,6 +153,8 @@ class ItemController extends Controller
             'suitableSize' => $formDataWithItem['suitableSize'],
             'fields' => $formDataWithItem['fields'],
             'userTolerance' => $formDataWithItem['userTolerance'],
+            'priorityMap' => $priorityMap,
+            'guides' => $guides,
         ]);
     }
 
@@ -154,6 +163,7 @@ class ItemController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request);
         $request->validate(ItemService::getValidationRules(true));
         $userId = Auth::id();
 

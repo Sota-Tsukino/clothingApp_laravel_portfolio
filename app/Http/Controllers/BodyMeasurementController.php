@@ -17,8 +17,10 @@ class BodyMeasurementController extends Controller
      */
     public function index()
     {
-        $user = User::findOrFail(Auth::id());
-        $bodyMeasurements = $user->bodymeasurements;
+        $userId = Auth::id();
+        $bodyMeasurements = BodyMeasurement::where('user_id', $userId)
+            ->orderBy('measured_at', 'desc')->get();
+
         return view('bodymeasurement.index', compact('bodyMeasurements'));
     }
 
@@ -29,7 +31,10 @@ class BodyMeasurementController extends Controller
     {
 
         //$fields変数にこのクラスのprivate変数を代入
-        return view('bodymeasurement.create', ['fields' => BodyMeasurementService::getFields()]);
+        return view('bodymeasurement.create', [
+            'fields' => BodyMeasurementService::getFields(),
+            'guides' => BodyMeasurementService::getGuide(),
+        ]);
     }
 
     /**
@@ -138,6 +143,7 @@ class BodyMeasurementController extends Controller
     {
 
         $bodyMeasurement = BodyMeasurement::findOrFail($id);
+        $guides = BodyMeasurementService::getGuide();
 
         //参照する体格情報が、ログインユーザー所有のものか？を判定
         if ($bodyMeasurement->user_id !== Auth::id()) {
@@ -152,7 +158,9 @@ class BodyMeasurementController extends Controller
         // return view('bodymeasurement.edit', compact('bodyMeasurement', 'fields'));
         return view('bodymeasurement.edit', [
             'bodyMeasurement' => $bodyMeasurement,
-            'fields' => BodyMeasurementService::getFields(),//compact()を使うとクラスのプライベート変数を渡せない？
+            'fields' => BodyMeasurementService::getFields(),
+            'guides' => $guides,
+
         ]);
     }
 

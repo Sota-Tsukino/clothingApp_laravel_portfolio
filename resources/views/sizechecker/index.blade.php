@@ -11,18 +11,36 @@
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
 
-      <div class="flex justify-between pb-4">
-        <div class="w-1/2 border">
-          <img src="{{ asset('images/measurements/tops.svg') }}" class="w-full"alt="">
+      <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2 mb-4">衣類サイズ測定ガイド</h2>
+      <!-- 画像ガイド -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+          <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+            <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
+          </div>
+          <div class="p-2">
+            <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full h-auto"
+              alt="トップス測定ガイド">
+          </div>
         </div>
-        <div class="w-1/2 border">
-          <img src="{{ asset('images/measurements/bottoms.svg') }}"class="w-full" alt="">
+        <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+          <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+            <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
+          </div>
+          <div class="p-2">
+            <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}" class="w-full h-auto"
+              alt="ボトムス測定ガイド">
+          </div>
         </div>
       </div>
       @php
         $fromMeasurementId = session('from_measurement_id') ?? $bodyMeasurement->id; //sessionがない場合に$bodyMeasurement->idを追記
       @endphp
-      <p>※体格測定日は最新の日付：{{ $bodyMeasurement->measured_at }}を元に判定します</p>
+      <!-- 注意書き -->
+      <div class="mb-6 bg-yellow-50 p-4 rounded-md">
+        <p class="text-sm text-yellow-700">
+          ※サイズ判定は最新の体格計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}を元に判定します</p>
+      </div>
       <table class="w-full whitespace-no-wrap">
         <thead>
           <tr>
@@ -53,13 +71,11 @@
               <td>
                 <span id="{{ $field }}_result" class="font-semibold block">未評価</span>
               </td>
-              <td class="text-center px-2 py-2">{{ $field == 'chest_circumference' || $field == 'hip' ? '低い' : '高い' }}
+              <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
+                <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
               </td>
-              <td class="text-center px-2 py-2">
-                <div class="img w-8 mx-auto ">
-                  <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
-                    class="hover:opacity-50 cursor-pointer">
-                </div>
+              <td x-data="{ show: false }" class="relative text-center">
+                <x-popup-guide :field="$field" :guides="$guides" />
               </td>
             </tr>
           @endforeach

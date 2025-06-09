@@ -80,7 +80,8 @@
               @foreach ($categories as $category)
                 @foreach ($category->subCategory as $subCategory)
                   <option value="{{ $subCategory->id }}"
-                    {{ $item->sub_category_id == $subCategory->id ? 'selected' : '' }} data-type="{{ $subCategory->name }}">
+                    {{ $item->sub_category_id == $subCategory->id ? 'selected' : '' }}
+                    data-type="{{ $subCategory->name }}">
                     {{ __("subcategory.$subCategory->name") }}
                   </option>
                 @endforeach
@@ -280,7 +281,8 @@
                 <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
               </div>
               <div class="p-2">
-                <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full h-auto" alt="トップス測定ガイド">
+                <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full h-auto"
+                  alt="トップス測定ガイド">
               </div>
             </div>
             <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
@@ -288,12 +290,11 @@
                 <h3 class="text-sm font-medium text-gray-700">ボトムス測定ガイド</h3>
               </div>
               <div class="p-2">
-                <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}" class="w-full h-auto" alt="ボトムス測定ガイド">
+                <img id="bottoms-img" src="{{ asset('images/measurements/slacks-common.svg') }}"
+                  class="w-full h-auto" alt="ボトムス測定ガイド">
               </div>
             </div>
           </div>
-
-
 
           <!-- 注意書き -->
           <div class="mb-6 bg-yellow-50 p-4 rounded-md">
@@ -358,17 +359,14 @@
                     <td class="px-4 py-3 whitespace-nowrap">
                       <span id="{{ $field }}_result"
                         class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                        未評価
+                        {{ $field == 'total_length' ? 'ー' : '未評価'}}
                       </span>
                     </td>
                     <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
-                      {{ $field == 'chest_circumference' || $field == 'hip' ? '低い' : '高い' }}
+                      <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
                     </td>
-                    <td class="px-1 py-3 whitespace-nowrap text-center">
-                      <button type="button" class="text-indigo-600 hover:text-indigo-900 focus:outline-none">
-                        <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
-                          class="w-5 h-5 hover:opacity-75 transition-opacity">
-                      </button>
+                    <td x-data="{ show: false }" class="relative text-center">
+                      <x-popup-guide :field="$field" :guides="$guides" />
                     </td>
                   </tr>
                 @endforeach

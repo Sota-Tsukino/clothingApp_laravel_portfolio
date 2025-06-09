@@ -18,6 +18,7 @@ class BodyMeasurement extends Model
         'user_id',
         'measured_at',
         'height',
+        'kitake_length',
         'head_circumference',
         'neck_circumference',
         'shoulder_width',
