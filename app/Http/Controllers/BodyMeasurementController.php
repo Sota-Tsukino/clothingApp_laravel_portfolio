@@ -17,8 +17,10 @@ class BodyMeasurementController extends Controller
      */
     public function index()
     {
-        $user = User::findOrFail(Auth::id());
-        $bodyMeasurements = $user->bodymeasurements;
+        $userId = Auth::id();
+        $bodyMeasurements = BodyMeasurement::where('user_id', $userId)
+            ->orderBy('measured_at', 'desc')->get();
+
         return view('bodymeasurement.index', compact('bodyMeasurements'));
     }
 
@@ -29,7 +31,10 @@ class BodyMeasurementController extends Controller
     {
 
         //$fields変数にこのクラスのprivate変数を代入
-        return view('bodymeasurement.create', ['fields' => BodyMeasurementService::getFields()]);
+        return view('bodymeasurement.create', [
+            'fields' => BodyMeasurementService::getFields(),
+            'guides' => BodyMeasurementService::getGuide(),
+        ]);
     }
 
     /**

@@ -359,7 +359,7 @@
                     <td class="px-4 py-3 whitespace-nowrap">
                       <span id="{{ $field }}_result"
                         class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                        未評価
+                        {{ $field == 'total_length' ? 'ー' : '未評価'}}
                       </span>
                     </td>
                     <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">

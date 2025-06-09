@@ -25,6 +25,7 @@ class SizeCheckerController extends Controller
         $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
         $userTolerance = FittingToleranceService::getForUser($userId);
         $fields = SizeCheckerService::getFields();
+        unset($fields[0]);//「総丈」を除外
         $guides = SizeCheckerService::getGuide();
         $priorityMap =SizeCheckerService::getPriorityMap();
 

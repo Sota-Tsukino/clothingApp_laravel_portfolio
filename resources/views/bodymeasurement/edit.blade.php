@@ -31,7 +31,14 @@
           </div>
         </div>
       </div>
-      <h3 class="font-semibold text-sm text-gray-800 leading-tight">計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}</h3>
+      <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2 mb-4">体格情報とは？</h2>
+      <!-- 注意書き -->
+      <div class="mb-6 bg-green-50 p-4 rounded-md">
+        <p class="text-sm text-green-700">
+          ユーザーに合った衣類サイズを算出し、サイズチェッカー機能が使用できるようになります。</p>
+      </div>
+      <h3 class="font-semibold text-sm text-gray-800 leading-tight">
+        計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}</h3>
       <form
         action="{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.update' : 'measurement.update', ['measurement' => $bodyMeasurement->id]) }}"
         method="post">
