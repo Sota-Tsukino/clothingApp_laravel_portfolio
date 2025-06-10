@@ -319,26 +319,26 @@
         </div>
 
         <!-- アクションボタン -->
-        <div class="flex flex-wrap justify-between gap-4 pt-4 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row justify-around gap-4 pt-4">
           <button
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.edit' : 'clothing-item.edit', ['clothing_item' => $item->id]) }}'"
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            class="inline-block text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             編集する
           </button>
 
           <button type="button"
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index') }}'"
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+            class="inline-block text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
             衣類アイテム一覧へ
           </button>
 
           <form id="delete_{{ $item->id }}"
             action="{{ route('admin.clothing-item.destroy', ['clothing_item' => $item->id]) }}" method="post"
-            class="inline">
+            class="block">
             @csrf
             @method('delete')
             <button type="button" onclick="deletePost(this)" data-id="{{ $item->id }}"
-              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+              class="block text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
               削除する
             </button>
           </form>

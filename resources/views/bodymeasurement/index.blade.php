@@ -110,7 +110,7 @@
         <div class="mt-8 flex justify-center md:justify-start">
           <button
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.create' : 'measurement.create') }}'"
-            class="text-white bg-teal-500 border-0 py-2.5 px-8 focus:outline-none hover:bg-teal-600 rounded transition">新規登録</button>
+            class="text-white bg-green-500 border-0 text-sm px-4 py-2 focus:outline-none hover:bg-green-600 rounded transition">新規登録</button>
         </div>
       </div>
     </div>
