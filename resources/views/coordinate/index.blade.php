@@ -80,6 +80,9 @@
       <div class="mt-8">
         {{ $coordinates->links() }}
       </div>
+      <button
+        onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.coordinate.create' : 'coordinate.create') }}'"
+        class="text-white bg-green-500 border-0 text-sm px-4 py-2 focus:outline-none hover:bg-green-600 rounded transition">新規登録</button>
     </div>
   </section>
 </x-app-layout>

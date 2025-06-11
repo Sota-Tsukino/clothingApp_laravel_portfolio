@@ -45,25 +45,25 @@
                 <thead class="bg-gray-50">
                   <tr>
                     <th scope="col"
-                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
                       部位
                     </th>
                     <th scope="col"
-                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
                       体格寸法
                     </th>
                     <th scope="col"
-                      class="px-2 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      class="px-2 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
                     </th>
                     <th scope="col"
-                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
                       補正値
                     </th>
                     <th scope="col"
-                      class="px-2 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      class="px-2 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
                     </th>
                     <th scope="col"
-                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
                       あなたに合う衣類サイズ
                     </th>
                   </tr>
@@ -109,7 +109,7 @@
                           <div class="text-sm text-gray-600 font-semibold">=</div>
                         </td>
                         <td class="px-3 py-4 whitespace-nowrap text-center">
-                          <div class="text-sm font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">
+                          <div class="text-sm font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">
                             {{ $suitableSize[$field] }}cm
                           </div>
                         </td>

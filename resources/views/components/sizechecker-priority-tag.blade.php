@@ -8,4 +8,4 @@
 
 @endphp
 <span
-  class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $priorityBadgeClass[$priorityMap[$field]] }}">{{ __("priority.$priorityMap[$field]") }}</span>
+  class="inline-block px-2 py-1 text-sm font-semibold rounded-full {{ $priorityBadgeClass[$priorityMap[$field]] }}">{{ __("priority.$priorityMap[$field]") }}</span>

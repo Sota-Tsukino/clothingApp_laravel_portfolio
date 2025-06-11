@@ -5,8 +5,8 @@
     </h2>
   </x-slot>
 
-  <section class="text-gray-600 body-font overflow-hidden px-7">
-    <div class="container max-w-4xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
+  <section class="text-gray-600 body-font overflow-hidden px-2 sm:px-7">
+    <div class="max-w-3xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
@@ -44,61 +44,77 @@
             サイズチェッカー機能で、衣類サイズがユーザーの体格寸法に合っているかどうか判定する際に使用されます。例えば、首回り:36cmの場合で下限値:-0.5cm, 上限値:1.0cmの場合は
             35.5cm~37cmの範囲が「✅ちょどいい」判定となります。</p>
         </div>
-        <table class="w-full whitespace-no-wrap">
-          <thead>
-            <tr>
-              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">部位</th>
-              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">判定</th>
-              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">下限値</th>
-              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100"></th>
-              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">上限値</th>
-            </tr>
-          </thead>
-          @foreach ($fittingTolerances as $index => $fittingTolerance)
-            @php
-              $key = $fittingTolerance->body_part . '-' . $fittingTolerance->tolerance_level;
-            @endphp
-            <tr>
-              <td class="text-center px-2 py-2">{{ __('measurement.' . $fittingTolerance->body_part) }}</td>
-              <td class="text-center px-2 py-2">
-                @if ($fittingTolerance->tolerance_level === 'just')
-                  <span class="text-green-600 font-semibold">✅ ちょうどいい</span>
-                @elseif ($fittingTolerance->tolerance_level === 'slight')
-                  <span class="text-yellow-500 font-semibold">△ やや合わない</span>
-                @elseif ($fittingTolerance->tolerance_level === 'long_or_short')
-                  <span class="text-red-600 font-semibold">✕ 合わない</span>
-                @endif
-              </td>
-              <td class="text-center px-2 py-2">
-                <input type="number" id="min_value_{{ $key }}"
-                  name="tolerances[{{ $key }}][min_value]" value="{{ $fittingTolerance->min_value }}"
-                  step="0.1" min="-15.0" max="15.0">
-                <span class="ml-1">cm</span>
-                <div id="error-message-min-{{ $key }}" style="color: red;"></div>
-              </td>
+        <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-3 py-3 text-center text-sm font-medium text-gray-500 whitespace-nowrap">部位</th>
+                <th class="px-3 py-3 text-center text-sm font-medium text-gray-500 whitespace-nowrap">判定</th>
+                <th class="px-3 py-3 text-center text-sm font-medium text-gray-500 whitespace-nowrap min-w-[196px]">下限値
+                </th>
+                <th class="px-3 py-3 text-center text-sm font-medium text-gray-500 whitespace-nowrap"></th>
+                <th class="px-3 py-3 text-center text-sm font-medium text-gray-500 whitespace-nowrap min-w-[196px]">上限値
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              @foreach ($fittingTolerances as $index => $fittingTolerance)
+                @php
+                  $key = $fittingTolerance->body_part . '-' . $fittingTolerance->tolerance_level;
+                @endphp
+                <tr class="hover:bg-gray-50">
+                  <td class="px-3 py-4 whitespace-nowrap text-center">
+                    {{ __('measurement.' . $fittingTolerance->body_part) }}</td>
+                  <td class="px-3 py-4 whitespace-nowrap text-center">
+                    @if ($fittingTolerance->tolerance_level === 'just')
+                      <span class="text-green-600 font-semibold">✅ ちょうどいい</span>
+                    @elseif ($fittingTolerance->tolerance_level === 'slight')
+                      <span class="text-yellow-500 font-semibold">△ やや合わない</span>
+                    @elseif ($fittingTolerance->tolerance_level === 'long_or_short')
+                      <span class="text-red-600 font-semibold">✕ 合わない</span>
+                    @endif
+                  </td>
+                  <td class="px-3 py-4 whitespace-nowrap text-center">
+                    <div class="relative">
+                      <input type="number" id="min_value_{{ $key }}"
+                        name="tolerances[{{ $key }}][min_value]" value="{{ $fittingTolerance->min_value }}"
+                        step="0.1" min="-15.0" max="15.0"
+                        class="block w-full text-gray-900 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10">
+                      <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <span class="text-gray-500 text-sm">cm</span>
+                      </div>
+                    </div>
+                    <div id="error-message-min-{{ $key }}" style="color: red; display: none;" class="mt-2"></div>
+                  </td>
 
-              <td class="text-center px-2 py-2">～</td>
-              <td class="text-center px-2 py-2">
-                <input type="number" id="max_value_{{ $key }}"
-                  name="tolerances[{{ $key }}][max_value]" value="{{ $fittingTolerance->max_value }}"
-                  step="0.1" min="-15.0" max="15.0">
-                <span class="ml-1">cm</span>
-                <div id="error-message-max-{{ $key }}" style="color: red;"></div>
-              </td>
-            </tr>
-          @endforeach
-
-
-          </tbody>
-        </table>
-        <div class="flex justify-between mx-auto my-5">
-          <button
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">更新する</button>
-          <button type="button" onclick="resetToDefault()"
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">デフォルト値に戻す</button>
-          <button type="button"
-            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index') }}'"
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">戻る</button>
+                  <td class="px-3 py-4 whitespace-nowrap text-center">～</td>
+                  <td class="px-3 py-4 whitespace-nowrap text-center">
+                    <div class="relative">
+                      <input type="number" id="max_value_{{ $key }}"
+                        name="tolerances[{{ $key }}][max_value]" value="{{ $fittingTolerance->max_value }}"
+                        step="0.1" min="-15.0" max="15.0"
+                        class="block w-full text-gray-900 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10">
+                      <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <span class="text-gray-500 text-sm">cm</span>
+                      </div>
+                    </div>
+                    <div id="error-message-max-{{ $key }}" style="color: red; display: none;" class="mt-2"></div>
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-6">
+          <div class="flex flex-col sm:flex-row justify-around gap-3">
+            <button
+              class="text-center block px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">更新する</button>
+            <button type="button" onclick="resetToDefault()"
+              class="text-center block px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">デフォルト値に戻す</button>
+            <button type="button"
+              onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index') }}'"
+              class="text-center block px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">戻る</button>
+          </div>
         </div>
     </div>
     </form>
@@ -136,12 +152,16 @@
           const max = parseFloat(maxInput.value);
 
           if (!isNaN(min) && !isNaN(max) && min > max) { //minとmaxの変数が空かどうか判定？
-            errorDivMin.textContent = "下限値は上限値以下にしてください。";
-            errorDivMax.textContent = "上限値は下限値以上にしてください。";
+            errorDivMin.textContent = "上限値以下にしてください。";
+            errorDivMax.textContent = "下限値以上にしてください。";
+            errorDivMin.style.display = ""
+            errorDivMax.style.display = ""
             isValid = false;
           } else {
             errorDivMin.textContent = "";
             errorDivMax.textContent = "";
+            errorDivMin.style.display = "none"
+            errorDivMax.style.display = "none"
           }
         })();
     @endforeach

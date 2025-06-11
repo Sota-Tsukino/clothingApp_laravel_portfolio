@@ -238,18 +238,18 @@
               <thead class="bg-gray-50">
                 <tr>
                   <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">部位</th>
+                    class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">部位</th>
                   <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">あなたに合う衣類サイズ
+                    class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">あなたに合う衣類サイズ
                   </th>
                   <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">衣類サイズ</th>
+                    class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">衣類サイズ</th>
                   <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">判定</th>
+                    class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[146px]">判定</th>
                   <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">優先度</th>
+                    class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">優先度</th>
                   <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ガイド</th>
+                    class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">ガイド</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
@@ -286,29 +286,31 @@
                 @endphp
                 @foreach ($fields as $field)
                   <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {{ __("measurement.$field") }}
                     </td>
                     <td
-                      class="px-4 py-3 whitespace-nowrap font-semibold text-sm {{ $suitableSize[$field] ? 'text-green-600' : 'text-gray-700' }}">
-                      {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
+                      class="px-4 py-4 whitespace-nowrap">
+                      <div class="inline-flex text-sm font-semibold px-2 py-1 rounded-full {{ $suitableSize[$field] ? 'text-green-600 bg-green-50' : 'text-gray-700' }}">
+                          {{ number_format($suitableSize[$field], 1) ?? '未登録' }}cm
+                      </div>
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                       <span id="{{ $field }}__size">
                         {{ $item->$field ? number_format($item->$field, 1) : '未登録' }}
                       </span>
                       <span class="ml-1">cm</span>
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap">
+                    <td class="px-4 py-4 whitespace-nowrap">
                       <span id="{{ $field }}_result"
-                        class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                        class="inline-flex px-2 py-1 text-sm font-semibold rounded-full bg-gray-100 text-gray-800">
                         {{ $field == 'total_length' ? 'ー' : '未評価' }}
                       </span>
                     </td>
-                    <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                       <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
                     </td>
-                    <td x-data="{ show: false }" class="relative text-center">
+                    <td x-data="{ show: false }" class="relative px-4 py-4">
                       <x-popup-guide :field="$field" :guides="$guides" />
                     </td>
                   </tr>
@@ -338,7 +340,7 @@
             @csrf
             @method('delete')
             <button type="button" onclick="deletePost(this)" data-id="{{ $item->id }}"
-              class="block text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+              class="w-full inline-block text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
               削除する
             </button>
           </form>

@@ -307,19 +307,13 @@
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
-                  <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">部位</th>
-                  <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">あなたに合う衣類サイズ
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">部位</th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">あなたに合う衣類サイズ
                   </th>
-                  <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">衣類サイズ</th>
-                  <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">判定</th>
-                  <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">優先度</th>
-                  <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ガイド</th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[128px]">衣類サイズ</th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[146px]">判定</th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">優先度</th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">ガイド</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
@@ -341,31 +335,35 @@
                             : '');
                   @endphp
                   <tr class="{{ $fieldClass }} hover:bg-gray-50">
-                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {{ __("measurement.$field") }}
                     </td>
                     <td
-                      class="px-4 py-3 whitespace-nowrap text-sm font-semibold {{ $suitableSize[$field] ? 'text-green-600' : 'text-gray-700' }}">
-                      {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
-                    </td>
-                    <td class="px-4 py-3 whitespace-nowrap">
-                      <div class="flex items-center">
-                        <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1"
-                          value="{{ $item->$field }}" min="0.0" max="999.0" placeholder="40.0"
-                          class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-20 text-sm border-gray-300 rounded-md">
-                        <span class="ml-2 text-sm text-gray-600">cm</span>
+                      class="px-4 py-4 whitespace-nowrap text-sm font-semibold">
+                      <div class="inline-flex text-sm font-semibold px-2 py-1 rounded-full {{ $suitableSize[$field] ? 'text-green-600 bg-green-50' : 'text-gray-700' }}">
+                          {{ number_format($suitableSize[$field], 1) ?? '未登録' }}cm
                       </div>
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap">
+                    <td class="px-4 py-4 whitespace-nowrap">
+                      <div class="relative">
+                        <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1"
+                          value="{{ $item->$field }}" min="0.0" max="999.0" placeholder="40.0"
+                          class="block w-full text-gray-900 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                          <span class="text-gray-500 text-sm">cm</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
                       <span id="{{ $field }}_result"
-                        class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                        {{ $field == 'total_length' ? 'ー' : '未評価'}}
+                        class="inline-flex px-2 py-1 text-sm font-semibold rounded-full bg-gray-100 text-gray-800">
+                        {{ $field == 'total_length' ? 'ー' : '未評価' }}
                       </span>
                     </td>
-                    <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                       <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
                     </td>
-                    <td x-data="{ show: false }" class="relative text-center">
+                    <td x-data="{ show: false }" class="relative px-4 py-4">
                       <x-popup-guide :field="$field" :guides="$guides" />
                     </td>
                   </tr>
@@ -376,27 +374,15 @@
         </div>
 
         <!-- アクションボタン -->
-        <div class="flex flex-wrap justify-between gap-4 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row justify-around gap-4 pt-4">
           <button type="submit"
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-              fill="currentColor">
-              <path fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clip-rule="evenodd" />
-            </svg>
+            class=" text-center inline-block items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             更新する
           </button>
 
           <button type="button"
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.show' : 'clothing-item.show', ['clothing_item' => $item->id]) }}'"
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-              fill="currentColor">
-              <path fill-rule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clip-rule="evenodd" />
-            </svg>
+            class=" text-center inline-block items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
             キャンセル
           </button>
         </div>

@@ -5,7 +5,7 @@
     </h2>
   </x-slot>
 
-  <section class="text-gray-600 body-font overflow-hidden px-7">
+  <section class="text-gray-600 body-font overflow-hidden px-2 sm:px-7">
     <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
@@ -51,21 +51,21 @@
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
-                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/4">部位</th>
-                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/4">体格寸法</th>
-                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500"></th>
-                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/2">補正値</th>
+                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/4 whitespace-nowrap">部位</th>
+                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/4 whitespace-nowrap">体格寸法</th>
+                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap"></th>
+                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/2 whitespace-nowrap min-w-28">補正値</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($fields as $field)
                   <tr class="hover:bg-gray-50 transition-colors duration-150">
-                    <td class="px-4 py-4 text-sm font-medium text-gray-900">{{ __("measurement.$field") }}</td>
-                    <td class="px-4 py-4 text-sm font-medium text-gray-900">
+                    <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ __("measurement.$field") }}</td>
+                    <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                       {{ $bodyMeasurement->$field ?? '未登録' }}<span class="ml-1">cm</span>
                     </td>
-                    <td class="px-4 py-4 text-sm font-medium text-gray-900">+</td>
-                    <td class="px-4 py-4">
+                    <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">+</td>
+                    <td class="px-4 py-4 whitespace-nowrap min-w-28">
                       <div class="relative">
                         <input type="number" name="{{ $field }}" step="0.1"
                           value="{{ $bodyCorrection->$field }}" min="0.0" max="9.0"

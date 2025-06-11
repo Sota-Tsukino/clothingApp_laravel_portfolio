@@ -15,8 +15,8 @@
         @csrf
         <div class="w-full mb-6 ">
           <h2 class='text-black'>必須入力</h2>
-          <div class="flex mb-6 justify-between">
-            <div class="main w-1/3 text-center">
+          <div class="flex flex-col sm:flex-row gap-3 mb-6 justify-between">
+            <div class="main sm:w-1/3 text-center">
               <label class="block mb-2 text-gray-700">メイン画像</label>
               <button type="button" data-micromodal-trigger="modal-item-list"
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="main">
@@ -29,7 +29,7 @@
                 <input type="hidden" name="items[]" id="input-main">
               </div>
             </div>
-            <div class="sub1 w-1/3 text-center">
+            <div class="sub1 sm:w-1/3 text-center">
               <label class="block mb-2 text-gray-700">サブ画像1</label>
               <button type="button" data-micromodal-trigger="modal-item-list"
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="sub1">
@@ -42,7 +42,7 @@
                 <input type="hidden" name="items[]" id="input-sub1">
               </div>
             </div>
-            <div class="sub2 w-1/3 text-center">
+            <div class="sub2 sm:w-1/3 text-center">
               <label class="block mb-2 text-gray-700">サブ画像2</label>
               <button type="button" data-micromodal-trigger="modal-item-list"
                 class="bg-blue-500 text-white px-4 py-2 rounded" data-target="sub2">

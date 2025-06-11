@@ -5,8 +5,8 @@
     </h2>
   </x-slot>
 
-  <section class="text-gray-600 body-font overflow-hidden px-7">
-    <div class="container max-w-3xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
+  <section class="text-gray-600 body-font overflow-hidden px-2 sm:px-6">
+    <div class="max-w-4xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
@@ -41,47 +41,63 @@
         <p class="text-sm text-yellow-700">
           ※サイズ判定は最新の体格計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}を元に判定します</p>
       </div>
-      <table class="w-full whitespace-no-wrap">
-        <thead>
-          <tr>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">部位</th>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">体格寸法</th>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">あなたに合う衣類サイズ</th>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">衣類サイズ</th>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">判定</th>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">優先度</th>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">ガイド</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($fields as $field)
-            <tr>
-              <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
-              <td class="text-center px-2 py-2">
-                {{ number_format($bodyMeasurement[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
-              </td>
-              <td class="text-center px-2 py-2">
-                {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
-              </td>
-              <td class="text-center px-2 py-2">
-                <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1" value=""
-                  min="0.0" max="999.0" placeholder="40.0" class="text-black">
-                <span class="ml-1">cm</span>
-              </td>
-              <td>
-                <span id="{{ $field }}_result" class="font-semibold block">未評価</span>
-              </td>
-              <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
-                <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
-              </td>
-              <td x-data="{ show: false }" class="relative text-center">
-                <x-popup-guide :field="$field" :guides="$guides" />
-              </td>
-            </tr>
-          @endforeach
+      <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">部位</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">体格寸法</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">あなたに合う衣類サイズ
+                </th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[140px]">
+                  衣類サイズ</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[130px]">判定</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">優先度</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">ガイド</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              @foreach ($fields as $field)
+                <tr class="hover:bg-gray-50 transition-colors duration-150">
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    {{ __("measurement.$field") }}</td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    {{ number_format($bodyMeasurement[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
+                  </td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    <div class="text-sm font-semibold text-center text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                      {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    <div class="relative">
+                      <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1"
+                        value="" min="0.0" max="999.0" placeholder="40.0"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10">
+                      <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <span class="text-gray-500 text-sm">cm</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    <span id="{{ $field }}_result" class="font-semibold block">未評価</span>
+                  </td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
+                  </td>
+                  <td x-data="{ show: false }"
+                    class="relative px-4 py-4 text-sm font-medium text-gray-900">
+                    <x-popup-guide :field="$field" :guides="$guides" />
+                  </td>
+                </tr>
+              @endforeach
 
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="flex justify-between mx-auto my-5">
         <button type="button"
           onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index') }}'"

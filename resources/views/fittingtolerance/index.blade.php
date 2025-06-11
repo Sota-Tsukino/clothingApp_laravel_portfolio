@@ -5,7 +5,7 @@
     </h2>
   </x-slot>
 
-  <section class="text-gray-600 body-font overflow-hidden px-7">
+  <section class="text-gray-600 body-font overflow-hidden px-2 sm:px-7">
     <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
@@ -40,37 +40,41 @@
           サイズチェッカー機能で、衣類サイズがユーザーの体格寸法に合っているかどうか判定する際に使用されます。例えば、首回り:36cmの場合で下限値:-0.5cm, 上限値:1.0cmの場合は
           35.5cm~37cmの範囲が「✅ちょどいい」判定となります。</p>
       </div>
-      <table class="w-full whitespace-no-wrap">
-        <thead>
-          <tr>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">部位</th>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">判定</th>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">下限値</th>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100"></th>
-            <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">上限値</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($fittingTolerances as $fittingTolerance)
-            <tr>
-              <td class="text-center px-2 py-2">{{ __('measurement.' . $fittingTolerance->body_part) }}</td>
-              <td class="text-center px-2 py-2">
-                @if ($fittingTolerance->tolerance_level === 'just')
-                  <span class="text-green-600 font-semibold">✅ ちょうどいい</span>
-                @elseif ($fittingTolerance->tolerance_level === 'slight')
-                  <span class="text-yellow-500 font-semibold">△ やや合わない</span>
-                @elseif ($fittingTolerance->tolerance_level === 'long_or_short')
-                  <span class="text-red-600 font-semibold">✕ 合わない</span>
-                @endif
-              </td>
-              <td class="text-center px-2 py-2">{{ $fittingTolerance->min_value }}cm</td>
-              <td class="text-center px-2 py-2">~</td>
-              <td class="text-center px-2 py-2">{{ $fittingTolerance->max_value }}cm</td>
-            </tr>
-          @endforeach
+      <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/8 whitespace-nowrap">部位</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-2/8 whitespace-nowrap">判定</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-2/8 whitespace-nowrap">下限値</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/8 whitespace-nowrap"></th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-2/8 whitespace-nowrap">上限値</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              @foreach ($fittingTolerances as $fittingTolerance)
+                <tr class="hover:bg-gray-50 transition-colors duration-150">
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ __('measurement.' . $fittingTolerance->body_part) }}</td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    @if ($fittingTolerance->tolerance_level === 'just')
+                      <span class="text-green-600 font-semibold">✅ ちょうどいい</span>
+                    @elseif ($fittingTolerance->tolerance_level === 'slight')
+                      <span class="text-yellow-500 font-semibold">△ やや合わない</span>
+                    @elseif ($fittingTolerance->tolerance_level === 'long_or_short')
+                      <span class="text-red-600 font-semibold">✕ 合わない</span>
+                    @endif
+                  </td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ $fittingTolerance->min_value }}cm</td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">~</td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ $fittingTolerance->max_value }}cm</td>
+                </tr>
+              @endforeach
 
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </div>
+      </div>
       <div class="flex justify-between mx-auto my-5">
         <button
           onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.edit' : 'tolerance.edit') }}'"

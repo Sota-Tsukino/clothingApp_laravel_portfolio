@@ -6,7 +6,7 @@
   </x-slot>
 
   <div class="py-6 sm:py-12">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto px-2 sm:px-4 lg:px-6">
       <div class="bg-white overflow-hidden shadow-xl rounded-lg">
         <div class="p-8 sm:p-12 lg:p-16">
           <!-- Validation Errors -->
@@ -57,19 +57,19 @@
             <!-- 測定データテーブル -->
             <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
               <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
+                <table class="w-full divide-y divide-gray-200">
                   <thead class="bg-gray-50">
                     <tr>
                       <th scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                        class="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider w-1/4 whitespace-nowrap">
                         部位
                       </th>
                       <th scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider w-1/2">
+                        class="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider w-1/2 whitespace-nowrap">
                         体格寸法
                       </th>
                       <th scope="col"
-                        class="px-4 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                        class="px-4 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider w-1/4 whitespace-nowrap">
                         ガイド
                       </th>
                     </tr>
@@ -77,10 +77,10 @@
                   <tbody class="bg-white divide-y divide-gray-200">
                     @foreach ($fields as $field)
                       <tr class="hover:bg-gray-50 transition-colors duration-150">
-                        <td class="px-4 py-4 text-sm font-medium text-gray-900">
+                        <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                           {{ __("measurement.$field") }}
                         </td>
-                        <td class="px-4 py-4">
+                        <td class="px-4 py-4 whitespace-nowrap">
                           <div class="flex items-center space-x-2">
                             @if ($field === 'armpit_to_armpit_width')
                               <div class="flex-1">
@@ -117,7 +117,7 @@
                             @endif
                           </div>
                         </td>
-                        <td x-data="{ show: false }" class="px-4 py-4 text-center relative">
+                        <td x-data="{ show: false }" class="px-4 py-4 text-center relative whitespace-nowrap">
                           <x-popup-guide :field="$field" :guides="$guides" />
                         </td>
                       </tr>
