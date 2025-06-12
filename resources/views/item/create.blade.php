@@ -5,8 +5,8 @@
     </h2>
   </x-slot>
 
-  <section class="text-gray-600 body-font overflow-hidden px-7">
-    <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
+  <section class="text-gray-600 body-font overflow-hidden px-2 sm:px-4">
+    <div class="max-w-3xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
@@ -225,23 +225,30 @@
               </div>
             </div>
             <!-- 注意書き -->
-            <div class="mb-6 bg-yellow-50 p-4 rounded-md">
-              <p class="text-sm text-yellow-700">
-                ※サイズ判定は最新の体格計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}を元に判定します</p>
+            <div class="mb-6 bg-green-50 p-4 rounded-md">
+              <p class="text-sm text-green-700">
+                サイズ判定は最新の体格計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}を元に判定します</p>
             </div>
-            <div class="overflow-x-auto rounded-lg border border-gray-200 mb-6">
+            <div class="overflow-x-auto rounded-lg border border-gray-200">
               <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
-                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">部位</th>
-                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">あなたに合う衣類サイズ</th>
-                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">衣類サイズ</th>
-                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">判定</th>
-                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">優先度</th>
-                    <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">ガイド</th>
+                    <th scope="col"
+                      class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">部位</th>
+                    <th scope="col"
+                      class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">あなたに合う衣類サイズ</th>
+                    <th scope="col"
+                      class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">衣類サイズ</th>
+                    <th scope="col"
+                      class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[146px]">判定
+                    </th>
+                    <th scope="col"
+                      class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">優先度</th>
+                    <th scope="col"
+                      class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">ガイド</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class="bg-white divide-y divide-gray-200">
                   @foreach ($fields as $field)
                     @php
                       $fieldClass = in_array($field, [
@@ -260,14 +267,20 @@
                               : '');
                     @endphp
                     <tr class="{{ $fieldClass }}  hover:bg-gray-50">
-                      <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {{ __("measurement.$field") }}
                       </td>
-                      <td
-                        class="px-4 py-3 whitespace-nowrap text-sm font-semibold {{ $suitableSize[$field] ? 'text-green-600' : 'text-gray-700' }}">
-                        {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
+                      <td class="px-4 py-4 whitespace-nowrap">
+                        <div
+                          class="inline-flex text-sm font-semibold px-2 py-1 rounded-full {{ $suitableSize[$field] ? 'text-green-600 bg-green-50' : 'text-gray-700' }}">
+                          @if ($field === 'total_length')
+                            ー
+                          @else
+                            {{ number_format($suitableSize[$field], 1) ?? '未登録' }}cm
+                          @endif
+                        </div>
                       </td>
-                      <td class="px-4 py-3 whitespace-nowrap">
+                      <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         <div class="flex items-center">
                           <input type="number" name="{{ $field }}" id="{{ $field }}" step="0.1"
                             value="{{ old($field) }}" min="0.0" max="999.0" placeholder="40.0"
@@ -275,20 +288,17 @@
                           <span class="ml-2 text-sm text-gray-600">cm</span>
                         </div>
                       </td>
-                      <td class="px-4 py-3 whitespace-nowrap">
+                      <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         <span id="{{ $field }}_result"
-                          class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                          未評価
+                          class="inline-flex px-2 py-1 text-sm font-semibold rounded-full bg-gray-100 text-gray-800">
+                          {{ $field == 'total_length' ? 'ー' : '未評価' }}
                         </span>
                       </td>
-                      <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
-                        {{ $field == 'chest_circumference' || $field == 'hip' ? '低い' : '高い' }}
+                      <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
                       </td>
-                      <td class="px-1 py-3 whitespace-nowrap text-center">
-                        <button type="button" class="text-indigo-600 hover:text-indigo-900 focus:outline-none">
-                          <img src="{{ asset('images/question.png') }}" alt="ガイドアイコン画像"
-                            class="w-5 h-5 hover:opacity-75 transition-opacity">
-                        </button>
+                      <td x-data="{ show: false }" class="relative px-4 py-4">
+                        <x-popup-guide :field="$field" :guides="$guides" />
                       </td>
                     </tr>
                   @endforeach
@@ -298,12 +308,12 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-wrap justify-between gap-4 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row justify-around gap-4 pt-4">
           <button
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">登録する</button>
+            class="inline-block text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">登録する</button>
           <button type="button"
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index') }}'"
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">キャンセル</button>
+            class="inline-block text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">キャンセル</button>
         </div>
       </form>
     </div>

@@ -7,11 +7,6 @@
 
   <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-      <!-- ヘッダー部分 -->
-      <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
-        <h1 class="text-xl md:text-2xl font-bold text-white">衣類アイテム編集</h1>
-      </div>
-
       <form id="form"
         action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.update' : 'clothing-item.update', ['clothing_item' => $item->id]) }}"
         method="post" enctype="multipart/form-data" class="p-6 md:p-8">
@@ -297,8 +292,8 @@
           </div>
 
           <!-- 注意書き -->
-          <div class="mb-6 bg-yellow-50 p-4 rounded-md">
-            <p class="text-sm text-yellow-700">
+          <div class="mb-6 bg-green-50 p-4 rounded-md">
+            <p class="text-sm text-green-700">
               ※サイズ判定は最新の体格計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}を元に判定します</p>
           </div>
 
@@ -307,13 +302,21 @@
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
-                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">部位</th>
-                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">あなたに合う衣類サイズ
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                    部位</th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                    あなたに合う衣類サイズ
                   </th>
-                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[128px]">衣類サイズ</th>
-                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[146px]">判定</th>
-                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">優先度</th>
-                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">ガイド</th>
+                  <th scope="col"
+                    class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[128px]">衣類サイズ
+                  </th>
+                  <th scope="col"
+                    class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[146px]">判定
+                  </th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                    優先度</th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                    ガイド</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
@@ -338,10 +341,14 @@
                     <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {{ __("measurement.$field") }}
                     </td>
-                    <td
-                      class="px-4 py-4 whitespace-nowrap text-sm font-semibold">
-                      <div class="inline-flex text-sm font-semibold px-2 py-1 rounded-full {{ $suitableSize[$field] ? 'text-green-600 bg-green-50' : 'text-gray-700' }}">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold">
+                      <div
+                        class="inline-flex text-sm font-semibold px-2 py-1 rounded-full {{ $suitableSize[$field] ? 'text-green-600 bg-green-50' : 'text-gray-700' }}">
+                        @if ($field === 'total_length')
+                          ー
+                        @else
                           {{ number_format($suitableSize[$field], 1) ?? '未登録' }}cm
+                        @endif
                       </div>
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap">

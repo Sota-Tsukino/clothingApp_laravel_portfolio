@@ -6,7 +6,7 @@
   </x-slot>
 
   <div class="py-6 sm:py-12">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="bg-white overflow-hidden shadow-xl rounded-lg">
         <div class="p-4 sm:p-6 lg:p-8">
           <x-flash-message status="session('status')" />
@@ -45,25 +45,25 @@
                 <thead class="bg-gray-50">
                   <tr>
                     <th scope="col"
-                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
+                      class="px-3 py-3 text-center text-sm font-medium text-gray-500 whitespace-nowrap">
                       部位
                     </th>
                     <th scope="col"
-                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
+                      class="px-3 py-3 text-center text-sm font-medium text-gray-500 whitespace-nowrap">
                       体格寸法
                     </th>
                     <th scope="col"
-                      class="px-2 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
+                      class="px-2 py-3 text-center text-sm font-medium text-gray-500 whitespace-nowrap">
                     </th>
                     <th scope="col"
-                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
+                      class="px-3 py-3 text-center text-sm font-medium text-gray-500 whitespace-nowrap">
                       補正値
                     </th>
                     <th scope="col"
-                      class="px-2 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
+                      class="px-2 py-3 text-center text-sm font-medium text-gray-500 whitespace-nowrap">
                     </th>
                     <th scope="col"
-                      class="px-3 py-3 text-center text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
+                      class="px-3 py-3 text-center text-sm font-medium text-gray-500 whitespace-nowrap">
                       あなたに合う衣類サイズ
                     </th>
                   </tr>

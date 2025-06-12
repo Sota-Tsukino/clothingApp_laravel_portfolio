@@ -55,7 +55,8 @@
             <tbody class="bg-white divide-y divide-gray-200">
               @foreach ($fittingTolerances as $fittingTolerance)
                 <tr class="hover:bg-gray-50 transition-colors duration-150">
-                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ __('measurement.' . $fittingTolerance->body_part) }}</td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    {{ __('measurement.' . $fittingTolerance->body_part) }}</td>
                   <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                     @if ($fittingTolerance->tolerance_level === 'just')
                       <span class="text-green-600 font-semibold">✅ ちょうどいい</span>
@@ -65,9 +66,11 @@
                       <span class="text-red-600 font-semibold">✕ 合わない</span>
                     @endif
                   </td>
-                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ $fittingTolerance->min_value }}cm</td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    {{ $fittingTolerance->min_value }}cm</td>
                   <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">~</td>
-                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ $fittingTolerance->max_value }}cm</td>
+                  <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    {{ $fittingTolerance->max_value }}cm</td>
                 </tr>
               @endforeach
 
@@ -75,13 +78,15 @@
           </table>
         </div>
       </div>
-      <div class="flex justify-between mx-auto my-5">
-        <button
-          onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.edit' : 'tolerance.edit') }}'"
-          class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">編集する</button>
-        <button type="button"
-          onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index') }}'"
-          class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">サイズチェッカーへ</button>
+      <div class="pt-6">
+        <div class="flex flex-col sm:flex-row gap-3 justify-around">
+          <button
+            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.edit' : 'tolerance.edit') }}'"
+            class="inline-block text-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">編集する</button>
+          <button type="button"
+            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index') }}'"
+            class="inline-block text-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">サイズチェッカーへ</button>
+        </div>
       </div>
     </div>
   </section>

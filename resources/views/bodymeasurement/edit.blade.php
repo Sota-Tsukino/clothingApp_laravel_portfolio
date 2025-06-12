@@ -117,7 +117,7 @@
                             @endif
                           </div>
                         </td>
-                        <td x-data="{ show: false }" class="px-4 py-4 text-center relative whitespace-nowrap">
+                        <td x-data="{ show: false }" class="px-4 py-4 text-center relative">
                           <x-popup-guide :field="$field" :guides="$guides" />
                         </td>
                       </tr>

@@ -52,7 +52,8 @@
                 </th>
                 <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[140px]">
                   衣類サイズ</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[130px]">判定</th>
+                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[130px]">
+                  判定</th>
                 <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">優先度</th>
                 <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">ガイド</th>
               </tr>
@@ -81,13 +82,12 @@
                     </div>
                   </td>
                   <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                    <span id="{{ $field }}_result" class="font-semibold block">未評価</span>
+                    <span id="{{ $field }}_result" class="inline-flex px-2 py-1 text-sm font-semibold rounded-full bg-gray-100 text-gray-800">未評価</span>
                   </td>
                   <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                     <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
                   </td>
-                  <td x-data="{ show: false }"
-                    class="relative px-4 py-4 text-sm font-medium text-gray-900">
+                  <td x-data="{ show: false }" class="relative px-4 py-4 text-sm text-gray-900">
                     <x-popup-guide :field="$field" :guides="$guides" />
                   </td>
                 </tr>
@@ -98,10 +98,12 @@
         </div>
       </div>
 
-      <div class="flex justify-between mx-auto my-5">
-        <button type="button"
-          onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index') }}'"
-          class="text-white bg-violet-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">体格許容値を表示</button>
+      <div class="pt-6">
+        <div class="flex flex-col sm:flex-row gap-3 justify-around">
+          <button type="button"
+            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index') }}'"
+            class="inline-block px-4 py-2 bg-teal-600 rounded-md font-semibold text-sm text-white hover:bg-teal-700 active:bg-teal-900 focus:outline-none focus:border-teal-900 focus:ring ring-teal-300 disabled:opacity-25 transition ease-in-out duration-150">体格許容値を表示</button>
+        </div>
       </div>
     </div>
   </section>
