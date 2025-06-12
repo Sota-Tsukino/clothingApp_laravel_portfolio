@@ -3,7 +3,7 @@
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
       衣類アイテム一覧
     </h2>
-    <form  action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index') }}"
+    <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index') }}"
       method="get" class="space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
@@ -31,8 +31,10 @@
         <div>
           <label for="sort" class="block text-sm font-medium text-gray-700">表示順</label>
           <select name="sort" id="sort" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            <option value="{{ \Constant::SORT_ORDER['latestRegisterItem'] }}" @selected(empty(request('sort')))>登録日が新しい(デフォルト)</option>
-            <option value="{{ \Constant::SORT_ORDER['oldRegisteredItem'] }}" @selected(request('sort') === \Constant::SORT_ORDER['oldRegisteredItem'])>登録日が古い</option>
+            <option value="{{ \Constant::SORT_ORDER['latestRegisterItem'] }}" @selected(empty(request('sort')))>
+              登録日が新しい(デフォルト)</option>
+            <option value="{{ \Constant::SORT_ORDER['oldRegisteredItem'] }}" @selected(request('sort') === \Constant::SORT_ORDER['oldRegisteredItem'])>登録日が古い
+            </option>
             <option value="{{ \Constant::SORT_ORDER['newItem'] }}" @selected(request('sort') === \Constant::SORT_ORDER['newItem'])>購入日が新しい</option>
             <option value="{{ \Constant::SORT_ORDER['oldItem'] }}" @selected(request('sort') === \Constant::SORT_ORDER['oldItem'])>購入日が古い</option>
           </select>
@@ -77,6 +79,9 @@
         </div>
       </div>
       {{ $items->links() }}
+      <button
+        onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.create' : 'clothing-item.create') }}'"
+        class="inline-block px-4 py-2 bg-green-600 rounded-md font-semibold text-sm text-white hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 mt-4">新規登録</button>
     </div>
   </section>
 </x-app-layout>

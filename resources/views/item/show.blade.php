@@ -6,11 +6,6 @@
   </x-slot>
   <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-      <!-- ヘッダー部分 -->
-      <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
-        <h1 class="text-xl md:text-2xl font-bold text-white">衣類アイテム詳細</h1>
-      </div>
-
       <div class="p-6 md:p-8">
         <!-- バリデーションエラーとフラッシュメッセージ -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
@@ -237,19 +232,20 @@
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
-                  <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">部位</th>
-                  <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">あなたに合う衣類サイズ
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                    部位</th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                    あなたに合う衣類サイズ
                   </th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                    衣類サイズ</th>
                   <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">衣類サイズ</th>
-                  <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">判定</th>
-                  <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">優先度</th>
-                  <th scope="col"
-                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ガイド</th>
+                    class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[146px]">判定
+                  </th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                    優先度</th>
+                  <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                    ガイド</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
@@ -286,29 +282,35 @@
                 @endphp
                 @foreach ($fields as $field)
                   <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {{ __("measurement.$field") }}
                     </td>
-                    <td
-                      class="px-4 py-3 whitespace-nowrap font-semibold text-sm {{ $suitableSize[$field] ? 'text-green-600' : 'text-gray-700' }}">
-                      {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                      <div
+                        class="inline-flex text-sm font-semibold px-2 py-1 rounded-full {{ $suitableSize[$field] ? 'text-green-600 bg-green-50' : 'text-gray-700' }}">
+                        @if ($field === 'total_length')
+                          ー
+                        @else
+                          {{ number_format($suitableSize[$field], 1) ?? '未登録' }}cm
+                        @endif
+                      </div>
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                       <span id="{{ $field }}__size">
                         {{ $item->$field ? number_format($item->$field, 1) : '未登録' }}
                       </span>
                       <span class="ml-1">cm</span>
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap">
+                    <td class="px-4 py-4 whitespace-nowrap">
                       <span id="{{ $field }}_result"
-                        class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                        class="inline-flex px-2 py-1 text-sm font-semibold rounded-full bg-gray-100 text-gray-800">
                         {{ $field == 'total_length' ? 'ー' : '未評価' }}
                       </span>
                     </td>
-                    <td class="px-1 py-3 whitespace-nowrap text-sm text-gray-700">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                       <x-sizechecker-priority-tag :priorityMap="$priorityMap" :field="$field" />
                     </td>
-                    <td x-data="{ show: false }" class="relative text-center">
+                    <td x-data="{ show: false }" class="relative px-4 py-4">
                       <x-popup-guide :field="$field" :guides="$guides" />
                     </td>
                   </tr>
@@ -319,26 +321,26 @@
         </div>
 
         <!-- アクションボタン -->
-        <div class="flex flex-wrap justify-between gap-4 pt-4 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row justify-around gap-4 pt-4">
           <button
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.edit' : 'clothing-item.edit', ['clothing_item' => $item->id]) }}'"
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            class="inline-block text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             編集する
           </button>
 
           <button type="button"
             onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index') }}'"
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+            class="inline-block text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
             衣類アイテム一覧へ
           </button>
 
           <form id="delete_{{ $item->id }}"
             action="{{ route('admin.clothing-item.destroy', ['clothing_item' => $item->id]) }}" method="post"
-            class="inline">
+            class="block">
             @csrf
             @method('delete')
             <button type="button" onclick="deletePost(this)" data-id="{{ $item->id }}"
-              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+              class="w-full inline-block text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
               削除する
             </button>
           </form>

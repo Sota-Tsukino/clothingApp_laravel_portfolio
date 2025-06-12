@@ -10,9 +10,9 @@
     </h2>
   </x-slot>
 
-  <section class="text-gray-600 body-font overflow-hidden">
+  <section class="text-gray-600 body-font overflow-hidden px-4 sm:px-8">
     <div
-      class="container max-w-3xl px-4 sm:px-6 md:px-8 py-8 md:py-12 mx-auto bg-white rounded-lg my-6 md:my-16 shadow-lg">
+      class="container max-w-3xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- バリデーションエラーとフラッシュメッセージ -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
@@ -103,15 +103,15 @@
       </div>
 
       <!-- ボタンエリア -->
-      <div class="flex flex-col sm:flex-row justify-between mx-auto space-y-3 sm:space-y-0">
+      <div class="flex flex-col sm:flex-row justify-around mx-auto gap-4">
         <button
           onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.coordinate.edit' : 'coordinate.edit', ['coordinate' => $coordinate->id]) }}'"
-          class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded transition duration-200">
+          class="text-center inline-block items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           編集する
         </button>
         <button
           onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index') }}'"
-          class="text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded transition duration-200">
+          class="text-center inline-block items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
           コーデ一覧へ
         </button>
 
@@ -121,7 +121,7 @@
           @csrf
           @method('delete')
           <button type="button" onclick="deletePost(this)" data-id="{{ $coordinate->id }}"
-            class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-200">
+            class="w-full text-center inline-block items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
             削除する
           </button>
         </form>

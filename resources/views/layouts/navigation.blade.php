@@ -74,16 +74,16 @@
                             体格許容値
                         </x-dropdown-link>
                         <x-dropdown-link
+                            :href="route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index')">
+                            サイズチェッカー
+                        </x-dropdown-link>
+                        <x-dropdown-link
                             :href="route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')">
                             衣類アイテム一覧
                         </x-dropdown-link>
                         <x-dropdown-link
                             :href="route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index')">
                             コーデ一覧
-                        </x-dropdown-link>
-                        <x-dropdown-link
-                            :href="route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index')">
-                            サイズチェッカー
                         </x-dropdown-link>
                         @if (Auth::user()->role === 'admin')
                             <x-dropdown-link
@@ -134,9 +134,35 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.show')">
+                <x-responsive-nav-link :href="route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link
+                    :href="route(Auth::user()->role === 'admin' ? 'admin.measurement.index' : 'measurement.index')">
+                    体格情報一覧
+                </x-responsive-nav-link>
+                <x-responsive-nav-link
+                    :href="route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index')">
+                    体格許容値
+                </x-responsive-nav-link>
+                <x-responsive-nav-link
+                    :href="route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index')">
+                    サイズチェッカー
+                </x-responsive-nav-link>
+                <x-responsive-nav-link
+                    :href="route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')">
+                    衣類アイテム一覧
+                </x-responsive-nav-link>
+                <x-responsive-nav-link
+                    :href="route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index')">
+                    コーデ一覧
+                </x-responsive-nav-link>
+                @if (Auth::user()->role === 'admin')
+                    <x-responsive-nav-link
+                        :href="route('admin.user.index')">
+                        ユーザー一覧
+                    </x-responsive-nav-link>
+                @endif
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">

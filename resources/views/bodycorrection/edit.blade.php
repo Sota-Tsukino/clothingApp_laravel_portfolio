@@ -5,7 +5,7 @@
     </h2>
   </x-slot>
 
-  <section class="text-gray-600 body-font overflow-hidden px-7">
+  <section class="text-gray-600 body-font overflow-hidden px-2 sm:px-7">
     <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
@@ -42,44 +42,56 @@
       @endphp
       <form
         action="{{ route(Auth::user()->role === 'admin' ? 'admin.correction.update' : 'correction.update', ['correction' => $bodyCorrection->id]) }}?from_measurement_id={{ $fromMeasurementId }}"
-        method="post">
+        method="post" class="space-y-6">
         @csrf
         @method('put')
-        <table class="w-full whitespace-no-wrap">
-          <thead>
-            <tr>
-              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">部位</th>
-              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">体格寸法</th>
-              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100"></th>
-              <th class="text-center title-font font-medium text-gray-900 text-sm bg-gray-100">補正値</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($fields as $field)
-              <tr>
-                <td class="text-center px-2 py-2">{{ __("measurement.$field") }}</td>
-                <td class="text-center px-2 py-2">
-                  {{ $bodyMeasurement->$field ?? '未登録' }}<span class="ml-1">cm</span>
-                </td>
-                <td class="text-center px-2 py-2">+</td>
-                <td class="text-center px-2 py-2">
-                  <input type="number" name="{{ $field }}" step="0.1" value="{{ $bodyCorrection->$field }}"
-                    min="0.0" max="9.0">
-                  <span class="ml-1">cm</span>
-                </td>
-              </tr>
-            @endforeach
 
-          </tbody>
-        </table>
-        <div class="flex justify-between mx-auto my-5">
-          <button
-            class="text-white bg-amber-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">更新する</button>
-          <button type="button" onclick="resetToDefault()"
-            class="text-white bg-cyan-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">デフォルト値に戻す</button>
-          <button type="button"
-            onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $fromMeasurementId]) }}'"
-            class="text-white bg-gray-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">戻る</button>
+        <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/4 whitespace-nowrap">部位</th>
+                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/4 whitespace-nowrap">体格寸法</th>
+                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap"></th>
+                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/2 whitespace-nowrap min-w-28">補正値</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                @foreach ($fields as $field)
+                  <tr class="hover:bg-gray-50 transition-colors duration-150">
+                    <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ __("measurement.$field") }}</td>
+                    <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                      {{ $bodyMeasurement->$field ?? '未登録' }}<span class="ml-1">cm</span>
+                    </td>
+                    <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">+</td>
+                    <td class="px-4 py-4 whitespace-nowrap min-w-28">
+                      <div class="relative">
+                        <input type="number" name="{{ $field }}" step="0.1"
+                          value="{{ $bodyCorrection->$field }}" min="0.0" max="9.0"
+                          class="block w-full text-gray-900 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                          <span class="text-gray-500 text-sm">cm</span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                @endforeach
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="pt-6">
+          <div class="flex flex-col sm:flex-row justify-around gap-3">
+            <button
+              class="block text-center px-4 py-2 bg-indigo-600 rounded-md font-semibold text-sm text-white hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">更新する</button>
+            <button type="button" onclick="resetToDefault()"
+              class="block text-center px-4 py-2 bg-amber-600 rounded-md font-semibold text-sm text-white hover:bg-amber-700 active:bg-amber-900 focus:outline-none focus:border-amber-900 focus:ring ring-amber-300 disabled:opacity-25 transition ease-in-out duration-150">デフォルト値に戻す</button>
+            <button type="button"
+              onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $fromMeasurementId]) }}'"
+              class="block text-center px-4 py-2 bg-teal-600 rounded-md font-semibold text-sm text-white hover:bg-teal-700 active:bg-teal-900 focus:outline-none focus:border-teal-900 focus:ring ring-teal-300 disabled:opacity-25 transition ease-in-out duration-150">戻る</button>
+          </div>
         </div>
       </form>
     </div>

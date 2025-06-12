@@ -16,7 +16,7 @@
     <!-- 情報 -->
     <div class="p-3 text-sm text-gray-800 space-y-1">
       <div class="text-sm lg:text-base text-gray-600">{{ $item->brand->name }} / {{ __("status.$item->status") }}</div>
-      <div class="text-sm sm:text-base text-gray-500">
+      <div class="text-sm lg:text-base text-gray-500">
         {{ $item->category->name ? __("category.{$item->category->name}") : '' }}{{ isset($item->subcategory) ? ' / ' . __("subcategory.{$item->subcategory->name}") : '' }}
       </div>
       <div class="text-md text-gray-600">購入日：{{ $item->purchased_date ? \Carbon\Carbon::parse($item->purchased_date)->format('Y/m/d') : '未登録' }}</div>

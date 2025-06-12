@@ -43,6 +43,8 @@ class ItemController extends Controller
 
         $userId = Auth::id();
         $formData = ItemService::getFormData($userId);
+        $priorityMap = SizeCheckerService::getPriorityMap();
+        $guides = SizeCheckerService::getGuide();
 
         return view('item.create', [
             'categories' => $formData['categories'],
@@ -55,6 +57,8 @@ class ItemController extends Controller
             'suitableSize' => $formData['suitableSize'],
             'fields' => $formData['fields'],
             'userTolerance' => $formData['userTolerance'],
+            'priorityMap' => $priorityMap,
+            'guides' => $guides,
         ]);
     }
 
