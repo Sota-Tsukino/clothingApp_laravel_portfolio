@@ -17,6 +17,10 @@
           <span class="text-gray-500 text-sm font-semibold">メール</span>
           <span class="ml-auto text-gray-900">{{ $user->email }}</span>
         </div>
+        <div class="flex mb-6">
+          <span class="text-gray-500 text-sm font-semibold">性別</span>
+          <span class="ml-auto text-gray-900">{{ __("user.$user->gender") }}</span>
+        </div>
         @if ($user->role == 'admin')
           <div class="flex mb-6">
             <span class="text-gray-500 text-sm font-semibold">役割</span>

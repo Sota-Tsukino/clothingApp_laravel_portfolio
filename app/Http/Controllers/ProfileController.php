@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use App\Models\User;
 use App\Models\Prefecture;
@@ -46,8 +47,9 @@ class ProfileController extends Controller
     {
 
         $request->validate([
-            'name' => 'required|string|max:20',
+            'nickname' => 'required|string|max:20',
             'email' => 'required|string|email|max:20|unique:users,email,' . $request->user()->id,//unique:テーブル名、カラム名、除外するID
+            'gender' =>  ['required',Rule::in(['male', 'female', 'prefer_not_to_say'])],
             'prefecture_id' => 'integer|nullable',
             'city_id' => 'integer|nullable',
         ]);
@@ -76,8 +78,9 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        $user->name = $request->name;
+        $user->nickname = $request->nickname;
         $user->email = $request->email;
+        $user->gender = $request->gender;
         $user->prefecture_id = $request->prefecture_id;
         $user->city_id = $request->city_id;
         $user->save();
