@@ -47,13 +47,13 @@
         class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
         <option value="">性別</option>
         <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>
-          {{ __('gender.male') }}
+          {{ __('user.male') }}
         </option>
         <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>
-          {{ __('gender.female') }}
+          {{ __('user.female') }}
         </option>
         <option value="prefer_not_to_say" {{ old('gender') == 'prefer_not_to_say' ? 'selected' : '' }}>
-          {{ __('gender.prefer_not_to_say') }}
+          {{ __('user.prefer_not_to_say') }}
         </option>
       </select>
     </div>
