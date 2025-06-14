@@ -1,7 +1,6 @@
 @props(['field', 'guides'])
 
-<button type="button" @mouseenter="show = true" @mouseleave="show = false" @click.away="show = false" @click="show = !show"
-  class="focus:outline-none w-7">
+<button type="button" @click="show = !show" @click.away="show = false" class="focus:outline-none w-7">
   <img src="{{ asset('images/question.png') }}" alt="ガイド" class="w-full h-full inline hover:opacity-75">
 </button>
 
