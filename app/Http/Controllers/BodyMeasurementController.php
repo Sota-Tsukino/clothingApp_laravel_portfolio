@@ -187,7 +187,7 @@ class BodyMeasurementController extends Controller
         // foreach (BodyMeasurementService::getFields() as $field) {
         //     $bodyMeasurement->$field = $request->$field;
         // }
-        $bodyMeasurement->fill($request->only(BodyMeasurementService::getFields()))->save(); //リファクタリング
+        $bodyMeasurement->fill($request->only(array_merge(['measured_at'], BodyMeasurementService::getFields())))->save(); //リファクタリング
 
         $bodyMeasurement->save();
 

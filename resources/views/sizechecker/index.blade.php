@@ -46,16 +46,16 @@
           <table class="w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">部位</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">体格寸法</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">あなたに合う衣類サイズ
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">部位</th>
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">体格寸法</th>
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">あなたに合う衣類サイズ
                 </th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[140px]">
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[140px]">
                   衣類サイズ</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[130px]">
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[130px]">
                   判定</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">優先度</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">ガイド</th>
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">優先度</th>
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">ガイド</th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">

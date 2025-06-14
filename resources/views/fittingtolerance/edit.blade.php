@@ -63,9 +63,9 @@
                   $key = $fittingTolerance->body_part . '-' . $fittingTolerance->tolerance_level;
                 @endphp
                 <tr class="hover:bg-gray-50">
-                  <td class="px-3 py-4 whitespace-nowrap text-center">
+                  <td class="px-3 py-4 text-sm whitespace-nowrap font-semibold text-center">
                     {{ __('measurement.' . $fittingTolerance->body_part) }}</td>
-                  <td class="px-3 py-4 whitespace-nowrap text-center">
+                  <td class="px-3 py-4 text-sm whitespace-nowrap text-center">
                     @if ($fittingTolerance->tolerance_level === 'just')
                       <span class="text-green-600 font-semibold">✅ ちょうどいい</span>
                     @elseif ($fittingTolerance->tolerance_level === 'slight')
@@ -74,7 +74,7 @@
                       <span class="text-red-600 font-semibold">✕ 合わない</span>
                     @endif
                   </td>
-                  <td class="px-3 py-4 whitespace-nowrap text-center">
+                  <td class="px-3 py-4 text-sm whitespace-nowrap text-center">
                     <div class="relative">
                       <input type="number" id="min_value_{{ $key }}"
                         name="tolerances[{{ $key }}][min_value]" value="{{ $fittingTolerance->min_value }}"
@@ -87,8 +87,8 @@
                     <div id="error-message-min-{{ $key }}" style="color: red; display: none;" class="mt-2"></div>
                   </td>
 
-                  <td class="px-3 py-4 whitespace-nowrap text-center">～</td>
-                  <td class="px-3 py-4 whitespace-nowrap text-center">
+                  <td class="px-3 py-4 text-sm whitespace-nowrap text-center">～</td>
+                  <td class="px-3 py-4 text-sm whitespace-nowrap text-center">
                     <div class="relative">
                       <input type="number" id="max_value_{{ $key }}"
                         name="tolerances[{{ $key }}][max_value]" value="{{ $fittingTolerance->max_value }}"
