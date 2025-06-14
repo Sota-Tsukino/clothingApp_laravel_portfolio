@@ -37,9 +37,9 @@
         $fromMeasurementId = session('from_measurement_id') ?? $bodyMeasurement->id; //sessionがない場合に$bodyMeasurement->idを追記
       @endphp
       <!-- 注意書き -->
-      <div class="mb-6 bg-yellow-50 p-4 rounded-md">
-        <p class="text-sm text-yellow-700">
-          ※サイズ判定は最新の体格計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}を元に判定します</p>
+      <div class="mb-6 bg-green-50 p-4 rounded-md">
+        <p class="text-sm text-green-700">
+          ※体格寸法は最新の計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}を参照しています。</p>
       </div>
       <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
