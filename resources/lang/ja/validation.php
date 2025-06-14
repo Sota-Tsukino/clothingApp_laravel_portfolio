@@ -178,11 +178,12 @@ return [
 
     'attributes' => [
         'user_id' => 'ユーザーID',
-        'name' => 'ニックネーム',
+        'nickname' => 'ニックネーム',
         'password' => 'パスワード',
         'email' => 'メール',
-        'prefecture_id' => '都道府県ID',
-        'city_id' => '市区町村ID',
+        'gender' => '性別',
+        'prefecture_id' => '都道府県',
+        'city_id' => '市区町村',
 
         //体格情報
         'height' => '身長',

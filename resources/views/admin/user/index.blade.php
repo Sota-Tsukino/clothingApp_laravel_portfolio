@@ -25,7 +25,7 @@
           <tbody class="bg-white divide-y divide-gray-200">
             @foreach ($users as $user)
               <tr class="hover:bg-gray-50">
-                <td class="px-3 py-3 text-sm whitespace-nowrap ">{{ $user->name }}</td>
+                <td class="px-3 py-3 text-sm whitespace-nowrap ">{{ $user->nickname }}</td>
                 <td class="px-3 py-3 text-sm whitespace-nowrap ">{{ $user->email }}</td>
                 <td class="px-3 py-3 text-sm whitespace-nowrap ">{{ $user->prefecture->name }}</td>
                 <td class="px-3 py-3 text-sm whitespace-nowrap ">{{ $user->city->name }}</td>

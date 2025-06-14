@@ -15,8 +15,8 @@
         @method('put') <!-- formタグがPOSTでも、laravelがput methodとして認識できるようになる-->
         <div class="w-full mb-6 ">
           <div class="flex mb-6 items-center">
-            <label for="name" class="leading-7 text-sm text-gray-600 w-1/3">ニックネーム</label>
-            <input type="text" id="name" name="name" value="{{ $user->name }}" required
+            <label fonickr="name" class="leading-7 text-sm text-gray-600 w-1/3">ニックネーム</label>
+            <input type="text" id="nickname" name="nickname" value="{{ $user->nickname }}" required
               class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
           </div>
           <div class="flex mb-6 items-center">

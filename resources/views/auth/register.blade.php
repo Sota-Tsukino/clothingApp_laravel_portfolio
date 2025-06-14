@@ -7,10 +7,10 @@
 
     <!-- Name -->
     <div>
-      <x-input-label for="name" :value="__('Name')" />
-      <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
-        autofocus autocomplete="name" />
-      <x-input-error :messages="$errors->get('name')" class="mt-2" />
+      <x-input-label for="nickname" :value="__('NickName')" />
+      <x-text-input id="nickname" class="block mt-1 w-full" type="text" name="nickname" :value="old('nickname')" required
+        autofocus autocomplete="nickname" />
+      <x-input-error :messages="$errors->get('nickname')" class="mt-2" />
     </div>
 
     <!-- Email Address -->
@@ -42,7 +42,23 @@
     </div>
 
     <div class="flex mb-6 items-center">
-      <label for="name" class="leading-7 text-sm text-gray-600 w-1/3">都道府県</label>
+      <label for="gender" class="leading-7 font-semibold text-sm text-gray-600 w-1/3">性別</label>
+      <select name="gender" id="gender"
+        class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        <option value="">性別</option>
+        <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>
+          {{ __('gender.male') }}
+        </option>
+        <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>
+          {{ __('gender.female') }}
+        </option>
+        <option value="prefer_not_to_say" {{ old('gender') == 'prefer_not_to_say' ? 'selected' : '' }}>
+          {{ __('gender.prefer_not_to_say') }}
+        </option>
+      </select>
+    </div>
+    <div class="flex mb-6 items-center">
+      <label for="name" class="leading-7 font-semibold text-sm text-gray-600 w-1/3">都道府県</label>
       <select name="prefecture_id" id="prefecture_id"
         class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
         <option value="">都道府県を選択してください</option>
@@ -54,7 +70,7 @@
       </select>
     </div>
     <div class="flex mb-6 items-center">
-      <label for="name" class="leading-7 text-sm text-gray-600 w-1/3">市区町村</label>
+      <label for="name" class="leading-7 font-semibold text-sm text-gray-600 w-1/3">市区町村</label>
       <select name="city_id" id="city_id"
         class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
         <option value="">市区町村を選択してください</option>

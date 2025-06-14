@@ -11,7 +11,7 @@
       <div class="w-full mb-6 ">
         <div class="flex mb-6">
           <span class="text-gray-500">ニックネーム</span>
-          <span class="ml-auto text-gray-900">{{ $user->name }}</span>
+          <span class="ml-auto text-gray-900">{{ $user->nickname }}</span>
         </div>
         <div class="flex mb-6">
           <span class="text-gray-500">メール</span>

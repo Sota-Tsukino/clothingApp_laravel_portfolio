@@ -15,6 +15,7 @@ use Illuminate\View\View;
 use App\Services\UserInitializationService;
 use App\Models\Prefecture;
 use App\Models\City;
+use Illuminate\Validation\Rule;
 
 
 class RegisteredUserController extends Controller
@@ -43,11 +44,12 @@ class RegisteredUserController extends Controller
     {
         // dd($request);
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'nickname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'prefecture_id' => ['nullable', 'integer'],
-            'city_id' => ['nullable', 'integer'],
+            'gender' =>  [' required',Rule::in(['male', 'female', 'prefer_not_to_say'])],
+            'prefecture_id' => ['required', 'integer'],
+            'city_id' => ['required', 'integer'],
         ]);
 
         //存在しないprefecture_id、city_idがリクエストされたらエラーを返す
@@ -70,9 +72,10 @@ class RegisteredUserController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->name,
+            'nickname' => $request->nickname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'gender' => $request->gender,
             'prefecture_id' => $request->prefecture_id,
             'city_id' => $request->city_id,
         ]);
