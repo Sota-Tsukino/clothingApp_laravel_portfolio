@@ -30,23 +30,26 @@
               <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($bodyMeasurements as $bodyMeasurement)
                   <tr class="hover:bg-gray-50">
-                    <td class="px-3 py-3 text-sm whitespace-nowrap">{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}
+                    <td class="px-3 py-3 text-sm whitespace-nowrap">
+                      {{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}
                     </td>
                     <td class="px-3 py-3 text-sm whitespace-nowrap">{{ $bodyMeasurement->height ?? '未登録' }}cm</td>
-                    <td class="px-3 py-3 text-sm whitespace-nowrap">{{ $bodyMeasurement->neck_circumference ?? '未登録' }}cm</td>
-                    <td class="px-3 py-3 text-sm whitespace-nowrap">{{ $bodyMeasurement->chest_circumference ?? '未登録' }}cm</td>
+                    <td class="px-3 py-3 text-sm whitespace-nowrap">
+                      {{ $bodyMeasurement->neck_circumference ?? '未登録' }}cm</td>
+                    <td class="px-3 py-3 text-sm whitespace-nowrap">
+                      {{ $bodyMeasurement->chest_circumference ?? '未登録' }}cm</td>
                     <td class="px-3 py-3 text-sm whitespace-nowrap">{{ $bodyMeasurement->waist ?? '未登録' }}cm</td>
                     <td class="px-3 py-3 text-sm whitespace-nowrap">{{ $bodyMeasurement->foot_length ?? '未登録' }}cm</td>
                     <td class="px-3 py-3 text-sm whitespace-nowrap">
                       <button
                         onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $bodyMeasurement->id]) }}'"
                         class="inline-block px-4 py-2 bg-indigo-600 rounded-md font-semibold text-sm text-white hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">詳細</button>
-                      <form
+                      <form id="delete_{{ $bodyMeasurement->id }}"
                         action="{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.destroy' : 'measurement.destroy', ['measurement' => $bodyMeasurement->id]) }}"
                         method="post" class="inline-block">
                         @csrf
                         @method('delete')
-                        <button
+                        <button type="button" onclick="deletePost(this)" data-id="{{ $bodyMeasurement->id }}"
                           class="inline-block px-4 py-2 bg-red-600 rounded-md font-semibold text-sm text-white hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-red-900 focus:ring ring-red-300 disabled:opacity-25 transition ease-in-out duration-150">削除</button>
                       </form>
                     </td>
@@ -91,12 +94,12 @@
                   <button
                     onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $bodyMeasurement->id]) }}'"
                     class="w-1/2 inline-block px-4 py-2 bg-indigo-600 rounded-md font-semibold text-sm text-white hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">詳細</button>
-                  <form
+                  <form id="delete_{{ $bodyMeasurement->id }}"
                     action="{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.destroy' : 'measurement.destroy', ['measurement' => $bodyMeasurement->id]) }}"
                     method="post" class="flex-1">
                     @csrf
                     @method('delete')
-                    <button
+                    <button type="button" onclick="deletePost(this)" data-id="{{ $bodyMeasurement->id }}"
                       class="w-full inline-block px-4 py-2 bg-red-600 rounded-md font-semibold text-sm text-white hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-red-900 focus:ring ring-red-300 disabled:opacity-25 transition ease-in-out duration-150">削除</button>
                   </form>
                 </div>
@@ -116,3 +119,11 @@
     </div>
   </section>
 </x-app-layout>
+<script>
+  function deletePost(e) {
+    'use strict';
+    if (confirm('本当に削除してもいいですか?')) {
+      document.getElementById('delete_' + e.dataset.id).submit();
+    }
+  }
+</script>

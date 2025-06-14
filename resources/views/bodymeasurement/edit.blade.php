@@ -43,16 +43,22 @@
             <p class="text-sm text-green-700">
               ユーザーに合った衣類サイズを算出し、サイズチェッカー機能が使用できるようになります。</p>
           </div>
-          <p class="text-gray-600 font-medium">
-            計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}
-          </p>
-
           <!-- フォーム -->
           <form
             action="{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.update' : 'measurement.update', ['measurement' => $bodyMeasurement->id]) }}"
             method="post" class="space-y-6">
             @csrf
             @method('put')
+            
+            <!-- 計測日入力 -->
+            <div>
+              <label for="measured_at" class="block text-md font-medium text-gray-700 mb-2">
+                計測日
+              </label>
+              <input type="date" name="measured_at" id="measured_at"
+                class="block w-full sm:w-64 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-md"
+                value="{{ $bodyMeasurement->measured_at }}">
+            </div>
 
             <!-- 測定データテーブル -->
             <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">

@@ -123,7 +123,7 @@
 
           <!-- アクションボタン -->
           <div class="pt-6">
-            <div class="flex flex-col sm:flex-row gap-3 justify-around">
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-2 justify-around">
               <button
                 onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.index' : 'measurement.index') }}'"
                 class="inline-block px-4 py-2 bg-teal-600 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-teal-700 active:bg-teal-900 focus:outline-none focus:border-teal-900 focus:ring ring-teal-300 disabled:opacity-25 transition ease-in-out duration-150 text-center">
@@ -148,7 +148,7 @@
                 @method('delete')
                 <button type="submit"
                   class="inline-block text-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-red-900 focus:ring ring-red-300 disabled:opacity-25 transition ease-in-out duration-150 w-full">
-                  削除
+                  体格寸法の削除
                 </button>
               </form>
             </div>

@@ -37,25 +37,25 @@
         $fromMeasurementId = session('from_measurement_id') ?? $bodyMeasurement->id; //sessionがない場合に$bodyMeasurement->idを追記
       @endphp
       <!-- 注意書き -->
-      <div class="mb-6 bg-yellow-50 p-4 rounded-md">
-        <p class="text-sm text-yellow-700">
-          ※サイズ判定は最新の体格計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}を元に判定します</p>
+      <div class="mb-6 bg-green-50 p-4 rounded-md">
+        <p class="text-sm text-green-700">
+          ※体格寸法は最新の計測日：{{ \Carbon\Carbon::parse($bodyMeasurement->measured_at)->format('Y/m/d') }}を参照しています。</p>
       </div>
       <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">部位</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">体格寸法</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">あなたに合う衣類サイズ
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">部位</th>
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">体格寸法</th>
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">あなたに合う衣類サイズ
                 </th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[140px]">
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[140px]">
                   衣類サイズ</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[130px]">
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[130px]">
                   判定</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">優先度</th>
-                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">ガイド</th>
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">優先度</th>
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">ガイド</th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
