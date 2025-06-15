@@ -39,7 +39,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // dd($request);
         $request->validate(UserService::getValidationRules(true));
 
         //存在しないprefecture_id、city_idがリクエストされたらエラーを返す
