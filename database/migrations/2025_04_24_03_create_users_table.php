@@ -29,6 +29,7 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->softDeletes();// ←deleted_atカラム追加
             $table->timestamps();
         });
     }

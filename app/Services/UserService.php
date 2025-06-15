@@ -74,4 +74,22 @@ class UserService
 
         return $user;
     }
+
+    public static function getAllUsers($is_paginate = false)
+    {
+        $users = User::with(['prefecture', 'city'])
+            ->where('role', 'user')
+            ->orderBy('created_at', 'desc');
+
+        return $is_paginate ?  $users->paginate(\Constant::DEFAULT_PAGINATION) : $users->get();
+    }
+
+    public static function searchUserByAdmin($filters = [])
+    {
+        return User::ofUser() //scopeOfUser()を呼び出し
+            ->isActive($filters['is_active'] ?? null)
+            ->sortOrder($filters['sort'] ?? null)
+            ->paginate($filters['pagination'] ?? \Constant::DEFAULT_PAGINATION)
+            ->appends($filters);
+    }
 }
