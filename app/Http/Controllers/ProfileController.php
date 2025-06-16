@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +10,7 @@ use Illuminate\View\View;
 use App\Models\User;
 use App\Models\Prefecture;
 use App\Models\City;
-
+use App\Services\UserService;
 
 class ProfileController extends Controller
 {
@@ -19,9 +18,10 @@ class ProfileController extends Controller
      * Display the user's profile form.
      */
 
-     public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth'); //必要？ web.phpでもこれを通している？
-     }
+    }
 
     public function show(Request $request): View
     {
@@ -42,21 +42,12 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
-
-        $request->validate([
-            'name' => 'required|string|max:20',
-            'email' => 'required|string|email|max:20|unique:users,email,' . $request->user()->id,//unique:テーブル名、カラム名、除外するID
-            'prefecture_id' => 'integer|nullable',
-            'city_id' => 'integer|nullable',
-        ]);
-
-        // dd($request);
+        $request->validate(UserService::getValidationRules(false, Auth::id()));
 
         //存在しないprefecture_id、city_idがリクエストされたらエラーを返す
-        if(!empty($request->prefecture_id) && !Prefecture::where('id', $request->prefecture_id)->exists()) {
-            //この記述は正しい？ back()というのもみた事がある
+        if (!empty($request->prefecture_id) && !Prefecture::where('id', $request->prefecture_id)->exists()) {
             return redirect()
                 ->route(Auth::user()->role === 'admin' ? 'admin.profile.edit' : 'profile.edit')
                 ->with([
@@ -65,7 +56,7 @@ class ProfileController extends Controller
                 ]);
         }
 
-        if(!empty($request->city_id) && !City::where('id', $request->city_id)->exists()) {
+        if (!empty($request->city_id) && !City::where('id', $request->city_id)->exists()) {
             return redirect()
                 ->route(Auth::user()->role === 'admin' ? 'admin.profile.edit' : 'profile.edit')
                 ->with([
@@ -74,21 +65,21 @@ class ProfileController extends Controller
                 ]);
         }
 
-        $user = $request->user();
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->prefecture_id = $request->prefecture_id;
-        $user->city_id = $request->city_id;
-        $user->save();
+        try {
+            $user = $request->user(); //ログインUser(model型)を取得
+            UserService::saveUser($request->all(), $user);
+        } catch (Exception $e) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.profile.edit' : 'profile.edit')
+                ->with(['message' => $e->getMessage(), 'status' => 'alert']);
+        }
 
         return redirect()
             ->route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show')
-            ->with([//セッションにフラッシュデータとして保存  session('message') session('status')
+            ->with([ //セッションにフラッシュデータとして保存  session('message') session('status')
                 'message' => 'ユーザープロフィールを更新しました。',
                 'status' => 'info'
             ]);
-
     }
 
     /**

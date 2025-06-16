@@ -12,10 +12,12 @@ use App\Models\Prefecture;
 use App\Models\BodyMeasurement;
 use App\Models\BodyCorrection;
 use App\Models\FittingTolerance;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Constants\Common;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -23,10 +25,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'nickname',
         'email',
         'password',
         'role',
+        'gender',
         'is_active',
         'prefecture_id',
         'city_id',
@@ -85,5 +88,28 @@ class User extends Authenticatable
     public function CoordinateWearingLogs()
     {
         return $this->hasMany(CoordinateWearingLog::class);
+    }
+
+    public function scopeOfUser($query)
+    {
+        return $query->with(['prefecture', 'city'])
+            ->where('role', 'user');
+    }
+    public function scopeIsActive($query, $flag)
+    {
+        if ($flag === '0' || $flag === '1') {
+            return $query->where('is_active', (bool)$flag);
+        }
+        return $query;
+    }
+
+    public function scopeSortOrder($query, $sortOrder)
+    {
+        switch ($sortOrder) {
+            case Common::SORT_ORDER['oldRegisteredItem']:
+                return $query->orderBy('created_at', 'asc');
+            default:
+                return $query->orderBy('created_at', 'desc');
+        }
     }
 }

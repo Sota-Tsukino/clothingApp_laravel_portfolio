@@ -14,8 +14,8 @@
         <!-- Scripts -->
         @vite([
             'resources/css/app.css',
-             'resources/js/app.js',
-             Request::routeIs('register') ? 'resources/js/prefecture-city-list.js' : '',
+            'resources/js/app.js',
+             Request::routeIs('register') ? 'resources/js/init-pref-city-select.js' : '',
              ])
     </head>
     <body class="font-sans text-gray-900 antialiased">

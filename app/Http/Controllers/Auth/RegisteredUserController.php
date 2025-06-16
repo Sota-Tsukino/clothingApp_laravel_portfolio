@@ -3,18 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use App\Services\UserInitializationService;
 use App\Models\Prefecture;
 use App\Models\City;
+use App\Services\UserService;
 
 
 class RegisteredUserController extends Controller
@@ -41,14 +39,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // dd($request);
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'prefecture_id' => ['nullable', 'integer'],
-            'city_id' => ['nullable', 'integer'],
-        ]);
+        $request->validate(UserService::getValidationRules(true));
 
         //存在しないprefecture_id、city_idがリクエストされたらエラーを返す
         if(!empty($request->prefecture_id) && !Prefecture::where('id', $request->prefecture_id)->exists()) {
@@ -69,14 +60,7 @@ class RegisteredUserController extends Controller
                 ]);
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'prefecture_id' => $request->prefecture_id,
-            'city_id' => $request->city_id,
-        ]);
-
+        $user = UserService::saveUser($request->all());
         event(new Registered($user));
 
         Auth::login($user);

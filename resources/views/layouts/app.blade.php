@@ -15,7 +15,9 @@
         @vite([
             'resources/css/app.css',
             'resources/js/app.js',//全ページ(blade)で読み込むのでこの中で下記JSをimportしない
+            
             //↓ページ別にJS読み込み
+            //管理者用
             Request::routeIs('admin.clothing-item.create') ? 'resources/js/init-item-category-select.js' : '',
             Request::routeIs('admin.clothing-item.create') ? 'resources/js/clothing-item.js' : '',
             Request::routeIs('admin.clothing-item.create') ? 'resources/js/init-size-checker.js' : '',
@@ -31,7 +33,8 @@
             Request::routeIs('admin.measurement.create') ? 'resources/js/calc-armpits-width.js' : '',
             Request::routeIs('admin.measurement.edit') ? 'resources/js/calc-kitake-length.js' : '',
             Request::routeIs('admin.measurement.create') ? 'resources/js/calc-kitake-length.js' : '',
-            //↓一般ユーザー用
+
+            //一般ユーザー用
             Request::routeIs('profile.edit') ? 'resources/js/init-pref-city-select.js' : '',
             Request::routeIs('clothing-item.create') ? 'resources/js/init-item-category-select.js' : '',
             Request::routeIs('clothing-item.create') ? 'resources/js/clothing-item.js' : '',

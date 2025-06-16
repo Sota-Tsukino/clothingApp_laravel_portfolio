@@ -6,15 +6,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with(['prefecture', 'city'])->where('role', 'user')->get();
+        $params = $request->only(['is_active', 'sort', 'pagination']);
+        $filtered = array_filter($params, fn($v) => $v !== null && $v !== '');
+        $users = !empty($filtered)
+            ? UserService::searchUserByAdmin($params)
+            : UserService::getAllUsers(true);
+
         return view('admin.user.index', compact('users'));
     }
 
@@ -88,11 +94,10 @@ class UserController extends Controller
         User::findOrFail($id)->delete();
 
         return redirect()
-        ->route('admin.user.index')
-        ->with([
-            'message' => 'ユーザーを削除しました。',
-            'status' => 'info'
-        ]);
-
+            ->route('admin.user.index')
+            ->with([
+                'message' => 'ユーザーを削除しました。',
+                'status' => 'info'
+            ]);
     }
 }
