@@ -79,24 +79,24 @@
                       class="inline-flex text-sm font-semibold px-2 py-1 rounded-full {{ $user->is_active ? ' text-green-600 bg-green-50' : 'text-gray-600 bg-gray-50' }}">{{ $user->is_active ? '有効' : '無効' }}</span>
                   </td>
                   <td class="px-3 py-2 text-sm whitespace-nowrap ">
-                    <form action="{{ route('admin.user.update', ['user' => $user->id]) }}" method="post"
-                      class="inline">
+                    <form id="toggle_{{ $user->id }}"
+                      action="{{ route('admin.user.update', ['user' => $user->id]) }}" method="post" class="inline">
                       @csrf
                       @method('put')
                       @if ($user->is_active === 1)
-                        <button
+                        <button type="button" onclick="toggleIsActive(this)" data-id="{{ $user->id }}"
                           class="text-center inline-block items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">無効にする</button>
                       @else
-                        <button
+                        <button type="button" onclick="toggleIsActive(this)" data-id="{{ $user->id }}"
                           class="text-center inline-block items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">有効にする</button>
                       @endif
                       <input type="hidden" name="is_active" value="{{ $user->is_active }}">
                     </form>
-                    <form action="{{ route('admin.user.destroy', ['user' => $user->id]) }}" method="post"
-                      class="inline">
+                    <form id="delete_{{ $user->id }}"
+                      action="{{ route('admin.user.destroy', ['user' => $user->id]) }}" method="post" class="inline">
                       @csrf
                       @method('delete')
-                      <button
+                      <button type="button" onclick="deleteUser(this)" data-id="{{ $user->id }}"
                         class="text-center inline-block items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">削除</button>
                     </form>
                   </td>
@@ -119,3 +119,18 @@
 
 
 </x-app-layout>
+<script>
+  function deleteUser(e) {
+    'use strict';
+    if (confirm('本当に削除してもいいですか?')) {
+      document.getElementById('delete_' + e.dataset.id).submit();
+    }
+  }
+
+  function toggleIsActive(e) {
+    'use strict';
+    if (confirm('このユーザーのステータスを切り替えますか?')) {
+      document.getElementById('toggle_' + e.dataset.id).submit();
+    }
+  }
+</script>
