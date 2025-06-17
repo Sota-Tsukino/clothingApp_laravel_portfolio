@@ -276,7 +276,8 @@
                           @if ($field === 'total_length')
                             ー
                           @else
-                            {{ number_format($suitableSize[$field], 1) ?? '未登録' }}cm
+                            {{ $suitableSize[$field] ? number_format($suitableSize[$field], 1) : '未登録' }}<span
+                              class="ml-1">cm</span>
                           @endif
                         </div>
                       </td>

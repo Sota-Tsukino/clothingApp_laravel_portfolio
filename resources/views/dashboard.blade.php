@@ -12,6 +12,9 @@
   <section class="text-gray-600 body-font overflow-hidden">
     <div
       class="container px-4 sm:px-6 md:px-8 py-8 md:py-12 mx-auto max-w-4xl bg-white rounded-lg my-6 md:my-16 shadow-lg">
+      <!-- Validation Errors -->
+      <x-auth-validation-errors class="mb-4" :errors="$errors" />
+      <x-flash-message status="session('status')" />
 
       <!-- 日付・場所情報 -->
       <div class="mb-6">

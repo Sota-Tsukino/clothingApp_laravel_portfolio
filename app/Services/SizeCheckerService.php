@@ -10,6 +10,7 @@ class SizeCheckerService
         return [
             'total_length',
             'kitake_length',
+            // 'head_circumference',
             'neck_circumference',
             'shoulder_width',
             'yuki_length',
@@ -19,6 +20,8 @@ class SizeCheckerService
             'waist',
             'inseam',
             'hip',
+            // 'foot_length',
+            // 'foot_circumference',
         ];
     }
     public static function getPriorityMap()
@@ -61,7 +64,11 @@ class SizeCheckerService
         $suitableSize = [];
 
         foreach ($fields as $field) {
-            $suitableSize[$field] = $bodyMeasurement->$field + $bodyCorrection->$field;
+            if (is_null($bodyMeasurement->$field)) {
+                $suitableSize[$field] =  null;
+            } else {
+                $suitableSize[$field] =  $bodyMeasurement->$field + $bodyCorrection->$field;
+            }
         }
 
         return $suitableSize;

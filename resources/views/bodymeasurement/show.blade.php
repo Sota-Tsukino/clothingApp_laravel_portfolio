@@ -109,8 +109,10 @@
                           <div class="text-sm text-gray-600 font-semibold">=</div>
                         </td>
                         <td class="px-3 py-4 whitespace-nowrap text-center">
-                          <div class="text-sm font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                            {{ $suitableSize[$field] }}cm
+                          <div
+                            class="text-sm font-semibold {{ $suitableSize[$field] ? 'text-green-600 bg-green-50' : 'text-gray-600 bg-gray-50' }} px-2 py-1 rounded-full">
+                            {{ $suitableSize[$field] ? number_format($suitableSize[$field], 1) : '未登録' }}<span
+                              class="ml-1">cm</span>
                           </div>
                         </td>
                       </tr>
@@ -142,7 +144,8 @@
                 補正値の編集
               </button>
 
-              <form action="{{ route('admin.measurement.destroy', ['measurement' => $bodyMeasurement->id]) }}"
+              <form
+                action="{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.destroy' : 'measurement.destroy', ['measurement' => $bodyMeasurement->id]) }}"
                 method="post" class="inline" onsubmit="return confirm('本当に削除しますか？')">
                 @csrf
                 @method('delete')

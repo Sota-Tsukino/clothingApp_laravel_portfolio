@@ -64,11 +64,11 @@
                   <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                     {{ __("measurement.$field") }}</td>
                   <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                    {{ number_format($bodyMeasurement[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
+                    {{ $bodyMeasurement[$field] ? number_format($bodyMeasurement[$field], 1) : '未登録' }}<span class="ml-1">cm</span>
                   </td>
                   <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                    <div class="text-sm font-semibold text-center text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                      {{ number_format($suitableSize[$field], 1) ?? '未登録' }}<span class="ml-1">cm</span>
+                    <div class="text-sm font-semibold text-center {{ $suitableSize[$field] ? 'text-green-600 bg-green-50' : 'text-gray-600 bg-gray-50'}}  px-2 py-1 rounded-full">
+                      {{ $suitableSize[$field] ? number_format($suitableSize[$field], 1) : '未登録' }}<span class="ml-1">cm</span>
                     </div>
                   </td>
                   <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">

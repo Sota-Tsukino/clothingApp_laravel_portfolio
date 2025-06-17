@@ -42,6 +42,14 @@ class ItemController extends Controller
     {
 
         $userId = Auth::id();
+        if (!BodyMeasurementService::hasBodyMeasurement($userId)) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.measurement.create' : 'measurement.create')
+                ->with([
+                    'message' => 'サイズチェッカー機能を利用するため、体格情報を登録してください。',
+                    'status' => 'alert'
+                ]);
+        }
         $formData = ItemService::getFormData($userId);
         $priorityMap = SizeCheckerService::getPriorityMap();
         $guides = SizeCheckerService::getGuide();
@@ -93,11 +101,18 @@ class ItemController extends Controller
     {
         try {
             $userId = Auth::id();
+            if (!BodyMeasurementService::hasBodyMeasurement($userId)) {
+                return redirect()
+                    ->route(Auth::user()->role === 'admin' ? 'admin.measurement.create' : 'measurement.create')
+                    ->with([
+                        'message' => 'サイズチェッカー機能を利用するため、体格情報を登録してください。',
+                        'status' => 'alert'
+                    ]);
+            }
             $item = ItemService::getItemById($id);
             ItemService::isUserOwn($item, $userId);
 
             //サイズチェッカーに必要な情報を取得
-            $userId = Auth::id();
             $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
             $bodyCorrection = BodyCorrectionService::getForUser($userId);
             $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
@@ -130,6 +145,14 @@ class ItemController extends Controller
     public function edit(string $id)
     {
         $userId = Auth::id();
+        if (!BodyMeasurementService::hasBodyMeasurement($userId)) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.measurement.create' : 'measurement.create')
+                ->with([
+                    'message' => 'サイズチェッカー機能を利用するため、体格情報を登録してください。',
+                    'status' => 'alert'
+                ]);
+        }
         try {
             $formDataWithItem = ItemService::getFormDataWithItem($id, $userId);
             $priorityMap = SizeCheckerService::getPriorityMap();

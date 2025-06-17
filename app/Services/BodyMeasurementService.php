@@ -11,7 +11,7 @@ class BodyMeasurementService
         return [
             'height',
             'kitake_length',
-            'head_circumference',
+            // 'head_circumference',
             'neck_circumference',
             'shoulder_width',
             'yuki_length',
@@ -21,8 +21,8 @@ class BodyMeasurementService
             'waist',
             'hip',
             'inseam',
-            'foot_length',
-            'foot_circumference',
+            // 'foot_length',
+            // 'foot_circumference',
         ];
     }
 
@@ -63,5 +63,10 @@ class BodyMeasurementService
         return BodyMeasurement::where('user_id', $userId)
             ->orderBy('measured_at', 'desc')
             ->firstOrFail();
+    }
+
+    public static function hasBodyMeasurement($userId)
+    {
+        return BodyMeasurement::where('user_id', $userId)->exists();
     }
 }

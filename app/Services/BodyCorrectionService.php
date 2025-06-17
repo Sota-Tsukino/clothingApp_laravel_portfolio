@@ -9,7 +9,7 @@ class BodyCorrectionService
     public static array $fieldsDefaultValues = [
         'total_length' => 0.0,
         'kitake_length' => 0.0,
-        'head_circumference' => 2.0,
+        // 'head_circumference' => 2.0,
         'neck_circumference' => 2.0,
         'shoulder_width' => 2.0,
         'chest_circumference' => 6.0,
@@ -19,8 +19,8 @@ class BodyCorrectionService
         'sleeve_length' => 0.0,
         'yuki_length' => 0.0,
         'inseam' => 0.0,
-        'foot_length' => 1.0,
-        'foot_circumference' => 0.0,
+        // 'foot_length' => 1.0,
+        // 'foot_circumference' => 0.0,
     ];
 
     public static function getValidationRules(): array
@@ -35,6 +35,6 @@ class BodyCorrectionService
 
     public static function getForUser($userId)
     {
-        return BodyCorrection::findOrFail($userId);
+        return BodyCorrection::where('user_id', $userId)->first();//model型で取得
     }
 }
