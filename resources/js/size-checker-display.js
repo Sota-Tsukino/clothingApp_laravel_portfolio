@@ -9,6 +9,7 @@ export function applyStaticSizeEvaluation(
     const colorClasses = ["text-green-600", "text-yellow-500", "text-red-600", "text-gray-800"];
 
     for (let field in tolerance) {
+        if(!suitableSize[field]) continue;//体格情報未登録なら処理止める
         const resultEl = container.querySelector(`#${field}_result`);
         if (!resultEl) continue;
 
