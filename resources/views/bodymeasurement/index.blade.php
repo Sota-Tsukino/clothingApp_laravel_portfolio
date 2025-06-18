@@ -23,7 +23,7 @@
                   <th class="px-3 py-3 text-left  text-sm font-medium text-gray-500 whitespace-nowrap">首回り</th>
                   <th class="px-3 py-3 text-left  text-sm font-medium text-gray-500 whitespace-nowrap">胸囲</th>
                   <th class="px-3 py-3 text-left  text-sm font-medium text-gray-500 whitespace-nowrap">ウエスト</th>
-                  <th class="px-3 py-3 text-left  text-sm font-medium text-gray-500 whitespace-nowrap">足長</th>
+                  <th class="px-3 py-3 text-left  text-sm font-medium text-gray-500 whitespace-nowrap">股下</th>
                   <th class="px-3 py-3 text-left  text-sm font-medium text-gray-500 whitespace-nowrap">操作</th>
                 </tr>
               </thead>
@@ -39,7 +39,7 @@
                     <td class="px-3 py-3 text-sm whitespace-nowrap">
                       {{ $bodyMeasurement->chest_circumference ?? '未登録' }}cm</td>
                     <td class="px-3 py-3 text-sm whitespace-nowrap">{{ $bodyMeasurement->waist ?? '未登録' }}cm</td>
-                    <td class="px-3 py-3 text-sm whitespace-nowrap">{{ $bodyMeasurement->foot_length ?? '未登録' }}cm</td>
+                    <td class="px-3 py-3 text-sm whitespace-nowrap">{{ $bodyMeasurement->inseam ?? '未登録' }}cm</td>
                     <td class="px-3 py-3 text-sm whitespace-nowrap">
                       <button
                         onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.show' : 'measurement.show', ['measurement' => $bodyMeasurement->id]) }}'"
@@ -86,8 +86,8 @@
                     <span>{{ $bodyMeasurement->waist ?? '未登録' }}cm</span>
                   </div>
                   <div class="text-sm">
-                    <span class="font-medium">足長: </span>
-                    <span>{{ $bodyMeasurement->foot_length ?? '未登録' }}cm</span>
+                    <span class="font-medium">股下: </span>
+                    <span>{{ $bodyMeasurement->inseam ?? '未登録' }}cm</span>
                   </div>
                 </div>
                 <div class="flex space-x-2">

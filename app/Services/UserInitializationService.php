@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\BodyCorrection;
+use App\Models\BodyMeasurement;
 use App\Models\FittingTolerance;
 use App\Services\FittingToleranceService;
 
@@ -11,8 +12,16 @@ class UserInitializationService
 
     public function initialize(int $userId): void
     {
+        $this->createDefaultBodyMeasurement($userId);
         $this->createDefaultBodyCorrection($userId);
         $this->createDefaultFittingTolerance($userId);
+    }
+
+    public function createDefaultBodyMeasurement(int $userId): void
+    {
+        if (!BodyMeasurement::where('user_id', $userId)->exists()) {
+            BodyMeasurement::create(['user_id' => $userId]);
+        }
     }
 
     public function createDefaultBodyCorrection(int $userId): void

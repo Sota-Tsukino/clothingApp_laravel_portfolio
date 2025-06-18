@@ -17,21 +17,13 @@
           </div>
 
           <!-- 画像ガイド -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div class="mb-6">
             <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
               <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
                 <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">体格測定ガイド</h3>
               </div>
               <div class="p-2">
                 <img id="tops-img" src="{{ asset('images/body.png') }}" class="w-full h-auto" alt="体格測定ガイド">
-              </div>
-            </div>
-            <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-              <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
-                <h3 class="text-sm font-medium text-gray-700">足サイズ測定ガイド</h3>
-              </div>
-              <div class="p-2">
-                <img id="bottoms-img" src="{{ asset('images/foot.png') }}" class="w-full h-auto" alt="足サイズ測定ガイド">
               </div>
             </div>
           </div>
@@ -109,8 +101,10 @@
                           <div class="text-sm text-gray-600 font-semibold">=</div>
                         </td>
                         <td class="px-3 py-4 whitespace-nowrap text-center">
-                          <div class="text-sm font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                            {{ $suitableSize[$field] }}cm
+                          <div
+                            class="text-sm font-semibold {{ $suitableSize[$field] ? 'text-green-600 bg-green-50' : 'text-gray-600 bg-gray-50' }} px-2 py-1 rounded-full">
+                            {{ $suitableSize[$field] ? number_format($suitableSize[$field], 1) : '未登録' }}<span
+                              class="ml-1">cm</span>
                           </div>
                         </td>
                       </tr>
@@ -142,7 +136,8 @@
                 補正値の編集
               </button>
 
-              <form action="{{ route('admin.measurement.destroy', ['measurement' => $bodyMeasurement->id]) }}"
+              <form
+                action="{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.destroy' : 'measurement.destroy', ['measurement' => $bodyMeasurement->id]) }}"
                 method="post" class="inline" onsubmit="return confirm('本当に削除しますか？')">
                 @csrf
                 @method('delete')

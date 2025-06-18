@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\BodyMeasurement;
 use App\Models\BodyCorrection;
 use App\Services\BodyMeasurementService;
+use App\Services\BodyCorrectionService;
+use App\Services\SizeCheckerService;
 
 class BodyMeasurementController extends Controller
 {
@@ -101,6 +103,7 @@ class BodyMeasurementController extends Controller
      */
     public function show(string $id)
     {
+        $userId = Auth::id();
         $bodyMeasurement = BodyMeasurement::findOrFail($id);
 
         //参照する体格情報が、ログインユーザー所有のものか？を判定
@@ -113,20 +116,9 @@ class BodyMeasurementController extends Controller
                 ]);
         }
 
-        //model型で取得 first()でもokでも
-        $bodyCorrection = BodyCorrection::where('user_id', Auth::id())->firstOrFail();
+        $bodyCorrection = BodyCorrectionService::getForUser($userId);
+        $suitableSize = SizeCheckerService::getSuitableSize($bodyMeasurement, $bodyCorrection);
 
-        $suitableSize = [];
-        foreach (BodyMeasurementService::getFields() as $field) {
-            // if (!empty($bodyMeasurement->$field)) {
-            //     $suitableSize[$field] = $bodyMeasurement->$field + $bodyCorrection->$field;
-            //     continue;
-            // }
-            // $suitableSize[$field] = '未登録';
-            $suitableSize[$field] = !empty($bodyMeasurement->$field) ? $bodyMeasurement->$field + $bodyCorrection->$field : '未登録';
-        }
-
-        // return view('bodymeasurement.show', compact('bodyMeasurement', 'bodyCorrection', 'suitableSize', 'fields'));
         return view('bodymeasurement.show', [
             'bodyMeasurement' => $bodyMeasurement,
             'bodyCorrection' => $bodyCorrection,

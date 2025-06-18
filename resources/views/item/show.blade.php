@@ -262,8 +262,8 @@
                           'chest_circumference',
                           'armpit_to_armpit_width',
                           'waist',
-                          'inseam',
                           'hip',
+                          'inseam',
                       ];
                   } elseif (in_array($categoryName, ['tops', 'outer'])) {
                       $fields = [
@@ -277,7 +277,7 @@
                           'armpit_to_armpit_width',
                       ];
                   } elseif ($categoryName === 'bottoms') {
-                      $fields = ['waist', 'inseam', 'hip'];
+                      $fields = ['waist', 'hip', 'inseam'];
                   }
                 @endphp
                 @foreach ($fields as $field)
@@ -291,7 +291,8 @@
                         @if ($field === 'total_length')
                           ー
                         @else
-                          {{ number_format($suitableSize[$field], 1) ?? '未登録' }}cm
+                          {{ $suitableSize[$field] ? number_format($suitableSize[$field], 1) : '未登録' }}<span
+                            class="ml-1">cm</span>
                         @endif
                       </div>
                     </td>

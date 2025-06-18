@@ -16,13 +16,8 @@ class FittingToleranceController extends Controller
      */
     public function index()
     {
-        $fittingTolerances = FittingTolerance::where('user_id', Auth::id())->get();
-        // dd($fittingTolerances);
-        // foreach($fittingTolerances as $fittingTolerance) {
-        //     dd($fittingTolerance);
-        // }
-
         $userId = Auth::id();
+        $fittingTolerances = FittingTolerance::where('user_id', $userId)->orderBy('id', 'asc')->get();
 
         return view('fittingtolerance.index', compact('fittingTolerances', 'userId'));
     }
@@ -56,8 +51,8 @@ class FittingToleranceController extends Controller
      */
     public function edit()
     {
-        $fittingTolerances = FittingTolerance::where('user_id', Auth::id())->get();
         $userId = Auth::id();
+        $fittingTolerances = FittingTolerance::where('user_id', $userId)->orderBy('id', 'asc')->get();
 
         return view('fittingtolerance.edit',     [
             'fittingTolerances' => $fittingTolerances,
