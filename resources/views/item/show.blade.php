@@ -262,8 +262,8 @@
                           'chest_circumference',
                           'armpit_to_armpit_width',
                           'waist',
-                          'inseam',
                           'hip',
+                          'inseam',
                       ];
                   } elseif (in_array($categoryName, ['tops', 'outer'])) {
                       $fields = [
@@ -277,7 +277,7 @@
                           'armpit_to_armpit_width',
                       ];
                   } elseif ($categoryName === 'bottoms') {
-                      $fields = ['waist', 'inseam', 'hip'];
+                      $fields = ['waist', 'hip', 'inseam'];
                   }
                 @endphp
                 @foreach ($fields as $field)

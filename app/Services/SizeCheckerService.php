@@ -18,8 +18,8 @@ class SizeCheckerService
             'chest_circumference',
             'armpit_to_armpit_width',
             'waist',
-            'inseam',
             'hip',
+            'inseam',
             // 'foot_length',
             // 'foot_circumference',
         ];
@@ -36,8 +36,8 @@ class SizeCheckerService
             'chest_circumference' => 'middle',
             'armpit_to_armpit_width' => 'middle',
             'waist' => 'high',
-            'inseam' => 'middle',
             'hip' => 'middle',
+            'inseam' => 'middle',
         ];
     }
 
@@ -53,8 +53,8 @@ class SizeCheckerService
             'chest_circumference' => '+6〜8cm程度大きめに作られていることが多いため、目安としてご覧ください。',
             'armpit_to_armpit_width' => 'トップスの両わき下の縫い目の間を測ります。デフォルトでは、身幅は「胸囲 ÷ 2」を適正値として判定しています。',
             'waist' => 'デフォルトでは、体格寸法+3cmを適正値としています。締め付けにご注意ください。',
-            'inseam' => '長ズボンの前提で判定しています。半ズボンやクロップド丈では適宜調整してください。',
             'hip' => 'デフォルトでは、体格寸法+3cmを適正値としています。窮屈でないよう注意しましょう。',
+            'inseam' => '長ズボンの前提で判定しています。半ズボンやクロップド丈では適宜調整してください。',
         ];
     }
 

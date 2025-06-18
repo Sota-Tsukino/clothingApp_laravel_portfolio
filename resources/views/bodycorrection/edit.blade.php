@@ -13,21 +13,13 @@
 
       <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2 mb-4">体格寸法測定ガイド</h2>
       <!-- 画像ガイド -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+      <div class="mb-6">
         <div class="top-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
           <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
             <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">体格測定ガイド</h3>
           </div>
           <div class="p-2">
             <img id="tops-img" src="{{ asset('images/body.png') }}" class="w-full h-auto" alt="体格測定ガイド">
-          </div>
-        </div>
-        <div class="bottom-item border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-          <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
-            <h3 class="text-sm font-medium text-gray-700">足サイズ測定ガイド</h3>
-          </div>
-          <div class="p-2">
-            <img id="bottoms-img" src="{{ asset('images/foot.png') }}" class="w-full h-auto" alt="足サイズ測定ガイド">
           </div>
         </div>
       </div>
@@ -54,13 +46,15 @@
                   <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/4 whitespace-nowrap">部位</th>
                   <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/4 whitespace-nowrap">体格寸法</th>
                   <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap"></th>
-                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/2 whitespace-nowrap min-w-28">補正値</th>
+                  <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 w-1/2 whitespace-nowrap min-w-28">補正値
+                  </th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($fields as $field)
                   <tr class="hover:bg-gray-50 transition-colors duration-150">
-                    <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ __("measurement.$field") }}</td>
+                    <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                      {{ __("measurement.$field") }}</td>
                     <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                       {{ $bodyMeasurement->$field ?? '未登録' }}<span class="ml-1">cm</span>
                     </td>
