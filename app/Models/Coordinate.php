@@ -18,7 +18,7 @@ class Coordinate extends Model
     protected $fillable = [
         'user_id',
         'scene_tag_id',
-        'is_public',
+        // 'is_public',
         'memo',
         'is_favorite',
     ];

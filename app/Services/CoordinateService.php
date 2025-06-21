@@ -19,7 +19,7 @@ class CoordinateService
             'items' => 'required|array|min:2', //$request->items = []; 最低２つ登録必須
             'items.*' => ['integer', 'distinct', new UserOwnItem], //各item_idが重複しないこと
             'sceneTag_id' => 'integer|required|exists:scene_tags,id',
-            'is_public' => 'boolean|required', // blade側の valueは0,1でOK（booleanにキャストされる）
+            // 'is_public' => 'boolean|required', // blade側の valueは0,1でOK（booleanにキャストされる）
             'is_favorite' => 'boolean|required',
             'memo' => 'string|nullable|max:50',
         ];
@@ -48,7 +48,7 @@ class CoordinateService
             $coordinateData = [
                 'user_id' => Auth::id(),
                 'scene_tag_id' => $data['sceneTag_id'],
-                'is_public' => $data['is_public'],
+                // 'is_public' => $data['is_public'],
                 'is_favorite' => $data['is_favorite'],
                 'memo' => $data['memo'] ?? null,
             ];

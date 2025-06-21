@@ -60,9 +60,6 @@
       <div class="flex justify-between text-xs text-gray-500">
         <div>{{ $coordinate->created_at->format('Y/m/d') }}</div>
         <div class="flex space-x-2">
-          <span class="{{ $coordinate->is_public ? 'text-green-600' : 'text-gray-500' }}">
-            {{ $coordinate->is_public ? '公開' : '非公開' }}
-          </span>
           <span class="{{ $coordinate->is_favorite ? 'text-amber-500' : 'text-gray-500' }}">
             @if ($coordinate->is_favorite)
               <span class="inline-flex items-center">
