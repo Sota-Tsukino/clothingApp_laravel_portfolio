@@ -34,7 +34,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->enum('status', ['owned', 'cleaning', 'discarded']);//DB保存英語保存＋日本語幼児推奨（将来的な国際化(i18n))
-            $table->tinyInteger('is_public');
+            // $table->tinyInteger('is_public');
             $table->tinyInteger('is_item_suggest');
             $table->foreignId('main_material_id')->nullable()
                 ->constrained('materials')//引数でテーブル指定

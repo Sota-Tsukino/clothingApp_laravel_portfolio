@@ -127,20 +127,9 @@
             </select>
           </div>
 
-          <!-- 公開設定 -->
-          <div class="mb-6">
-            <label for="is_public" class="block text-sm font-medium text-gray-700 mb-1">衣類の公開</label>
-            <select name="is_public" id="is_public"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
-              required>
-              <option value="1" {{ $item->is_public == '1' ? 'selected' : '' }}>公開する</option>
-              <option value="0" {{ $item->is_public == '0' ? 'selected' : '' }}>公開しない</option>
-            </select>
-          </div>
-
           <!-- コーデ提案 -->
           <div class="mb-6">
-            <label for="is_item_suggest" class="block text-sm font-medium text-gray-700 mb-1">コーデ提案に</label>
+            <label for="is_item_suggest" class="block text-sm font-medium text-gray-700 mb-1">衣類提案に</label>
             <select name="is_item_suggest" id="is_item_suggest"
               class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
               required>
