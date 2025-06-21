@@ -34,7 +34,7 @@ class ItemService
             'colors' => 'required|array',
             'colors.*' => 'integer|exists:colors,id',
             'status' => [Rule::in(['owned', 'cleaning', 'discarded'])],
-            'is_public' => 'integer|required',
+            // 'is_public' => 'integer|required',
             'is_item_suggest' => 'integer|required|between:0,1',
             'tags' => 'nullable|array',
             'tags.*' => 'integer|exists:tags,id',
@@ -69,8 +69,23 @@ class ItemService
     {
         $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
         $bodyCorrection = BodyCorrectionService::getForUser($userId);
+        $user = UserService::getLoginUser($userId);
+
+        // サブカテゴリのgender条件をユーザーの性別で判定
+        $subCategoryGenders = match ($user->gender) {
+            'female' => ['unisex', 'female'],
+            'male' => ['unisex', 'male'],
+            default => null, // prefer_not_to_say なら制限なし
+        };
+
+        $categories = Category::with(['subCategory' => function ($query) use ($subCategoryGenders) {
+            if ($subCategoryGenders) {
+                $query->whereIn('gender', $subCategoryGenders);// []に含まれるデータを取得
+            }
+        }])->get();
+
         return [
-            'categories' => Category::with('subCategory')->get(), //with()の引数はmodels/Category.phpで定義したメソッド名を指定
+            'categories' => $categories,
             'colors' => Color::all(),
             'brands' => Brand::all(),
             'tags' => Tag::all(),
@@ -162,7 +177,7 @@ class ItemService
                 'sub_category_id' => $data['sub_category_id'],
                 'brand_id' => $data['brand_id'],
                 'status' => $data['status'],
-                'is_public' => $data['is_public'],
+                // 'is_public' => $data['is_public'],
                 'is_item_suggest' => $data['is_item_suggest'],
                 'main_material_id' => $data['main_material'] ?? null,
                 'sub_material_id' => $data['sub_material'] ?? null,

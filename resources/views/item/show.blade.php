@@ -78,16 +78,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
             <div class="flex items-center py-2 border-b border-gray-200">
-              <span class="text-sm font-medium text-gray-600 w-1/3">衣類の公開</span>
-              <span
-                class="text-sm font-semibold
-                       {{ $item->is_public ? 'text-green-600' : 'text-gray-600' }}">
-                {{ $item->is_public ? '公開する' : '非公開にする' }}
-              </span>
-            </div>
-
-            <div class="flex items-center py-2 border-b border-gray-200">
-              <span class="text-sm font-medium text-gray-600 w-1/3">コーデ提案に</span>
+              <span class="text-sm font-medium text-gray-600 w-1/3">衣類提案に</span>
               <span
                 class="text-sm font-semibold
                        {{ $item->is_item_suggest == '1' ? 'text-green-600' : 'text-gray-600' }}">

@@ -28,7 +28,7 @@ class Item extends Model
         'sub_category_id',
         'brand_id',
         'status',
-        'is_public',
+        // 'is_public',
         'is_item_suggest',
         'main_material_id',
         'sub_material_id', //materials_table →sub_materials_tableで紐づけしてるが必要？
