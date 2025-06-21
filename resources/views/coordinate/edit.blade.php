@@ -116,17 +116,6 @@
               </select>
             </div>
 
-            <!-- 公開設定 -->
-            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
-              <label for="is_public" class="text-sm font-medium text-gray-600 w-full sm:w-1/3">コーデを公開</label>
-              <select name="is_public" id="is_public"
-                class="w-full sm:w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                required>
-                <option value="1" {{ $coordinate->is_public == 1 ? 'selected' : '' }}>公開する</option>
-                <option value="0" {{ $coordinate->is_public == 0 ? 'selected' : '' }}>公開しない</option>
-              </select>
-            </div>
-
             <!-- お気に入り設定 -->
             <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
               <label for="is_favorite" class="text-sm font-medium text-gray-600 w-full sm:w-1/3">お気に入り</label>

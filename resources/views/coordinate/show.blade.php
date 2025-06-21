@@ -75,15 +75,6 @@
           </div>
 
           <div class="flex flex-wrap items-center py-3 border-b border-gray-200">
-            <span class="text-sm font-medium text-gray-600 w-full sm:w-1/3 mb-1 sm:mb-0">コーデを公開</span>
-            <span
-              class="text-sm font-semibold
-              {{ $coordinate->is_public == '1' ? 'text-green-600' : 'text-gray-600' }}">
-              {{ $coordinate->is_public == '1' ? '公開する' : '公開しない' }}
-            </span>
-          </div>
-
-          <div class="flex flex-wrap items-center py-3 border-b border-gray-200">
             <span class="text-sm font-medium text-gray-600 w-full sm:w-1/3 mb-1 sm:mb-0">お気に入り</span>
             <span
               class="text-sm font-semibold

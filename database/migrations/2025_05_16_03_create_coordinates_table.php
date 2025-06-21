@@ -21,7 +21,7 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->boolean('is_public')->default(false);
+            // $table->boolean('is_public')->default(false);
             $table->string('memo', 100)->nullable();
             $table->boolean('is_favorite')->default(false);
             $table->softDeletes(); // ←deleted_atカラム追加

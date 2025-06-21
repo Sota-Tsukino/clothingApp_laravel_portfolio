@@ -72,16 +72,6 @@
             </select>
           </div>
           <div class="flex mb-6 items-center">
-            <label for="is_public" class="text-sm font-medium text-gray-600 w-full sm:w-1/3">コーデを公開</label>
-            <select name="is_public" id="is_public"
-              class="w-full sm:w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              required>
-              {{-- DB上は型がbooleanになっているのでvalue= true/falseで管理する？ --}}
-              <option value="1" {{ old('is_public') == 1 ? 'selected' : '' }}>公開する</option>
-              <option value="0" {{ old('is_public') == 0 ? 'selected' : '' }}>公開しない</option>
-            </select>
-          </div>
-          <div class="flex mb-6 items-center">
             <label for="is_favorite" class="text-sm font-medium text-gray-600 w-full sm:w-1/3">お気に入り</label>
             <select name="is_favorite" id="is_favorite"
               class="w-full sm:w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out"
