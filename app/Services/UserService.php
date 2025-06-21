@@ -54,6 +54,15 @@ class UserService
         return $rules;
     }
 
+    public static function getLoginUser($userId)
+    {
+        $user = User::with(['prefecture', 'city'])
+            ->where('id', $userId)
+            ->first();
+
+        return $user;
+    }
+
     public static function saveUser(array $data, ?User $user = null): User
     {
         $userData = [

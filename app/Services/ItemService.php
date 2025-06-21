@@ -69,8 +69,23 @@ class ItemService
     {
         $bodyMeasurement = BodyMeasurementService::getLatestForUser($userId);
         $bodyCorrection = BodyCorrectionService::getForUser($userId);
+        $user = UserService::getLoginUser($userId);
+
+        // サブカテゴリのgender条件をユーザーの性別で判定
+        $subCategoryGenders = match ($user->gender) {
+            'female' => ['unisex', 'female'],
+            'male' => ['unisex', 'male'],
+            default => null, // prefer_not_to_say なら制限なし
+        };
+
+        $categories = Category::with(['subCategory' => function ($query) use ($subCategoryGenders) {
+            if ($subCategoryGenders) {
+                $query->whereIn('gender', $subCategoryGenders);// []に含まれるデータを取得
+            }
+        }])->get();
+
         return [
-            'categories' => Category::with('subCategory')->get(), //with()の引数はmodels/Category.phpで定義したメソッド名を指定
+            'categories' => $categories,
             'colors' => Color::all(),
             'brands' => Brand::all(),
             'tags' => Tag::all(),
