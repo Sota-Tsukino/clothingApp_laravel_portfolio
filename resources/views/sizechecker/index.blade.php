@@ -52,7 +52,7 @@
                 </th>
                 <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[140px]">
                   衣類サイズ</th>
-                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[130px]">
+                <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap min-w-[146px]">
                   判定</th>
                 <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">優先度</th>
                 <th class="px-4 py-4 text-left text-sm font-medium text-gray-500 w-1/7 whitespace-nowrap">ガイド</th>

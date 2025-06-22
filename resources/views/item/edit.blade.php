@@ -300,7 +300,7 @@
                     class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[128px]">衣類サイズ
                   </th>
                   <th scope="col"
-                    class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[146px]">判定
+                    class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[147px]">判定
                   </th>
                   <th scope="col" class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
                     優先度</th>
