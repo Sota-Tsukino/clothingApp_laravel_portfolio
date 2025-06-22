@@ -30,38 +30,49 @@
         <div class="rounded-lg mb-8">
           <h2 class="text-lg font-medium text-gray-700 mb-4 border-b border-gray-200 pb-2">今日の天気</h2>
 
-          <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0">
-            <!-- 天気アイコン -->
-            <div class="weather__icon flex items-center justify-center sm:justify-start">
-              @if ($sameDesc)
-                <x-weather-icon :icon="$weatherSummary['morning_icon']" :desc="$weatherSummary['morning_desc']" />
-              @elseif (empty($weatherSummary['morning_icon']))
-                <x-weather-icon :icon="$weatherSummary['afternoon_icon']" :desc="$weatherSummary['afternoon_desc']" />
-              @elseif (empty($weatherSummary['afternoon_icon']))
-                <x-weather-icon :icon="$weatherSummary['morning_icon']" :desc="$weatherSummary['morning_desc']" />
-              @else
-                <x-weather-icon :icon="$weatherSummary['morning_icon']" :desc="$weatherSummary['morning_desc']" />
-                <span class="text-3xl sm:text-4xl text-gray-400 mx-2">/</span>
-                <x-weather-icon :icon="$weatherSummary['afternoon_icon']" :desc="$weatherSummary['afternoon_desc']" />
-              @endif
-            </div>
+          <div class="openWeather block mx-auto sm:mx-0">
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0">
+              <!-- 天気アイコン -->
+              <div class="weather__icon flex items-center justify-center sm:justify-start">
+                @if ($sameDesc)
+                  <x-weather-icon :icon="$weatherSummary['morning_icon']" :desc="$weatherSummary['morning_desc']" />
+                @elseif (empty($weatherSummary['morning_icon']))
+                  <x-weather-icon :icon="$weatherSummary['afternoon_icon']" :desc="$weatherSummary['afternoon_desc']" />
+                @elseif (empty($weatherSummary['afternoon_icon']))
+                  <x-weather-icon :icon="$weatherSummary['morning_icon']" :desc="$weatherSummary['morning_desc']" />
+                @else
+                  <x-weather-icon :icon="$weatherSummary['morning_icon']" :desc="$weatherSummary['morning_desc']" />
+                  <span class="text-3xl sm:text-4xl text-gray-400 mx-2">/</span>
+                  <x-weather-icon :icon="$weatherSummary['afternoon_icon']" :desc="$weatherSummary['afternoon_desc']" />
+                @endif
+              </div>
 
-            <!-- 温度・湿度情報 -->
-            <div class="weather__info sm:ml-6 text-center sm:text-left">
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
-                <div class="text-red-600 font-semibold">
-                  <span class="block text-xs text-gray-500">最高気温</span>
-                  <span class="text-lg">{{ number_format($weatherSummary['temp_max'], 1) }}℃</span>
-                </div>
-                <div class="text-blue-600 font-semibold">
-                  <span class="block text-xs text-gray-500">最低気温</span>
-                  <span class="text-lg">{{ number_format($weatherSummary['temp_min'], 1) }}℃</span>
-                </div>
-                <div class="text-sky-500 font-semibold">
-                  <span class="block text-xs text-gray-500">湿度</span>
-                  <span class="text-lg">{{ $weatherSummary['humidity'] }}%</span>
+              <!-- 温度・湿度情報 -->
+              <div class="weather__info sm:ml-6 text-center sm:text-left">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+                  <div class="text-red-600 font-semibold">
+                    <span class="block text-xs text-gray-500">最高気温</span>
+                    <span class="text-lg">{{ number_format($weatherSummary['temp_max'], 1) }}℃</span>
+                  </div>
+                  <div class="text-blue-600 font-semibold">
+                    <span class="block text-xs text-gray-500">最低気温</span>
+                    <span class="text-lg">{{ number_format($weatherSummary['temp_min'], 1) }}℃</span>
+                  </div>
+                  <div class="text-sky-500 font-semibold">
+                    <span class="block text-xs text-gray-500">湿度</span>
+                    <span class="text-lg">{{ $weatherSummary['humidity'] }}%</span>
+                  </div>
                 </div>
               </div>
+            </div>
+            <div class="text-sm mt-4">
+              <a href="https://openweathermap.org/" target="_blank" rel="noopener noreferrer">
+                <div class="w-[100px] block mx-auto">
+                  <img src="{{ asset('images/vendors/OpenWeather-Master-Logo RGB.jpg') }}" alt="OpenWeather Logo"
+                    class="w-full">
+                </div>
+                <span class="text-center block font-semibold">Weather data provided by OpenWeather</span>
+              </a>
             </div>
           </div>
 
@@ -128,4 +139,15 @@
       </div>
     </div>
   </section>
+
+  <x-slot name="footer">
+    <small class="inline-block font-semibold text-sm text-gray-800 dark:text-gray-200 leading-tight">
+      &copy; ClothingApp
+    </small>
+    <p class="text-xs text-gray-500">
+      位置情報は <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">
+        &copy; OpenStreetMap
+      </a> のデータを使用しています。
+    </p>
+  </x-slot>
 </x-app-layout>
