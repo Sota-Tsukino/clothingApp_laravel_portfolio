@@ -17,28 +17,46 @@
                     </x-nav-link> --}}
                     <x-nav-link
                         :href="route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show')">
-                        {{ __('Profile') }}
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/Profile.svg') }}" alt="プロフィールアイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">プロフィール</p>
                     </x-nav-link>
                     <x-nav-link
                         :href="route(Auth::user()->role === 'admin' ? 'admin.measurement.index' : 'measurement.index')">
-                        体格情報一覧
-                    </x-nav-link>
-                    <x-nav-link
-                        :href="route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index')">
-                        体格許容値
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/BodyMeasurement.svg') }}" alt="体格情報アイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">体格情報</p>
                     </x-nav-link>
                     <x-nav-link
                         :href="route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')">
-                        衣類アイテム一覧
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/ClothingItems.svg') }}" alt="衣類一覧アイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">衣類一覧</p>
                     </x-nav-link>
                     <x-nav-link
                         :href="route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index')">
-                        サイズチェッカー
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/SizeChecker.svg') }}" alt="サイズチェッカーアイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">サイズチェッカー</p>
+                    </x-nav-link>
+                    <x-nav-link
+                        :href="route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index')">
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/Coordinate.svg') }}" alt="コーデ一覧アイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">コーデ一覧</p>
                     </x-nav-link>
                     @if (Auth::user()->role === 'admin')
                         <x-nav-link
                             :href="route('admin.user.index')">
-                            ユーザー一覧
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/admin.svg') }}" alt="ユーザー一覧アイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">ユーザー一覧</p>
                         </x-nav-link>
                     @endif
                 </div>

@@ -30,8 +30,8 @@
         <div class="rounded-lg mb-8">
           <h2 class="text-lg font-medium text-gray-700 mb-4 border-b border-gray-200 pb-2">今日の天気</h2>
 
-          <div class="openWeather block mx-auto sm:mx-0">
-            <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0">
+          <div class="openWeather block mx-auto sm:mx-0 w-[376px]">
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 justify-between">
               <!-- 天気アイコン -->
               <div class="weather__icon flex items-center justify-center sm:justify-start">
                 @if ($sameDesc)
