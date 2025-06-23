@@ -66,12 +66,14 @@
               @endforeach
             </select>
           </div>
-          <div class="flex justify-between mx-auto">
-            <button
-              class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">更新</button>
-            <button type="button"
-              onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show') }}'"
-              class=" text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:opacity-80 rounded">キャンセル</button>
+          <div class="pt-6">
+            <div class="flex flex-col sm:flex-row gap-3 justify-around">
+              <button
+                class="inline-block px-4 py-2 bg-indigo-600 rounded-md font-semibold text-sm text-white hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">更新する</button>
+              <button type="button"
+                onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show') }}'"
+                class="inline-block px-4 py-2 bg-red-600 rounded-md font-semibold text-sm text-white hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-red-900 focus:ring ring-red-300 disabled:opacity-25 transition ease-in-out duration-150">キャンセル</button>
+            </div>
           </div>
         </div>
       </form>
