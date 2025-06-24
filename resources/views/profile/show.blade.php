@@ -5,7 +5,7 @@
     </h2>
   </x-slot>
 
-  <section class="text-gray-600 body-font overflow-hidden px-4 sm:px-8">
+  <section class="text-gray-600 body-font overflow-hidden px-4 md:px-8">
     <div class="max-w-xl px-8 sm:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <x-flash-message status="session('status')" />
       <div class="w-full mb-6 ">

@@ -106,7 +106,7 @@
               <select name="sceneTag_id" id="categorySelect"
                 class="w-full sm:w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out"
                 required>
-                <option value="">シーンタグを選択してください</option>
+                <option value="">選択してください</option>
                 @foreach ($sceneTags as $sceneTag)
                   <option value="{{ $sceneTag->id }}"
                     {{ $coordinate->scene_tag_id == $sceneTag->id ? 'selected' : '' }}>
