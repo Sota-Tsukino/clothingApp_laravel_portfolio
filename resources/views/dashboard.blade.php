@@ -140,14 +140,4 @@
     </div>
   </section>
 
-  <x-slot name="footer">
-    <small class="inline-block font-semibold text-sm text-gray-800 dark:text-gray-200 leading-tight">
-      &copy; FitCloset
-    </small>
-    <p class="text-xs text-gray-500">
-      位置情報は <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">
-        &copy; OpenStreetMap
-      </a> のデータを使用しています。
-    </p>
-  </x-slot>
 </x-app-layout>
