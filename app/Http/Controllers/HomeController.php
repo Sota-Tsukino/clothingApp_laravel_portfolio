@@ -15,7 +15,7 @@ use App\Services\ItemRecommendationService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class DashBoardController extends Controller
+class HomeController extends Controller
 {
 
     /**
@@ -61,6 +61,6 @@ class DashBoardController extends Controller
 
         // dd($topsItem, $bottomsItem, $outerItem);
 
-        return view('dashboard', compact('weatherSummary', 'user', 'weatherMessage', 'topsItem', 'bottomsItem', 'outerItem'));
+        return view('home', compact('weatherSummary', 'user', 'weatherMessage', 'topsItem', 'bottomsItem', 'outerItem'));
     }
 }

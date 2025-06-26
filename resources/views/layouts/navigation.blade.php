@@ -5,16 +5,13 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.dashboard' : 'dashboard') }}">
+                    <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.home' : 'home') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-2 md:-my-px md:ml-8 md:flex">
-                    {{-- <x-nav-link :href="route(Auth::user()->role === 'admin' ? 'admin.dashboard' : 'dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link> --}}
                     <x-nav-link
                         :href="route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show')">
                         <div class="w-8 mx-auto">
