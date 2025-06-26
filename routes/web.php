@@ -10,7 +10,7 @@ use App\Http\Controllers\FittingToleranceController;
 use App\Http\Controllers\SizeCheckerController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CoordinateController;
-use App\Http\Controllers\DashBoardController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,13 +28,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/home', function () {
+    return view('home');
+})->middleware(['auth', 'verified'])->name('home');
 
 // user用ルート
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-    Route::get('/dashboard', [DashBoardController::class, 'index'])->name('dashboard');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
@@ -59,7 +59,7 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
     ->prefix('admin') // URLの先頭にadminをつける
     ->name('admin.')
     ->group(function () {
-        Route::get('/dashboard', [DashBoardController::class, 'index'])->name('dashboard');
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
         Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
