@@ -1,0 +1,29 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="4" r="1.9" fill="white" stroke="black" stroke-width="0.2"/>
+<rect x="10.1" y="7.1" width="3.8" height="7.8" rx="1.9" fill="white" stroke="black" stroke-width="0.2"/>
+<rect x="3.1" y="21.1" width="17.8" height="0.8" fill="white" stroke="black" stroke-width="0.2"/>
+<rect x="15.1" y="7.1" width="0.8" height="6.8" rx="0.4" fill="white" stroke="black" stroke-width="0.2"/>
+<rect x="8.1" y="7.1" width="0.8" height="6.8" rx="0.4" fill="white" stroke="black" stroke-width="0.2"/>
+<rect x="10.1" y="15.1" width="0.8" height="5.8" rx="0.4" fill="white" stroke="black" stroke-width="0.2"/>
+<rect x="13.1" y="15.1" width="0.8" height="5.8" rx="0.4" fill="white" stroke="black" stroke-width="0.2"/>
+<rect x="17.9" y="1.9" width="2.2" height="19.2" stroke="black" stroke-width="0.2"/>
+<rect x="18" y="2" width="2" height="19" fill="white"/>
+<path d="M19 3.1C19.0552 3.1 19.1 3.05523 19.1 3C19.1 2.94477 19.0552 2.9 19 2.9V3.1ZM19 3V2.9H18V3V3.1H19V3Z" fill="black"/>
+<path d="M19 4.1C19.0552 4.1 19.1 4.05523 19.1 4C19.1 3.94477 19.0552 3.9 19 3.9V4.1ZM19 4V3.9H18V4V4.1H19V4Z" fill="black"/>
+<path d="M19 5.1C19.0552 5.1 19.1 5.05523 19.1 5C19.1 4.94477 19.0552 4.9 19 4.9V5.1ZM19 5V4.9H18V5V5.1H19V5Z" fill="black"/>
+<path d="M19 6.1C19.0552 6.1 19.1 6.05523 19.1 6C19.1 5.94477 19.0552 5.9 19 5.9V6.1ZM19 6V5.9H18V6V6.1H19V6Z" fill="black"/>
+<path d="M19 7.1C19.0552 7.1 19.1 7.05523 19.1 7C19.1 6.94477 19.0552 6.9 19 6.9V7.1ZM19 7V6.9H18V7V7.1H19V7Z" fill="black"/>
+<path d="M19 8.1C19.0552 8.1 19.1 8.05523 19.1 8C19.1 7.94477 19.0552 7.9 19 7.9V8.1ZM19 8V7.9H18V8V8.1H19V8Z" fill="black"/>
+<path d="M19 9.1C19.0552 9.1 19.1 9.05523 19.1 9C19.1 8.94477 19.0552 8.9 19 8.9V9.1ZM19 9V8.9H18V9V9.1H19V9Z" fill="black"/>
+<path d="M19 10.1C19.0552 10.1 19.1 10.0552 19.1 10C19.1 9.94477 19.0552 9.9 19 9.9V10.1ZM19 10V9.9H18V10V10.1H19V10Z" fill="black"/>
+<path d="M19 11.1C19.0552 11.1 19.1 11.0552 19.1 11C19.1 10.9448 19.0552 10.9 19 10.9V11.1ZM19 11V10.9H18V11V11.1H19V11Z" fill="black"/>
+<path d="M19 12.1C19.0552 12.1 19.1 12.0552 19.1 12C19.1 11.9448 19.0552 11.9 19 11.9V12.1ZM19 12V11.9H18V12V12.1H19V12Z" fill="black"/>
+<path d="M19 13.1C19.0552 13.1 19.1 13.0552 19.1 13C19.1 12.9448 19.0552 12.9 19 12.9V13.1ZM19 13V12.9H18V13V13.1H19V13Z" fill="black"/>
+<path d="M19 14.1C19.0552 14.1 19.1 14.0552 19.1 14C19.1 13.9448 19.0552 13.9 19 13.9V14.1ZM19 14V13.9H18V14V14.1H19V14Z" fill="black"/>
+<path d="M19 15.1C19.0552 15.1 19.1 15.0552 19.1 15C19.1 14.9448 19.0552 14.9 19 14.9V15.1ZM19 15V14.9H18V15V15.1H19V15Z" fill="black"/>
+<path d="M19 16.1C19.0552 16.1 19.1 16.0552 19.1 16C19.1 15.9448 19.0552 15.9 19 15.9V16.1ZM19 16V15.9H18V16V16.1H19V16Z" fill="black"/>
+<path d="M19 17.1C19.0552 17.1 19.1 17.0552 19.1 17C19.1 16.9448 19.0552 16.9 19 16.9V17.1ZM19 17V16.9H18V17V17.1H19V17Z" fill="black"/>
+<path d="M19 18.1C19.0552 18.1 19.1 18.0552 19.1 18C19.1 17.9448 19.0552 17.9 19 17.9V18.1ZM19 18V17.9H18V18V18.1H19V18Z" fill="black"/>
+<path d="M19 19.1C19.0552 19.1 19.1 19.0552 19.1 19C19.1 18.9448 19.0552 18.9 19 18.9V19.1ZM19 19V18.9H18V19V19.1H19V19Z" fill="black"/>
+<path d="M19 20.1C19.0552 20.1 19.1 20.0552 19.1 20C19.1 19.9448 19.0552 19.9 19 19.9V20.1ZM19 20V19.9H18V20V20.1H19V20Z" fill="black"/>
+</svg>

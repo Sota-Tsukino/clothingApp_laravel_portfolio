@@ -11,34 +11,52 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-2 md:-my-px md:ml-8 md:flex">
                     {{-- <x-nav-link :href="route(Auth::user()->role === 'admin' ? 'admin.dashboard' : 'dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link> --}}
                     <x-nav-link
                         :href="route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show')">
-                        {{ __('Profile') }}
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/Profile.svg') }}" alt="プロフィールアイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">プロフィール</p>
                     </x-nav-link>
                     <x-nav-link
                         :href="route(Auth::user()->role === 'admin' ? 'admin.measurement.index' : 'measurement.index')">
-                        体格情報一覧
-                    </x-nav-link>
-                    <x-nav-link
-                        :href="route(Auth::user()->role === 'admin' ? 'admin.tolerance.index' : 'tolerance.index')">
-                        体格許容値
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/BodyMeasurement.svg') }}" alt="体格情報アイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">体格情報</p>
                     </x-nav-link>
                     <x-nav-link
                         :href="route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')">
-                        衣類アイテム一覧
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/ClothingItems.svg') }}" alt="衣類一覧アイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">衣類一覧</p>
                     </x-nav-link>
                     <x-nav-link
                         :href="route(Auth::user()->role === 'admin' ? 'admin.sizechecker.index' : 'sizechecker.index')">
-                        サイズチェッカー
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/SizeChecker.svg') }}" alt="サイズチェッカーアイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">サイズチェッカー</p>
+                    </x-nav-link>
+                    <x-nav-link
+                        :href="route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index')">
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/Coordinate.svg') }}" alt="コーデ一覧アイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">コーデ一覧</p>
                     </x-nav-link>
                     @if (Auth::user()->role === 'admin')
                         <x-nav-link
                             :href="route('admin.user.index')">
-                            ユーザー一覧
+                        <div class="w-8 mx-auto">
+                            <img src="{{ asset('images/icons/admin.svg') }}" alt="ユーザー一覧アイコン" class="w-full">
+                        </div>
+                        <p class="menu__text text-[12px]">ユーザー一覧</p>
                         </x-nav-link>
                     @endif
                 </div>
@@ -120,16 +138,10 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
-
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->nickname }}さん</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
 

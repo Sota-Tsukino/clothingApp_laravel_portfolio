@@ -63,7 +63,7 @@
             <select name="sceneTag_id" id="categorySelect"
               class="w-full sm:w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required>
-              <option value="" {{ old('sceneTag_id') == '' ? 'selected' : '' }}>シーンタグを選択してください</option>
+              <option value="" {{ old('sceneTag_id') == '' ? 'selected' : '' }}>選択してください</option>
               @foreach ($sceneTags as $sceneTag)
                 <option value="{{ $sceneTag->id }}" {{ old('sceneTag_id') == $sceneTag->id ? 'selected' : '' }}>
                   {{ __("sceneTag.$sceneTag->name") }}
@@ -82,16 +82,18 @@
             </select>
           </div>
 
-          <hr class="my-6">
-          <h2 class='text-black'>任意入力</h2>
-          <div class="flex mb-6 items-center">
-            <label for="memo" class="text-sm font-medium text-gray-600 w-full sm:w-1/3">メモ</label>
-            <textarea name="memo" id="memo"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              maxlength="50" placeholder="50文字以内で入力">{{ old('memo') }}</textarea>
+          <!-- 任意入力セクション -->
+          <div class="my-8 pt-6 border-t border-gray-200">
+            <h2 class="text-xl font-medium text-gray-700 mb-4">任意入力</h2>
+            <div class="flex flex-col sm:flex-row sm:items-start space-y-2 sm:space-y-0">
+                <label for="memo" class="text-sm font-medium text-gray-600 w-full sm:w-1/3 pt-2">メモ</label>
+                <textarea name="memo" id="memo"
+                class="w-full sm:w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-3 leading-relaxed transition-colors duration-200 ease-in-out h-32"
+                maxlength="50" placeholder="50文字以内で入力">{{ old('memo') }}</textarea>
+            </div>
           </div>
         </div>
-        <div class="flex flex-col sm:flex-row justify-around gap-4 pt-4">
+        <div class="flex flex-col sm:flex-row justify-around mx-auto space-y-3 sm:space-y-0">
           <button
             class="text-center inline-block items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">登録する</button>
           <button type="button"

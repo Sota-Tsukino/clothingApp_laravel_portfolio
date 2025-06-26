@@ -6,7 +6,7 @@
   </x-slot>
 
   <section class="text-gray-600 body-font overflow-hidden px-2 sm:px-4">
-    <div class="max-w-3xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
+    <div class="max-w-4xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
@@ -231,7 +231,7 @@
                     <th scope="col"
                       class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">衣類サイズ</th>
                     <th scope="col"
-                      class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[146px]">判定
+                      class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap min-w-[148px]">判定
                     </th>
                     <th scope="col"
                       class="px-4 py-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">優先度</th>
