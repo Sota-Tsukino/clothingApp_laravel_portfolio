@@ -21,15 +21,14 @@
       <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
         @auth
           <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.dashboard' : 'dashboard') }}"
-            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
+            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">ダッシュボード</a>
         @else
           <a href="{{ route('login') }}"
-            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log
-            in</a>
+            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">ログイン</a>
 
           @if (Route::has('register'))
             <a href="{{ route('register') }}"
-              class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
+              class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">ユーザー登録</a>
           @endif
         @endauth
       </div>
@@ -82,7 +81,7 @@
             class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
             <div class="w-full">
               <div class="p-2 h-16 w-16 bg-gray-100 dark:bg-gray-800/20 flex justify-center rounded-full">
-                <img src="{{ asset('images/icons/BodyMeasurement.svg') }}" alt="体格情報アイコン" class="w-9/10 object-contain">
+                <img src="{{ asset('images/icons/Weather.svg') }}" alt="天気情報アイコン" class="w-9/10 object-contain">
               </div>
 
               <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">天気情報の表示・今日のオススメ衣類</h2>
