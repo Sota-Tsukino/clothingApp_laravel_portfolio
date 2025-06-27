@@ -117,8 +117,8 @@ class WeatherService
         ];
 
         //メッセージ表示テスト用
-        // $tempMax = 4;
-        // $tempMin = 2;
+        $tempMax = 24;
+        $tempMin = 20;
 
         //日中気温の推奨衣類
         if ($tempMax !== null) {

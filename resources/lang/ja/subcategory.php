@@ -35,4 +35,5 @@ return array (
   'fleece' => 'フリース',
   'blouson' => 'ブルゾン',
   'coat' => 'コート',
+  'down-coat' => 'ダウンコート',
 );
