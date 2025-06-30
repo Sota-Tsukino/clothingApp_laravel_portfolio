@@ -51,7 +51,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                @foreach ($fields as $field)
+                @foreach ($fieldsWithDefaultVals as $field => $defaultVal)
                   <tr class="hover:bg-gray-50 transition-colors duration-150">
                     <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                       {{ __("measurement.$field") }}</td>
@@ -94,7 +94,7 @@
 
 </x-app-layout>
 <script>
-  const defaultValues = @json($defaultValues); //controllerから渡ってくる変数を変換
+  const defaultValues = @json($fieldsWithDefaultVals); //controllerから渡ってくる変数を変換
 
   function resetToDefault() {
     for (const key in defaultValues) {
