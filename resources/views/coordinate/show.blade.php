@@ -89,9 +89,9 @@
         </div>
 
         <!-- メモ -->
-        <div class="mb-8">
-          <h3 class="text-sm font-medium text-gray-700 mb-2">メモ</h3>
-          <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+        <div class="mb-8 flex flex-col sm:flex-row sm:items-start space-y-2 sm:space-y-0">
+          <h3 class="sm:w-1/3 text-sm font-medium text-gray-700 mb-2">メモ</h3>
+          <div class="w-full sm:w-2/3 bg-gray-50 rounded-lg p-4 border border-gray-200">
             <p class="text-sm text-gray-700 whitespace-pre-line">{{ $coordinate->memo ?? '未登録' }}</p>
           </div>
         </div>
