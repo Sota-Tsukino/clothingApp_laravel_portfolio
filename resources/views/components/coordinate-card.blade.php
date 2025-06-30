@@ -6,9 +6,9 @@
   $sub2 = $coordinate->items->get(2);
 @endphp
 
-<div class="w-full h-full">
+<div class="w-full h-full border rounded-lg shadow">
   <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.coordinate.show' : 'coordinate.show', ['coordinate' => $coordinate->id]) }}"
-    class="block h-full bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-200 border border-gray-100">
+    class="block bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-200 border border-gray-100">
 
     <!-- 画像セクション -->
     <div class="bg-gray-50 p-3">
@@ -53,25 +53,28 @@
         </div>
       </div>
     </div>
-
-    <!-- 情報セクション -->
-    <div class="p-3 text-sm">
-      <div class="mb-1 font-medium text-gray-800">{{ __("sceneTag.{$coordinate->sceneTag->name}") }}</div>
-      <div class="flex justify-between text-xs text-gray-500">
-        <div>{{ $coordinate->created_at->format('Y/m/d') }}</div>
-        <div class="flex space-x-2">
-          <span class="{{ $coordinate->is_favorite ? 'text-amber-500' : 'text-gray-500' }}">
-            @if ($coordinate->is_favorite)
-              <span class="inline-flex items-center">
-                <img src="{{ asset('images/icons/my_favorite.svg') }}" class="w-3 h-3" alt="お気に入りアイコン">
-                お気に入り
-              </span>
-            @else
-              未登録
-            @endif
-          </span>
-        </div>
-      </div>
-    </div>
   </a>
+
+  <!-- 情報セクション -->
+  <div class="p-3 text-sm">
+    <div class="flex justify-between items-center text-xs text-gray-500">
+      <div>
+        <p class="mb-1 font-medium text-gray-800">{{ __("sceneTag.{$coordinate->sceneTag->name}") }}</p>
+        <p>{{ $coordinate->created_at->format('Y/m/d') }}</p>
+      </div>
+      <form method="post"
+        action="{{ route(Auth::user()->role === 'admin' ? 'admin.coordinate.toggle' : 'coordinate.toggle', ['coordinate' => $coordinate->id]) }}" class="inline-block">
+        @csrf
+        @method('put')
+        <button type="submit" class="inline-block bg-transparent border-none p-0 w-8 h-8">
+          @if ($coordinate->is_favorite)
+            <img src="{{ asset('images/icons/favorite-yellow.svg') }}" class="w-full " alt="お気に入りアイコン">
+          @else
+            <img src="{{ asset('images/icons/favorite-gray.svg') }}" class="w-full " alt="お気に入りアイコン">
+          @endif
+        </button>
+        <input type="hidden" name="is_favorite" value="{{ $coordinate->is_favorite }}">
+      </form>
+    </div>
+  </div>
 </div>

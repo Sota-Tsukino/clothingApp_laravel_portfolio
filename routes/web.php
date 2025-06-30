@@ -79,6 +79,7 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
 
         Route::resource('/clothing-item', ItemController::class);
         Route::resource('/coordinate', CoordinateController::class);
+        Route::put('/coordinate/{coordinate}/toggle',[CoordinateController::class, 'toggleIsFavorite'])->name('coordinate.toggle');
 
         //adminのみユーザー管理権原
         Route::get('/user', [UserController::class, 'index'])->name('user.index');

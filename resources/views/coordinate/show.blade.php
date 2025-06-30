@@ -11,8 +11,7 @@
   </x-slot>
 
   <section class="text-gray-600 body-font overflow-hidden px-4 sm:px-8">
-    <div
-      class="container max-w-3xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
+    <div class="container max-w-3xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- バリデーションエラーとフラッシュメッセージ -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
@@ -75,7 +74,12 @@
           </div>
 
           <div class="flex flex-wrap items-center py-3 border-b border-gray-200">
-            <span class="text-sm font-medium text-gray-600 w-full sm:w-1/3 mb-1 sm:mb-0">お気に入り</span>
+            <div class="flex items-center text-sm font-medium text-gray-600 w-full sm:w-1/3 mb-1 sm:mb-0">
+              <span class="inline-block">お気に入り</span>
+              <div class="inline-block w-6">
+                <img src="{{ asset('images/icons/favorite-yellow.svg') }}" class="w-full " alt="お気に入りアイコン">
+              </div>
+            </div>
             <span
               class="text-sm font-semibold
               {{ $coordinate->is_favorite == '1' ? 'text-green-600' : 'text-gray-600' }}">
@@ -85,9 +89,9 @@
         </div>
 
         <!-- メモ -->
-        <div class="mb-8">
-          <h3 class="text-sm font-medium text-gray-700 mb-2">メモ</h3>
-          <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+        <div class="mb-8 flex flex-col sm:flex-row sm:items-start space-y-2 sm:space-y-0">
+          <h3 class="sm:w-1/3 text-sm font-medium text-gray-700 mb-2">メモ</h3>
+          <div class="w-full sm:w-2/3 bg-gray-50 rounded-lg p-4 border border-gray-200">
             <p class="text-sm text-gray-700 whitespace-pre-line">{{ $coordinate->memo ?? '未登録' }}</p>
           </div>
         </div>

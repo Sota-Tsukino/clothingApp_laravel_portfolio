@@ -138,6 +138,29 @@ class CoordinateController extends Controller
             ->with(['message' => 'コーデを更新しました。', 'status' => 'info']);
     }
 
+    public function toggleIsFavorite(Request $request, string $id)
+    {
+        // dd($request);
+        $request->validate([
+            'is_favorite' => 'boolean|required',
+        ]);
+
+        try {
+            $coordinate = Coordinate::findOrFail($id);
+            $userId = Auth::id();
+            CoordinateService::isUserOwn($coordinate, $userId);
+            CoordinateService::saveIsFavorite($coordinate);
+        } catch (Exception $e) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index')
+                ->with(['message' => $e->getMessage(), 'status' => 'alert']);
+        }
+
+        return redirect()
+            ->route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index')
+            ->with(['message' => 'お気に入りを更新しました', 'status' => 'info']);
+    }
+
     public function destroy(string $id)
     {
         $userId = Auth::id();
