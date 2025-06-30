@@ -62,22 +62,20 @@
     <div class="container px-4 py-8 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
-
-      <div class="lg:w-full w-full mx-auto mb-6">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4">
-          @if ($items->count() > 0)
-            @foreach ($items as $item)
-              <x-item-card :item="$item" />
-            @endforeach
-          @else
-            @if (request()->hasAny(['category', 'status', 'sort', 'pagination']))
-              <p class="text-xl text-gray-700">検索条件に一致するアイテムは見つかりませんでした。</p>
-            @else
-              <p class="text-xl text-gray-700">衣類アイテムが登録されていません。</p>
-            @endif
-          @endif
+      @if ($items->count() > 0)
+        <div class="text-sm text-gray-500 font-semibold mb-4">
+          総衣類アイテム数: {{ $items->total() ?? 0 }}件
         </div>
-      </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4 mb-4">
+          @foreach ($items as $item)
+            <x-item-card :item="$item" />
+          @endforeach
+        </div>
+      @elseif (request()->hasAny(['category', 'status', 'sort', 'pagination']))
+        <p class="text-xl text-gray-700">検索条件に一致するアイテムは見つかりませんでした。</p>
+      @else
+        <p class="text-xl text-gray-700">衣類アイテムが登録されていません。</p>
+      @endif
       {{ $items->links() }}
       <button
         onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.create' : 'clothing-item.create') }}'"
