@@ -67,6 +67,12 @@ class CoordinateService
         });
     }
 
+    public static function saveIsFavorite(?Coordinate $coordinate = null)
+    {
+        $coordinate->update(['is_favorite' => !$coordinate->is_favorite]);
+        return $coordinate;
+    }
+
     public static function getAllCoordinateByUserId($userId, bool $is_paginate = false)
     {
         $coordinates = Coordinate::with(['items.image', 'sceneTag'])
