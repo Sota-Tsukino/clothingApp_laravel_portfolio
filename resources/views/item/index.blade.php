@@ -64,7 +64,7 @@
       <x-flash-message status="session('status')" />
 
       <div class="lg:w-full w-full mx-auto mb-6">
-        <div class="flex flex-wrap -m-2">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4">
           @if ($items->count() > 0)
             @foreach ($items as $item)
               <x-item-card :item="$item" />
