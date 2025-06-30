@@ -59,7 +59,7 @@
   </x-slot>
 
   <section class="text-gray-600 body-font">
-    <div class="container px-5 py-8 mx-auto bg-white rounded-lg my-24 shadow-lg">
+    <div class="container px-4 py-8 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
 
