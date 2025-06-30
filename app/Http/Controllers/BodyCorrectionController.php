@@ -12,8 +12,8 @@ class BodyCorrectionController extends Controller
 {
     public function edit(Request $request, string $id)
     {
-        $fields = array_keys(BodyCorrectionService::$fieldsDefaultValues);//keyのみ取り出して配列に格納
-        unset($fields[0]);//「総丈」を除外
+        $fieldsWithDefaultVals = BodyCorrectionService::$fieldsDefaultValues;
+        unset($fieldsWithDefaultVals['total_length']);//「総丈」を除外
 
         //セッションに体格情報IDを保持させ、補正値画面で戻るボタン押した際にこれをparamで渡す。
         if ($request->has('from_measurement_id')) {
@@ -42,10 +42,9 @@ class BodyCorrectionController extends Controller
         }
 
         return view('bodycorrection.edit', [
-            'fields' => $fields,
+            'fieldsWithDefaultVals' => $fieldsWithDefaultVals,
             'bodyCorrection' => $bodyCorrection,
             'bodyMeasurement' => $bodyMeasurement,
-            'defaultValues' => BodyCorrectionService::$fieldsDefaultValues,
         ]);
     }
 
