@@ -11,8 +11,7 @@
   </x-slot>
 
   <section class="text-gray-600 body-font overflow-hidden px-4 sm:px-8">
-    <div
-      class="container max-w-3xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
+    <div class="container max-w-3xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- バリデーションエラーとフラッシュメッセージ -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
@@ -75,7 +74,12 @@
           </div>
 
           <div class="flex flex-wrap items-center py-3 border-b border-gray-200">
-            <span class="text-sm font-medium text-gray-600 w-full sm:w-1/3 mb-1 sm:mb-0">お気に入り</span>
+            <div class="flex items-center text-sm font-medium text-gray-600 w-full sm:w-1/3 mb-1 sm:mb-0">
+              <span class="inline-block">お気に入り</span>
+              <div class="inline-block w-6">
+                <img src="{{ asset('images/icons/favorite-yellow.svg') }}" class="w-full " alt="お気に入りアイコン">
+              </div>
+            </div>
             <span
               class="text-sm font-semibold
               {{ $coordinate->is_favorite == '1' ? 'text-green-600' : 'text-gray-600' }}">

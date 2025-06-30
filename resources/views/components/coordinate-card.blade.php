@@ -63,14 +63,14 @@
         <p>{{ $coordinate->created_at->format('Y/m/d') }}</p>
       </div>
       <form method="post"
-        action="{{ route(Auth::user()->role === 'admin' ? 'admin.coordinate.toggle' : 'coordinate.toggle', ['coordinate' => $coordinate->id]) }}">
+        action="{{ route(Auth::user()->role === 'admin' ? 'admin.coordinate.toggle' : 'coordinate.toggle', ['coordinate' => $coordinate->id]) }}" class="inline-block">
         @csrf
         @method('put')
-        <button type="submit" class="inline-block bg-transparent border-none p-0">
+        <button type="submit" class="inline-block bg-transparent border-none p-0 w-8 h-8">
           @if ($coordinate->is_favorite)
-            <img src="{{ asset('images/icons/favorite-yellow.svg') }}" class="w-8 h-8" alt="お気に入りアイコン">
+            <img src="{{ asset('images/icons/favorite-yellow.svg') }}" class="w-full " alt="お気に入りアイコン">
           @else
-            <img src="{{ asset('images/icons/favorite-gray.svg') }}" class="w-8 h-8" alt="お気に入りアイコン">
+            <img src="{{ asset('images/icons/favorite-gray.svg') }}" class="w-full " alt="お気に入りアイコン">
           @endif
         </button>
         <input type="hidden" name="is_favorite" value="{{ $coordinate->is_favorite }}">
