@@ -25,7 +25,7 @@
                 <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">体格測定ガイド</h3>
               </div>
               <div class="p-2">
-                <img id="tops-img" src="{{ asset('images/body.png') }}" class="w-full h-auto" alt="体格測定ガイド">
+                <img id="tops-img" src="{{ asset('images/body.svg') }}" class="w-full h-auto" alt="体格測定ガイド">
               </div>
             </div>
           </div>
@@ -35,6 +35,8 @@
           <div class="mb-6 bg-green-50 p-4 rounded-md">
             <p class="text-sm text-green-700">
               ユーザーに合った衣類サイズを算出し、サイズチェッカー機能が使用できるようになります。</p>
+            <p class="text-sm text-green-700">
+              ※全項目で入力必須ではありませんが、登録した部位でサイズチェッカーが使用できます。</p>
           </div>
 
           <!-- フォーム -->

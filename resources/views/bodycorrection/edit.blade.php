@@ -19,7 +19,7 @@
             <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">体格測定ガイド</h3>
           </div>
           <div class="p-2">
-            <img id="tops-img" src="{{ asset('images/body.png') }}" class="w-full h-auto" alt="体格測定ガイド">
+            <img id="tops-img" src="{{ asset('images/body.svg') }}" class="w-full h-auto" alt="体格測定ガイド">
           </div>
         </div>
       </div>
