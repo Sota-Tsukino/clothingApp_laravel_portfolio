@@ -48,11 +48,14 @@ class HomeController extends Controller
         $materialMap = Material::pluck('name', 'id')->toArray();//pluck()のみだとcollection型
         $subCategoryMap = SubCategory::pluck('name', 'id')->toArray();
 
-        $weatherMessage = WeatherService::generateMessage($weatherSummary, $materialMap, $subCategoryMap);
+        //天気メッセージ、オススメ衣類テスト用
+        // $weatherSummary['temp_min'] =30;
+        // $weatherSummary['temp_max'] =35;
+        $weatherMessage = WeatherService::generateMessage($weatherSummary, $materialMap, $subCategoryMap, $user->gender);
 
         // dd($weatherMessage);
         //オススメ衣類アイテム
-        $recommendedSubCategories = ItemRecommendationService::recommendByTemperature($weatherSummary['temp_max']);
+        $recommendedSubCategories = ItemRecommendationService::recommendByTemperature($weatherSummary['temp_max'], $user->gender);
         // dd($recommendedSubCategories);
 
         $topsItem = ItemService::getRecommendedItems($recommendedSubCategories['tops'], $userId);

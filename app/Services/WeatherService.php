@@ -94,7 +94,7 @@ class WeatherService
         return null;
     }
 
-    public static function generateMessage(array $weatherSummary, array $materialMap, array $subCategoryMap)
+    public static function generateMessage(array $weatherSummary, array $materialMap, array $subCategoryMap, string $gender)
     {
         $tempMax = $weatherSummary['temp_max'] ?? null;
         $tempMin = $weatherSummary['temp_min'] ?? null;
@@ -116,10 +116,6 @@ class WeatherService
             'blue' => [],
         ];
 
-        //メッセージ表示テスト用
-        // $tempMax = 4;
-        // $tempMin = 2;
-
         //日中気温の推奨衣類
         if ($tempMax !== null) {
             foreach (config('clothing_recommendations.temperature_ranges') as $range) {
@@ -132,14 +128,26 @@ class WeatherService
                     // material_id → name
                     $materialNames = collect($range['materials'])
                         ->map(fn($id) => isset($materialMap[$id]) ? __('material.' . $materialMap[$id]) : null)
-                        ->filter()//$materialMap[$id]が存在しない場合にnullが返るので取り除く
+                        ->filter() //$materialMap[$id]が存在しない場合にnullが返るので取り除く
                         ->implode('、');
 
-
                     // tops の sub_category_id → name
-                    $topsNames = collect($range['tops'])
-                        ->map(fn($id) => isset($subCategoryMap[$id]) ? __('subcategory.' . $subCategoryMap[$id]) : null)
+                    $topsIds = [];
+                    if ($gender === 'female') {
+                        $topsIds = array_merge($range['tops']['unisex'] ?? [], $range['tops']['female'] ?? []);
+                    } elseif ($gender === 'male') {
+                        $topsIds = $range['tops']['unisex'] ?? [];
+                    } else { // prefer_not_to_say や null
+                        $topsIds = array_merge(
+                            $range['tops']['unisex'] ?? [],
+                            $range['tops']['female'] ?? []
+                        );
+                    }
+
+                    $topsNames = collect($topsIds)
+                        ->map(fn($id) => $subCategoryMap[$id] ?? null)
                         ->filter()
+                        ->map(fn($key) => __('subcategory.' . $key))//日本語化
                         ->implode('、');
 
 

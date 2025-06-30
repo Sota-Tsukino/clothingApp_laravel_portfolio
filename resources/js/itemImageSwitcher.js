@@ -3,11 +3,29 @@ export function createItemImageSwitcher() {
     const bottomsImgEl = document.querySelector("#bottoms-img");
     const basePath = "/images/measurements/";
 
-    const parkaGroup = ["hoodie", "pull-over", "knitwear", "blouson"];
-    const fleeceGroup = ["fleece", "jumper"];
-    const tShirtGroup = ["t-shirt", "tunic"];
-    const shirtGroup = ["shirt", "blouse", "other"];
-    const jacketGroup = ["jacket", "other"];
+    const parkaGroup = [
+        "thin-hoodie",
+        "thick-hoodie",
+        "thin-knitwear",
+        "thick-knitwear",
+        "thin-blouson",
+        "thick-blouson",
+    ];
+    const fleeceGroup = ["thin-fleece", "thick-fleece", "jumper"];
+    const tShirtGroup = [
+        "thin-t-shirt",
+        "thick-t-shirt",
+        "thin-tunic",
+        "thick-tunic",
+    ];
+    const shirtGroup = [
+        "thin-shirt",
+        "thick-shirt",
+        "thin-blouse",
+        "thick-blouse",
+        "other",
+    ];
+    const jacketGroup = ["thin-jacket", "thick-jacket", "other"];
     const slacksGroup = [
         "slacks",
         "jeans",
@@ -19,7 +37,9 @@ export function createItemImageSwitcher() {
         "wide-pants",
         "other",
     ];
-    const camisoleGroup = ["camisole", "bustier"];
+    const camisoleGroup = ["camisole", "thin-bustier", "thick-bustier"];
+    const cardiganGroup = ["thin-cardigan", "thick-cardigan"];
+    const coatGroup = ["thin-coat", "thick-coat"];
 
     function switchItemImg(categoryName, subCategoryName) {
         if (!subCategoryName) {
@@ -55,6 +75,10 @@ export function createItemImageSwitcher() {
                 topsImgEl.src = `${basePath}jacket-common.svg`;
             } else if (camisoleGroup.includes(subCategoryName)) {
                 topsImgEl.src = `${basePath}camisole-common.svg`;
+            } else if (cardiganGroup.includes(subCategoryName)) {
+                topsImgEl.src = `${basePath}cardigan.svg`;
+            } else if (coatGroup.includes(subCategoryName)) {
+                topsImgEl.src = `${basePath}coat.svg`;
             } else {
                 topsImgEl.src = `${basePath}${subCategoryName}.svg`;
             }
