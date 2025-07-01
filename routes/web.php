@@ -51,7 +51,10 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/size-checker', [SizeCheckerController::class, 'index'])->name('sizechecker.index');
 
     Route::resource('/clothing-item', ItemController::class);
+    Route::put('/clothing-item/{clothing_item}/switchStatus',[ItemController::class, 'switchStatus'])->name('clothing-item.switchStatus');
     Route::resource('/coordinate', CoordinateController::class);
+    Route::put('/coordinate/{coordinate}/toggle',[CoordinateController::class, 'toggleIsFavorite'])->name('coordinate.toggle');
+
 });
 
 // admin用ルート
@@ -78,6 +81,7 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::get('/size-checker', [SizeCheckerController::class, 'index'])->name('sizechecker.index');
 
         Route::resource('/clothing-item', ItemController::class);
+        Route::put('/clothing-item/{clothing_item}/switchStatus',[ItemController::class, 'switchStatus'])->name('clothing-item.switchStatus');
         Route::resource('/coordinate', CoordinateController::class);
         Route::put('/coordinate/{coordinate}/toggle',[CoordinateController::class, 'toggleIsFavorite'])->name('coordinate.toggle');
 

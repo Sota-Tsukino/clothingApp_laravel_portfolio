@@ -2,18 +2,18 @@
 @php
   $categories = [
       'all' => '全て',
-      'topps' => 'トップス',
+      'tops' => 'トップス',
       'bottoms' => 'ボトムズ',
       'outer' => 'アウター',
       'setup' => 'セットアップ',
-      'others' => 'その他',
+    //   'other' => 'その他',
   ];
 @endphp
 
 <!-- モーダル本体 -->
 <div class="modal micromodal-slide" id="modal-item-list" aria-hidden="true">
   <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-    <div class="modal__container bg-white rounded-lg p-5 max-w-3xl mx-auto shadow-lg fixed top-0 w-full" role="dialog" aria-modal="true"
+    <div class="modal__container bg-white rounded-lg p-4 max-w-4xl mx-auto shadow-lg fixed top-0 w-full" role="dialog" aria-modal="true"
       aria-labelledby="modal-item-list-title">
       <header class="modal__header">
         <h2 class="text-xl font-semibold" id="modal-item-list-title">衣類を選択</h2>
@@ -23,14 +23,14 @@
         <!-- タブメニュー -->
         <div class="flex space-x-4 mb-6">
           @foreach ($categories as $key => $label)
-            <button type="button" class="px-4 py-2 text-sm text-gray-600"
+            <button type="button" class="px-1 py-1 sm:px-4 sm:py-4 md:px-6 md:py-6 lg:px-8 lg:py-8  text-sm text-gray-600"
               :class="{ 'border-b-2 border-blue-500 text-blue-600': tab === '{{ $key }}' }"
               @click="tab = '{{ $key }}'">
               {{ $label }}
             </button>
           @endforeach
         </div>
-        <div class="flex flex-wrap -m-2">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4">
           @if ($items->count() > 0)
             @foreach ($items as $item)
               <template x-if="tab === 'all' || tab === '{{ $item->category->name }}'">

@@ -63,19 +63,20 @@
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
 
-      <div class="w-full mx-auto mb-6">
-        @if ($coordinates->count() > 0)
+      @if ($coordinates->count() > 0)
+        <div class="text-sm text-gray-500 font-semibold mb-4">
+          総コーデ数: {{ $coordinates->total() ?? 0 }}件
+        </div>
+        <div class="w-full mx-auto mb-6">
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
             @foreach ($coordinates as $coordinate)
               <x-coordinate-card :coordinate="$coordinate" />
             @endforeach
           </div>
-        @else
-          <div class="flex justify-center items-center py-16">
-            <p class="text-xl text-gray-700">コーデが登録されていません。</p>
-          </div>
-        @endif
-      </div>
+        </div>
+      @else
+        <p class="w-full text-xl text-gray-700 py-16 text-center">コーデが登録されていません。</p>
+      @endif
 
       <div class="mt-8">
         {{ $coordinates->links() }}

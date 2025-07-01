@@ -12,6 +12,7 @@ use App\Services\FittingToleranceService;
 use App\Services\ItemService;
 use Illuminate\Support\Facades\Storage;
 use Exception;
+use Illuminate\Validation\Rule;
 
 class ItemController extends Controller
 {
@@ -206,6 +207,28 @@ class ItemController extends Controller
         } catch (Exception $e) {
             return redirect()
                 ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.edit' : 'clothing-item.edit', $id)
+                ->with(['message' => $e->getMessage(), 'status' => 'alert']);
+        }
+    }
+
+    public function switchStatus(Request $request, string $id)
+    {
+        // dd($request);
+        $request->validate(['status' => [Rule::in(['owned', 'cleaning', 'discarded'])]]);
+        $userId = Auth::id();
+
+        try {
+            $item = ItemService::getItemById($id);
+            ItemService::isUserOwn($item, $userId);
+
+            $item = ItemService::saveStatus($item);
+
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index', $item)
+                ->with(['message' => 'ステータスを更新しました', 'status' => 'info']);
+        } catch (Exception $e) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index')
                 ->with(['message' => $e->getMessage(), 'status' => 'alert']);
         }
     }

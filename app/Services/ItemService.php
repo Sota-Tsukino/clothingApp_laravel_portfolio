@@ -218,6 +218,17 @@ class ItemService
         });
     }
 
+    public static function saveStatus(?Item $item = null) {
+        if($item->status === 'owned') {
+            $item->update(['status' => 'cleaning']);
+
+        } else {
+            $item->update(['status' => 'owned']);
+        }
+
+        return $item;
+    }
+
     public static function getAllItemsByUserId($userId, bool $is_paginate = false)
     {
         $items = Item::with(['image', 'category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])
