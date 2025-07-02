@@ -22,10 +22,24 @@ class WeatherService
         //出力結果　https://api.openweathermap.org/data/2.5/forecast?lat=33.44&lon=-94.04&exclude=current,minutely,hourly&lang=ja&appid=...
         // dd($url);
 
+        try {
+            $response = Http::timeout(10)->get('https://api.openweathermap.org/data/2.5/forecast', $query_data);
 
-        $response = Http::get('https://api.openweathermap.org/data/2.5/forecast', $query_data);
+            if ($response->failed()) {
+                logger()->error('OpenWeather APIリクエスト失敗', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                ]);
+                return null;
+            }
 
-        return json_decode($response->getBody(), true); // true を渡すと連想配列になる
+            return $response->json();// array型で返す
+        } catch (Exception $e) {
+            logger()->error('OpenWeather API通信エラー', [
+                'message' => $e->getMessage()
+            ]);
+            return null;
+        }
     }
 
     public static function extractTodaysSummary(array $data): array
@@ -147,7 +161,7 @@ class WeatherService
                     $topsNames = collect($topsIds)
                         ->map(fn($id) => $subCategoryMap[$id] ?? null)
                         ->filter()
-                        ->map(fn($key) => __('subcategory.' . $key))//日本語化
+                        ->map(fn($key) => __('subcategory.' . $key)) //日本語化
                         ->implode('、');
 
 

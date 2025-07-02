@@ -1,7 +1,3 @@
-@php
-  $sameDesc = $weatherSummary['morning_desc'] === $weatherSummary['afternoon_desc'];
-@endphp
-
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -26,7 +22,10 @@
       </div>
 
       <!-- 天気情報 -->
-      @isset($weatherSummary)
+      @if (!empty($weatherSummary))
+        @php
+          $sameDesc = $weatherSummary['morning_desc'] === $weatherSummary['afternoon_desc'];
+        @endphp
         <div class="rounded-lg mb-8">
           <h2 class="text-lg font-medium text-gray-700 mb-4 border-b border-gray-200 pb-2">今日の天気</h2>
 
@@ -93,47 +92,56 @@
         </div>
       @else
         <div class="bg-gray-50 rounded-lg p-6 mb-8 text-center">
-          <p class="text-gray-500">天気情報が取得できません</p>
+          <div class="text-gray-400 mb-2 w-16 mx-auto">
+            <img src="{{ asset('images/icons/caution.svg') }}" alt="注意ロゴ" class="w-full">
+          </div>
+          <p class="text-gray-500">天気情報の取得に失敗しました。通信環境や時間帯を変えて再度お試しください。</p>
         </div>
-      @endisset
+      @endif
 
       <!-- オススメ衣類 -->
       <div class="w-full">
         <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2 mb-6">今日のオススメ衣類</h2>
 
-        @if (!empty($topsItem) || !empty($bottomsItem) || !empty($outerItem))
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            @if (!empty($topsItem))
-              <div class="recommend-item">
-                <h3 class="text-sm font-medium text-gray-600 mb-2 text-center">トップス</h3>
-                <x-item-card :item="$topsItem" class="w-full" />
-              </div>
-            @endif
+        @if (!empty($weatherSummary))
+          @if (!empty($topsItem) || !empty($bottomsItem) || !empty($outerItem))
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              @if (!empty($topsItem))
+                <div class="recommend-item">
+                  <h3 class="text-sm font-medium text-gray-600 mb-2 text-center">トップス</h3>
+                  <x-item-card :item="$topsItem" class="w-full" />
+                </div>
+              @endif
 
-            @if (!empty($bottomsItem))
-              <div class="recommend-item">
-                <h3 class="text-sm font-medium text-gray-600 mb-2 text-center">ボトムス</h3>
-                <x-item-card :item="$bottomsItem" class="w-full" />
-              </div>
-            @endif
+              @if (!empty($bottomsItem))
+                <div class="recommend-item">
+                  <h3 class="text-sm font-medium text-gray-600 mb-2 text-center">ボトムス</h3>
+                  <x-item-card :item="$bottomsItem" class="w-full" />
+                </div>
+              @endif
 
-            @if (!empty($outerItem))
-              <div class="recommend-item">
-                <h3 class="text-sm font-medium text-gray-600 mb-2 text-center">アウター</h3>
-                <x-item-card :item="$outerItem" class="w-full" />
+              @if (!empty($outerItem))
+                <div class="recommend-item">
+                  <h3 class="text-sm font-medium text-gray-600 mb-2 text-center">アウター</h3>
+                  <x-item-card :item="$outerItem" class="w-full" />
+                </div>
+              @endif
+            </div>
+          @else
+            <div class="bg-gray-50 rounded-lg p-8 text-center">
+              <div class="text-gray-400 mb-2 w-16 mx-auto">
+                <img src="{{ asset('images/icons/caution.svg') }}" alt="注意ロゴ" class="w-full">
               </div>
-            @endif
-          </div>
+              <p class="text-gray-600 font-medium">衣類アイテムが登録されていません</p>
+              <p class="text-gray-500 text-sm mt-1">アイテムを登録してオススメ機能をお試しください</p>
+            </div>
+          @endif
         @else
           <div class="bg-gray-50 rounded-lg p-8 text-center">
-            <div class="text-gray-400 mb-2">
-              <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
+            <div class="text-gray-400 mb-2 w-16 mx-auto">
+              <img src="{{ asset('images/icons/caution.svg') }}" alt="注意ロゴ" class="w-full">
             </div>
-            <p class="text-gray-600 font-medium">衣類アイテムが登録されていません</p>
-            <p class="text-gray-500 text-sm mt-1">アイテムを登録してオススメ機能をお試しください</p>
+            <p class="text-gray-500 text-sm mt-1">天気情報が取得できない為、この機能は使用できません。</p>
           </div>
         @endif
       </div>
