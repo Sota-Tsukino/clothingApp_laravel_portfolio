@@ -58,15 +58,34 @@
 
               <div class="flex items-center py-2 border-b border-gray-200">
                 <span class="text-sm font-medium text-gray-600 w-1/3">ステータス</span>
-                <span
-                  class="text-sm font-semibold px-2 py-1 rounded-full
-                          {{ $item->status == 'owned'
-                              ? 'bg-green-100 text-green-800'
-                              : ($item->status == 'cleaning'
-                                  ? 'bg-yellow-100 text-yellow-800'
-                                  : 'bg-gray-100 text-gray-800') }}">
-                  {{ __("status.$item->status") }}
-                </span>
+                @if ($item->status === 'owned')
+                  <div class="flex items-center px-1 py-1 rounded-full bg-green-100 text-green-800">
+                    <span class="inline-block w-6 h-6 mr-2">
+                      <img src="{{ asset('images/icons/owned.svg') }}" alt="所持中アイコン" class="w-full h-full">
+                    </span>
+                    <span class="text-sm font-semibold ">
+                      {{ __("status.$item->status") }}
+                    </span>
+                  </div>
+                @elseif($item->status === 'cleaning')
+                  <div class="flex items-center px-1 py-1 rounded-full bg-yellow-100 text-yellow-800">
+                    <span class="inline-block w-6 h-6 mr-2">
+                      <img src="{{ asset('images/icons/cleaning.svg') }}" alt="クリーニングアイコン" class="w-full h-full">
+                    </span>
+                    <span class="text-sm font-semibold ">
+                      {{ __("status.$item->status") }}
+                    </span>
+                  </div>
+                @else
+                  <div class="flex items-center px-1 py-1 rounded-full bg-gray-100 text-gray-800">
+                    <span class="inline-block w-6 h-6 mr-2">
+                      <img src="{{ asset('images/icons/discarded.svg') }}" alt="破棄済アイコン" class="w-full h-full">
+                    </span>
+                    <span class="text-sm font-semibold ">
+                      {{ __("status.$item->status") }}
+                    </span>
+                  </div>
+                @endif
               </div>
             </div>
           </div>
@@ -184,8 +203,8 @@
                   <h3 id="upper-img-title" class="text-sm font-medium text-gray-700">トップス測定ガイド</h3>
                 </div>
                 <div class="p-2">
-                  <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}" class="w-full h-auto"
-                    alt="トップス測定ガイド">
+                  <img id="tops-img" src="{{ asset('images/measurements/shirt-common.svg') }}"
+                    class="w-full h-auto" alt="トップス測定ガイド">
                 </div>
               </div>
             @elseif($item->category->name == 'bottoms')
