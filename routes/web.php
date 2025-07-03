@@ -51,10 +51,9 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/size-checker', [SizeCheckerController::class, 'index'])->name('sizechecker.index');
 
     Route::resource('/clothing-item', ItemController::class);
-    Route::put('/clothing-item/{clothing_item}/switchStatus',[ItemController::class, 'switchStatus'])->name('clothing-item.switchStatus');
+    Route::put('/clothing-item/{clothing_item}/switchStatus', [ItemController::class, 'switchStatus'])->name('clothing-item.switchStatus');
     Route::resource('/coordinate', CoordinateController::class);
-    Route::put('/coordinate/{coordinate}/toggle',[CoordinateController::class, 'toggleIsFavorite'])->name('coordinate.toggle');
-
+    Route::put('/coordinate/{coordinate}/toggle', [CoordinateController::class, 'toggleIsFavorite'])->name('coordinate.toggle');
 });
 
 // admin用ルート
@@ -81,14 +80,23 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::get('/size-checker', [SizeCheckerController::class, 'index'])->name('sizechecker.index');
 
         Route::resource('/clothing-item', ItemController::class);
-        Route::put('/clothing-item/{clothing_item}/switchStatus',[ItemController::class, 'switchStatus'])->name('clothing-item.switchStatus');
+        Route::put('/clothing-item/{clothing_item}/switchStatus', [ItemController::class, 'switchStatus'])->name('clothing-item.switchStatus');
         Route::resource('/coordinate', CoordinateController::class);
-        Route::put('/coordinate/{coordinate}/toggle',[CoordinateController::class, 'toggleIsFavorite'])->name('coordinate.toggle');
+        Route::put('/coordinate/{coordinate}/toggle', [CoordinateController::class, 'toggleIsFavorite'])->name('coordinate.toggle');
 
         //adminのみユーザー管理権原
         Route::get('/user', [UserController::class, 'index'])->name('user.index');
         Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
         Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+
+        Route::get('/softDeleted-user', [UserController::class, 'softDeletedUsersIndex'])
+            ->name('softDeleted-user.index');
+
+        Route::delete('/softDeleted-user/{user}', [UserController::class, 'destroySoftDeletedUser'])
+            ->name('softDeleted-user.destroy');
+
+        Route::put('/softDeleted-user/{user}', [UserController::class, 'restoreUser'])
+            ->name('softDeleted-user.restore');
     });
 
 Route::get('/phpinfo', function () {

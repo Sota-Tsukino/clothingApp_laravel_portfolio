@@ -91,12 +91,47 @@ class UserController extends Controller
      */
     public function destroy(Request $request, string $id)
     {
-        User::findOrFail($id)->delete();
+        User::findOrFail($id)->delete(); //ソフトデリート
 
         return redirect()
             ->route('admin.user.index')
             ->with([
                 'message' => 'ユーザーを削除しました。',
+                'status' => 'info'
+            ]);
+    }
+
+    public function softDeletedUsersIndex()
+    {
+        $softDeletedUsers = User::onlyTrashed()->paginate();
+        return view('admin.user.softdeleted-index', compact('softDeletedUsers'));
+    }
+
+    public function destroySoftDeletedUser($id)
+    {
+        try {
+            User::onlyTrashed()->findOrFail($id)->forceDelete();
+            return redirect()
+                ->route('admin.softDeleted-user.index')
+                ->with([
+                    'message' => 'ユーザーを完全削除しました。',
+                    'status' => 'info'
+                ]);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->with([
+                'message' => 'ユーザーが見つかりませんでした。',
+                'status' => 'error'
+            ]);
+        }
+    }
+
+    public function restoreUser($id)
+    {
+        User::onlyTrashed()->findOrFail($id)->restore(); //この記述でOK？
+        return redirect()
+            ->route('admin.softDeleted-user.index')
+            ->with([
+                'message' => 'ユーザーを復元しました。',
                 'status' => 'info'
             ]);
     }
