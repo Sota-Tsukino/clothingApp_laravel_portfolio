@@ -109,21 +109,21 @@
               @if (!empty($topsItem))
                 <div class="recommend-item">
                   <h3 class="text-sm font-medium text-gray-600 mb-2 text-center">トップス</h3>
-                  <x-item-card :item="$topsItem" class="w-full" />
+                  <x-item-card :item="$topsItem" :showStatus="false" class="w-full" />
                 </div>
               @endif
 
               @if (!empty($bottomsItem))
                 <div class="recommend-item">
                   <h3 class="text-sm font-medium text-gray-600 mb-2 text-center">ボトムス</h3>
-                  <x-item-card :item="$bottomsItem" class="w-full" />
+                  <x-item-card :item="$bottomsItem" :showStatus="false"  class="w-full" />
                 </div>
               @endif
 
               @if (!empty($outerItem))
                 <div class="recommend-item">
                   <h3 class="text-sm font-medium text-gray-600 mb-2 text-center">アウター</h3>
-                  <x-item-card :item="$outerItem" class="w-full" />
+                  <x-item-card :item="$outerItem" :showStatus="false" class="w-full" />
                 </div>
               @endif
             </div>
