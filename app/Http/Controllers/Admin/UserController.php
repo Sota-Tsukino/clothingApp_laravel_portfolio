@@ -101,9 +101,27 @@ class UserController extends Controller
             ]);
     }
 
-    public function softDeletedUsersIndex()
+    public function softDeletedUsersIndex(Request $request)
     {
-        $softDeletedUsers = User::onlyTrashed()->paginate();
+        $query = User::onlyTrashed();
+
+        if ($request->filled('is_active')) {
+            $query->where('is_active', $request->boolean('is_active'));
+        }
+
+        switch ($request->input('sort')) {
+            case \Constant::SORT_ORDER['oldRegisteredItem']:
+                $query->orderBy('deleted_at', 'asc');
+                break;
+            default:
+                $query->orderBy('deleted_at', 'desc');
+                break;
+        }
+
+        $perPage = $request->input('pagination', 12);
+
+        $softDeletedUsers = $query->paginate($perPage)->appends($request->all());
+
         return view('admin.user.softdeleted-index', compact('softDeletedUsers'));
     }
 

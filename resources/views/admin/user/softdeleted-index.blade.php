@@ -4,23 +4,13 @@
       削除済みユーザー一覧
     </h2>
     <form action="{{ route('admin.softDeleted-user.index') }}" method="get" class="space-y-4">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-        <div>
-          <label for="is_active" class="block text-sm font-medium text-gray-700">ステータス</label>
-          <select name="is_active" id="is_active" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            <option value="">全て</option>
-            <option value="1" @selected(request('is_active') === '1')>有効</option>
-            <option value="0" @selected(request('is_active') === '0')>無効</option>
-          </select>
-        </div>
-
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label for="sort" class="block text-sm font-medium text-gray-700">表示順</label>
           <select name="sort" id="sort" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
             <option value="{{ \Constant::SORT_ORDER['latestRegisterItem'] }}" @selected(empty(request('sort')))>
-              登録日が新しい(デフォルト)</option>
-            <option value="{{ \Constant::SORT_ORDER['oldRegisteredItem'] }}" @selected(request('sort') === \Constant::SORT_ORDER['oldRegisteredItem'])>登録日が古い
+              削除日が新しい(デフォルト)</option>
+            <option value="{{ \Constant::SORT_ORDER['oldRegisteredItem'] }}" @selected(request('sort') === \Constant::SORT_ORDER['oldRegisteredItem'])>削除日が古い
             </option>
           </select>
         </div>
@@ -28,7 +18,7 @@
         <div>
           <label for="pagination" class="block text-sm font-medium text-gray-700">表示件数</label>
           <select id="pagination" name="pagination" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            <option value="" @selected(empty(request('pagination')))>12件(デフォルト)</option>
+            <option value="12" @selected(empty(request('pagination')))>12件(デフォルト)</option>
             <option value="16" @selected(request('pagination') === '16')>16件</option>
             <option value="20" @selected(request('pagination') === '20')>20件</option>
           </select>
