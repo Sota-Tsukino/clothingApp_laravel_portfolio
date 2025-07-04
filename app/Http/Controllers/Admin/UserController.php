@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $params = $request->only(['is_active', 'sort', 'pagination']);
+        $params = $request->only(['is_active', 'sort', 'keyword', 'pagination']);
         $filtered = array_filter($params, fn($v) => $v !== null && $v !== '');
         $users = !empty($filtered)
             ? UserService::searchUserByAdmin($params)
@@ -105,24 +105,15 @@ class UserController extends Controller
 
     public function softDeletedUsersIndex(Request $request)
     {
-        $query = User::onlyTrashed();
+        $params = $request->only(['sort', 'keyword', 'pagination']);
+        $filtered = array_filter($params, fn($v) => $v !== null && $v !== '');
 
-        if ($request->filled('is_active')) {
-            $query->where('is_active', $request->boolean('is_active'));
-        }
-
-        switch ($request->input('sort')) {
-            case \Constant::SORT_ORDER['oldRegisteredItem']:
-                $query->orderBy('deleted_at', 'asc');
-                break;
-            default:
-                $query->orderBy('deleted_at', 'desc');
-                break;
-        }
-
-        $perPage = $request->input('pagination', 12);
-
-        $softDeletedUsers = $query->paginate($perPage)->appends($request->all());
+        $softDeletedUsers = !empty($filtered)
+            ? UserService::searchUserByAdmin($params, true) // 第二引数 true を渡す
+            : User::onlyTrashed()
+            ->orderBy('deleted_at', 'desc')
+            ->paginate($request->input('pagination', 12))
+            ->appends($request->all());
 
         return view('admin.user.softdeleted-index', compact('softDeletedUsers'));
     }

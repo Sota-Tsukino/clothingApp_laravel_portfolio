@@ -5,7 +5,7 @@
     </h2>
     <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.user.index' : 'user.index') }}" method="get"
       class="space-y-4">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 
         <div>
           <label for="is_active" class="block text-sm font-medium text-gray-700">ステータス</label>
@@ -33,6 +33,12 @@
             <option value="16" @selected(request('pagination') === '16')>16件</option>
             <option value="20" @selected(request('pagination') === '20')>20件</option>
           </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">メール検索</label>
+          <div>
+            <input name="keyword" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" type="text" placeholder="キーワードを入力">
+          </div>
         </div>
       </div>
 
@@ -183,8 +189,7 @@
 
       {{ $users->links() }}
       <div class="mt-8 flex justify-center md:justify-start">
-        <button
-          onclick="location.href='{{ route('admin.softDeleted-user.index') }}'"
+        <button onclick="location.href='{{ route('admin.softDeleted-user.index') }}'"
           class="inline-block px-4 py-2 bg-indigo-600 rounded-md font-semibold text-sm text-white hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">削除済みユーザー一覧</button>
       </div>
     </div>

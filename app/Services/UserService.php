@@ -93,11 +93,14 @@ class UserService
         return $is_paginate ?  $users->paginate(\Constant::DEFAULT_PAGINATION) : $users->get();
     }
 
-    public static function searchUserByAdmin($filters = [])
+    public static function searchUserByAdmin(array $filters = [], bool $onlyTrashed = false)
     {
-        return User::ofUser() //scopeOfUser()を呼び出し
+        $query = $onlyTrashed ? User::onlyTrashed() : User::ofUser();
+
+        return $query
             ->isActive($filters['is_active'] ?? null)
             ->sortOrder($filters['sort'] ?? null)
+            ->searchKeyword($filters['keyword'] ?? null)
             ->paginate($filters['pagination'] ?? \Constant::DEFAULT_PAGINATION)
             ->appends($filters);
     }
