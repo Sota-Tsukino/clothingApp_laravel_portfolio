@@ -63,7 +63,7 @@
                     <span class="inline-block w-6 h-6 mr-2">
                       <img src="{{ asset('images/icons/owned.svg') }}" alt="所持中アイコン" class="w-full h-full">
                     </span>
-                    <span class="text-sm font-semibold ">
+                    <span class="text-sm/6 font-semibold">
                       {{ __("status.$item->status") }}
                     </span>
                   </div>
@@ -72,7 +72,7 @@
                     <span class="inline-block w-6 h-6 mr-2">
                       <img src="{{ asset('images/icons/cleaning.svg') }}" alt="クリーニングアイコン" class="w-full h-full">
                     </span>
-                    <span class="text-sm font-semibold ">
+                    <span class="text-sm/6 font-semibold ">
                       {{ __("status.$item->status") }}
                     </span>
                   </div>
@@ -81,7 +81,7 @@
                     <span class="inline-block w-6 h-6 mr-2">
                       <img src="{{ asset('images/icons/discarded.svg') }}" alt="破棄済アイコン" class="w-full h-full">
                     </span>
-                    <span class="text-sm font-semibold ">
+                    <span class="text-sm/6 font-semibold ">
                       {{ __("status.$item->status") }}
                     </span>
                   </div>
