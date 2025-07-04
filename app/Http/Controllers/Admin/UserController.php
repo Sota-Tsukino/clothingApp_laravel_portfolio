@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
+use App\Models\Image;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -128,6 +130,18 @@ class UserController extends Controller
     public function destroySoftDeletedUser($id)
     {
         try {
+            //ユーザーが登録した衣類アイテム画像（サーバー上）を削除
+            $images = Image::where('user_id', $id)->get();
+
+            foreach ($images as $image) {
+                // ファイル削除（DB削除はリレーションで対応する前提）
+                $filePath = 'public/items/' . $image->file_name;
+                if (Storage::exists($filePath)) {
+                    Storage::delete($filePath);
+                }
+            }
+
+            // ユーザー完全削除（子のレコードはリレーションで削除）
             User::onlyTrashed()->findOrFail($id)->forceDelete();
             return redirect()
                 ->route('admin.softDeleted-user.index')
