@@ -182,6 +182,11 @@
       @endif
 
       {{ $users->links() }}
+      <div class="mt-8 flex justify-center md:justify-start">
+        <button
+          onclick="location.href='{{ route('admin.softDeleted-user.index') }}'"
+          class="inline-block px-4 py-2 bg-indigo-600 rounded-md font-semibold text-sm text-white hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">削除済みユーザー一覧</button>
+      </div>
     </div>
   </section>
 

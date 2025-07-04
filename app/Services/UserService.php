@@ -101,4 +101,12 @@ class UserService
             ->paginate($filters['pagination'] ?? \Constant::DEFAULT_PAGINATION)
             ->appends($filters);
     }
+
+    public static function getAllSoftDeletedUsers($is_paginate = false)
+    {
+        $users = User::onlyTrashed()
+            ->orderBy('deleted_at', 'desc');
+
+        return $is_paginate ?  $users->paginate(\Constant::DEFAULT_PAGINATION) : $users->get();
+    }
 }

@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
+use App\Services\ImageService;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -91,12 +93,69 @@ class UserController extends Controller
      */
     public function destroy(Request $request, string $id)
     {
-        User::findOrFail($id)->delete();
+        User::findOrFail($id)->delete(); //ソフトデリート
 
         return redirect()
             ->route('admin.user.index')
             ->with([
                 'message' => 'ユーザーを削除しました。',
+                'status' => 'info'
+            ]);
+    }
+
+    public function softDeletedUsersIndex(Request $request)
+    {
+        $query = User::onlyTrashed();
+
+        if ($request->filled('is_active')) {
+            $query->where('is_active', $request->boolean('is_active'));
+        }
+
+        switch ($request->input('sort')) {
+            case \Constant::SORT_ORDER['oldRegisteredItem']:
+                $query->orderBy('deleted_at', 'asc');
+                break;
+            default:
+                $query->orderBy('deleted_at', 'desc');
+                break;
+        }
+
+        $perPage = $request->input('pagination', 12);
+
+        $softDeletedUsers = $query->paginate($perPage)->appends($request->all());
+
+        return view('admin.user.softdeleted-index', compact('softDeletedUsers'));
+    }
+
+    public function destroySoftDeletedUser($id)
+    {
+        try {
+            //ユーザーが登録した衣類アイテム画像（サーバー上）を削除
+            ImageService::deleteAllUserImages($id);
+
+            // ユーザー完全削除（子のレコードはリレーションで削除）
+            User::onlyTrashed()->findOrFail($id)->forceDelete();
+            return redirect()
+                ->route('admin.softDeleted-user.index')
+                ->with([
+                    'message' => 'ユーザーを完全削除しました。',
+                    'status' => 'info'
+                ]);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->with([
+                'message' => 'ユーザーが見つかりませんでした。',
+                'status' => 'error'
+            ]);
+        }
+    }
+
+    public function restoreUser($id)
+    {
+        User::onlyTrashed()->findOrFail($id)->restore(); //この記述でOK？
+        return redirect()
+            ->route('admin.softDeleted-user.index')
+            ->with([
+                'message' => 'ユーザーを復元しました。',
                 'status' => 'info'
             ]);
     }
