@@ -255,6 +255,7 @@ class ItemService
         }
         $item = Item::with(['image', 'category', 'brand', 'mainMaterial', 'subMaterial', 'colors', 'seasons', 'tags'])
             ->where('user_id', $userId)
+            ->where('is_item_suggest', 1)
             ->whereIn('sub_category_id', $subCategoryIds)
             ->inRandomOrder() //ランダム順に並び替え
             ->first(); // 最初の要素を取得
