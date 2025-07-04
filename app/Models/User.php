@@ -108,8 +108,32 @@ class User extends Authenticatable
         switch ($sortOrder) {
             case Common::SORT_ORDER['oldRegisteredItem']:
                 return $query->orderBy('created_at', 'asc');
+            case Common::SORT_ORDER['oldDeletedUser']:
+                return $query->orderBy('deleted_at', 'asc');
+            case Common::SORT_ORDER['latestDeletedUser']:
+                return $query->orderBy('deleted_at', 'desc');
             default:
                 return $query->orderBy('created_at', 'desc');
+        }
+    }
+
+    public function scopeSearchKeyword($query, $keyword)
+    {
+        if (!is_null($keyword)) {
+            $spaceConvert = mb_convert_kana($keyword, 's'); //全角スペースを半角に
+            $keywords = preg_split('/[\s]+/', $spaceConvert, -1, PREG_SPLIT_NO_EMPTY); //空白で区切る
+
+            foreach ($keywords as $word) //単語をループで回す
+            {
+                $query->where(function ($q) use ($word) { //グループ化されたwhere条件を使うため、クロージャー（関数）を使う
+                    $q->where('users.email', 'like', '%' . $word . '%')
+                        ->orWhere('users.nickname', 'like', '%' . $word . '%');
+                    //WHERE (email LIKE '%word%' OR nickname LIKE '%word%')に同じ
+                });
+            }
+            return $query;
+        } else {
+            return;
         }
     }
 }

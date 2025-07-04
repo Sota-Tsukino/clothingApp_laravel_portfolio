@@ -4,13 +4,13 @@
       削除済みユーザー一覧
     </h2>
     <form action="{{ route('admin.softDeleted-user.index') }}" method="get" class="space-y-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label for="sort" class="block text-sm font-medium text-gray-700">表示順</label>
           <select name="sort" id="sort" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            <option value="{{ \Constant::SORT_ORDER['latestRegisterItem'] }}" @selected(empty(request('sort')))>
+            <option value="{{ \Constant::SORT_ORDER['latestDeletedUser'] }}" @selected(empty(request('sort')))>
               削除日が新しい(デフォルト)</option>
-            <option value="{{ \Constant::SORT_ORDER['oldRegisteredItem'] }}" @selected(request('sort') === \Constant::SORT_ORDER['oldRegisteredItem'])>削除日が古い
+            <option value="{{ \Constant::SORT_ORDER['oldDeletedUser'] }}" @selected(request('sort') === \Constant::SORT_ORDER['oldDeletedUser'])>削除日が古い
             </option>
           </select>
         </div>
@@ -22,6 +22,13 @@
             <option value="16" @selected(request('pagination') === '16')>16件</option>
             <option value="20" @selected(request('pagination') === '20')>20件</option>
           </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">ニックネーム・メール検索</label>
+          <div>
+            <input name="keyword" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" type="text"
+              placeholder="キーワードを入力">
+          </div>
         </div>
       </div>
 
