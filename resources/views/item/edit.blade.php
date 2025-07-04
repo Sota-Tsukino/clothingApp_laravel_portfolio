@@ -23,69 +23,67 @@
           <!-- 画像アップロード -->
           <div class="mb-6">
             <label for="file_name" class="block text-sm font-medium text-gray-700 mb-2">衣類アイテム画像を変更</label>
-            <div class="flex flex-col md:flex-row md:items-start gap-6">
-              <div class="w-full md:w-1/2">
+              <div class="w-full">
                 <div
-                  class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-indigo-500 transition-colors">
+                  class="mt-1 px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-indigo-500 transition-colors">
+                  <div class="mx-auto aspect-square max-w-xs bg-gray-100 rounded-lg overflow-hidden shadow-md">
+                    <img id="preview" src="{{ asset('storage/items/' . $item->image->file_name) }}" alt="プレビュー画像"
+                      class="w-full h-full object-cover">
+                  </div>
                   <div class="space-y-1 text-center">
-                    <div class="flex text-sm text-gray-600">
+                    <div class="text-sm text-gray-600 mt-4">
                       <label for="file_name"
                         class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
-                        <span>画像をアップロード</span>
+                        <span class="block">画像をアップロード</span>
                         <input id="file_name" name="file_name" type="file" class="sr-only"
                           accept="image/jpg, image/jpeg, image/png">
                       </label>
                     </div>
-                    <p class="text-xs text-gray-500">PNG, JPG, JPEG (最大4MB)</p>
+                    <p class="text-xs text-gray-500">PNG, JPG, JPEG （最大4MB）</p>
                   </div>
                 </div>
               </div>
-              <div class="w-full md:w-1/2">
-                <div class="aspect-square max-w-xs bg-gray-100 rounded-lg overflow-hidden shadow-md">
-                  <img id="preview" src="{{ asset('storage/items/' . $item->image->file_name) }}" alt="プレビュー画像"
-                    class="w-full h-full object-cover">
-                </div>
-              </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <!-- カテゴリー -->
+            <div>
+              <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">カテゴリー</label>
+              <select name="category_id" id="categorySelect"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
+                required>
+                <option value="" {{ $item->category_id == '' ? 'selected' : '' }}>カテゴリーを選択してください</option>
+                @foreach ($categories as $category)
+                  <option value="{{ $category->id }}" {{ $item->category_id == $category->id ? 'selected' : '' }}
+                    data-type="{{ $category->name }}">
+                    {{ __("category.$category->name") }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+
+            <!-- サブカテゴリー -->
+            <div>
+              <label for="sub_category_id" class="block text-sm font-medium text-gray-700 mb-1">サブカテゴリー</label>
+              <select name="sub_category_id" id="sub_category_id"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
+                required>
+                <option value="" {{ $item->sub_category_id == '' ? 'selected' : '' }}>サブカテゴリーを選択してください</option>
+                @foreach ($categories as $category)
+                  @foreach ($category->subCategory as $subCategory)
+                    <option value="{{ $subCategory->id }}"
+                      {{ $item->sub_category_id == $subCategory->id ? 'selected' : '' }}
+                      data-type="{{ $subCategory->name }}">
+                      {{ __("subcategory.$subCategory->name") }}
+                    </option>
+                  @endforeach
+                @endforeach
+              </select>
             </div>
           </div>
 
-          <!-- カテゴリー -->
-          <div class="mb-6">
-            <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">カテゴリー</label>
-            <select name="category_id" id="categorySelect"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
-              required>
-              <option value="" {{ $item->category_id == '' ? 'selected' : '' }}>カテゴリーを選択してください</option>
-              @foreach ($categories as $category)
-                <option value="{{ $category->id }}" {{ $item->category_id == $category->id ? 'selected' : '' }}
-                  data-type="{{ $category->name }}">
-                  {{ __("category.$category->name") }}
-                </option>
-              @endforeach
-            </select>
-          </div>
-
-          <!-- サブカテゴリー -->
-          <div class="mb-6">
-            <label for="sub_category_id" class="block text-sm font-medium text-gray-700 mb-1">サブカテゴリー</label>
-            <select name="sub_category_id" id="sub_category_id"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
-              required>
-              <option value="" {{ $item->sub_category_id == '' ? 'selected' : '' }}>サブカテゴリーを選択してください</option>
-              @foreach ($categories as $category)
-                @foreach ($category->subCategory as $subCategory)
-                  <option value="{{ $subCategory->id }}"
-                    {{ $item->sub_category_id == $subCategory->id ? 'selected' : '' }}
-                    data-type="{{ $subCategory->name }}">
-                    {{ __("subcategory.$subCategory->name") }}
-                  </option>
-                @endforeach
-              @endforeach
-            </select>
-          </div>
-
           <!-- ブランド -->
-          <div class="mb-6">
+          <div class="mb-4">
             <label for="brand_id" class="block text-sm font-medium text-gray-700 mb-1">ブランド</label>
             <select name="brand_id" id="brand_id"
               class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
@@ -100,8 +98,8 @@
           </div>
 
           <!-- 色 -->
-          <div class="mb-6">
-            <label for="colors" class="block text-sm font-medium text-gray-700 mb-1">色</label>
+          <div class="mb-4">
+            <label for="colors" class="block text-sm font-medium text-gray-700 mb-1">色 （※複数選択可能）</label>
             <select name="colors[]" id="colors" multiple
               class="mt-1 block w-full text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
               @foreach ($colors as $color)
@@ -111,31 +109,31 @@
                 </option>
               @endforeach
             </select>
-            <p class="text-xs text-gray-500 mt-1">複数選択可能</p>
           </div>
 
-          <!-- ステータス -->
-          <div class="mb-6">
-            <label for="status" class="block text-sm font-medium text-gray-700 mb-1">ステータス</label>
-            <select name="status" id="status"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
-              required>
-              <option value="" {{ $item->status == null ? 'selected' : '' }}>ステータスを選択してください</option>
-              <option value="owned" {{ $item->status == 'owned' ? 'selected' : '' }}>所持中</option>
-              <option value="cleaning" {{ $item->status == 'cleaning' ? 'selected' : '' }}>クリーニング中</option>
-              <option value="discarded" {{ $item->status == 'discarded' ? 'selected' : '' }}>破棄済</option>
-            </select>
-          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <!-- ステータス -->
+            <div>
+              <label for="status" class="block text-sm font-medium text-gray-700 mb-1">ステータス</label>
+              <select name="status" id="status"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
+                required>
+                <option value="owned" {{ $item->status == 'owned' ? 'selected' : '' }}>所持中</option>
+                <option value="cleaning" {{ $item->status == 'cleaning' ? 'selected' : '' }}>クリーニング中</option>
+                <option value="discarded" {{ $item->status == 'discarded' ? 'selected' : '' }}>破棄済</option>
+              </select>
+            </div>
 
-          <!-- コーデ提案 -->
-          <div class="mb-6">
-            <label for="is_item_suggest" class="block text-sm font-medium text-gray-700 mb-1">衣類提案に</label>
-            <select name="is_item_suggest" id="is_item_suggest"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
-              required>
-              <option value="1" {{ $item->is_item_suggest == '1' ? 'selected' : '' }}>使用する</option>
-              <option value="0" {{ $item->is_item_suggest == '0' ? 'selected' : '' }}>使用しない</option>
-            </select>
+            <!-- 衣類提案 -->
+            <div>
+              <label for="is_item_suggest" class="block text-sm font-medium text-gray-700 mb-1">衣類提案に</label>
+              <select name="is_item_suggest" id="is_item_suggest"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
+                required>
+                <option value="1" {{ $item->is_item_suggest == '1' ? 'selected' : '' }}>使用する</option>
+                <option value="0" {{ $item->is_item_suggest == '0' ? 'selected' : '' }}>使用しない</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -145,7 +143,7 @@
 
           <!-- タグ -->
           <div class="mb-6">
-            <label for="tags" class="block text-sm font-medium text-gray-700 mb-1">タグ</label>
+            <label for="tags" class="block text-sm font-medium text-gray-700 mb-1">タグ （※複数選択可能）</label>
             <select name="tags[]" id="tags" multiple
               class="mt-1 block w-full text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
               @foreach ($tags as $tag)
@@ -155,12 +153,11 @@
                 </option>
               @endforeach
             </select>
-            <p class="text-xs text-gray-500 mt-1">複数選択可能</p>
           </div>
 
           <!-- 季節 -->
           <div class="mb-6">
-            <legend class="block text-sm font-medium text-gray-700 mb-2">季節</legend>
+            <legend class="block text-sm font-medium text-gray-700 mb-2">季節 （※複数選択可能）</legend>
             <div class="flex flex-wrap gap-4">
               @foreach ($seasons as $season)
                 <label class="inline-flex items-center">
@@ -173,36 +170,40 @@
             </div>
           </div>
 
-          <!-- 主素材 -->
-          <div class="mb-6">
-            <label for="main_material" class="block text-sm font-medium text-gray-700 mb-1">主素材</label>
-            <select name="main_material" id="main_material"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
-              <option value="" {{ $item->main_material_id == '' ? 'selected' : '' }}>素材を選択してください</option>
-              @foreach ($materials as $material)
-                <option value="{{ $material->id }}" {{ $item->main_material_id == $material->id ? 'selected' : '' }}>
-                  {{ __("material.$material->name") }}
-                </option>
-              @endforeach
-            </select>
-          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <!-- 主素材 -->
+            <div>
+              <label for="main_material" class="block text-sm font-medium text-gray-700 mb-1">主素材</label>
+              <select name="main_material" id="main_material"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
+                <option value="" {{ $item->main_material_id == '' ? 'selected' : '' }}>素材を選択してください</option>
+                @foreach ($materials as $material)
+                  <option value="{{ $material->id }}"
+                    {{ $item->main_material_id == $material->id ? 'selected' : '' }}>
+                    {{ __("material.$material->name") }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
 
-          <!-- 副素材 -->
-          <div class="mb-6">
-            <label for="sub_material" class="block text-sm font-medium text-gray-700 mb-1">副素材</label>
-            <select name="sub_material" id="sub_material"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
-              <option value="" {{ $item->sub_material_id == '' ? 'selected' : '' }}>素材を選択してください</option>
-              @foreach ($materials as $material)
-                <option value="{{ $material->id }}" {{ $item->sub_material_id == $material->id ? 'selected' : '' }}>
-                  {{ __("material.$material->name") }}
-                </option>
-              @endforeach
-            </select>
+            <!-- 副素材 -->
+            <div>
+              <label for="sub_material" class="block text-sm font-medium text-gray-700 mb-1">副素材</label>
+              <select name="sub_material" id="sub_material"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
+                <option value="" {{ $item->sub_material_id == '' ? 'selected' : '' }}>素材を選択してください</option>
+                @foreach ($materials as $material)
+                  <option value="{{ $material->id }}"
+                    {{ $item->sub_material_id == $material->id ? 'selected' : '' }}>
+                    {{ __("material.$material->name") }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
           </div>
 
           <!-- 家庭洗濯 -->
-          <div class="mb-6">
+          <div class="mb-4">
             <label for="washability_option" class="block text-sm font-medium text-gray-700 mb-1">家庭洗濯</label>
             <select name="washability_option" id="washability_option"
               class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
@@ -216,16 +217,25 @@
             </select>
           </div>
 
-          <!-- 購入日 -->
-          <div class="mb-6">
-            <label for="purchased_date" class="block text-sm font-medium text-gray-700 mb-1">購入日</label>
-            <input type="date" name="purchased_date" id="purchased_date"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
-              value="{{ $item->purchased_date }}">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <!-- 購入日 -->
+            <div>
+              <label for="purchased_date" class="block text-sm font-medium text-gray-700 mb-1">購入日</label>
+              <input type="date" name="purchased_date" id="purchased_date"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
+                value="{{ $item->purchased_date }}">
+            </div>
+            <!-- 購入場所 -->
+            <div>
+              <label for="purchased_at" class="block text-sm font-medium text-gray-700 mb-1">購入場所</label>
+              <input type="text" name="purchased_at" id="purchased_at"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
+                maxlength="20" value="{{ $item->purchased_at }}">
+            </div>
           </div>
 
           <!-- 金額 -->
-          <div class="mb-6">
+          <div class="mb-4">
             <label for="price" class="block text-sm font-medium text-gray-700 mb-1">金額</label>
             <div class="mt-1 flex rounded-md shadow-sm">
               <input type="number" name="price" id="price"
@@ -236,16 +246,8 @@
             </div>
           </div>
 
-          <!-- 購入場所 -->
-          <div class="mb-6">
-            <label for="purchased_at" class="block text-sm font-medium text-gray-700 mb-1">購入場所</label>
-            <input type="text" name="purchased_at" id="purchased_at"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
-              maxlength="20" value="{{ $item->purchased_at }}">
-          </div>
-
           <!-- メモ -->
-          <div class="mb-6">
+          <div class="mb-4">
             <label for="memo" class="block text-sm font-medium text-gray-700 mb-1">メモ</label>
             <textarea name="memo" id="memo" rows="3"
               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full border-gray-300 rounded-md"
