@@ -59,7 +59,7 @@
               <div class="flex items-center py-2 border-b border-gray-200">
                 <span class="text-sm font-medium text-gray-600 w-1/3">ステータス</span>
                 @if ($item->status === 'owned')
-                  <div class="flex items-center px-1 py-1 rounded-full bg-green-100 text-green-800">
+                  <div class="flex items-center px-1 py-1 rounded-full text-green-600 bg-green-100">
                     <span class="inline-block w-6 h-6 mr-2">
                       <img src="{{ asset('images/icons/owned.svg') }}" alt="所持中アイコン" class="w-full h-full">
                     </span>
@@ -87,6 +87,14 @@
                   </div>
                 @endif
               </div>
+              <div class="flex items-center py-2 border-b border-gray-200">
+                <span class="text-sm font-medium text-gray-600 w-1/3">衣類提案に</span>
+                <span
+                  class="text-sm font-semibold rounded-full px-1 py-1
+                       {{ $item->is_item_suggest == '1' ? 'text-green-600 bg-green-100' : 'bg-gray-100 text-gray-800' }}">
+                  {{ $item->is_item_suggest == '1' ? '使用する' : '使用しない' }}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -96,14 +104,6 @@
           <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2 mb-4">詳細情報</h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
-            <div class="flex items-center py-2 border-b border-gray-200">
-              <span class="text-sm font-medium text-gray-600 w-1/3">衣類提案に</span>
-              <span
-                class="text-sm font-semibold
-                       {{ $item->is_item_suggest == '1' ? 'text-green-600' : 'text-gray-600' }}">
-                {{ $item->is_item_suggest == '1' ? '使用する' : '使用しない' }}
-              </span>
-            </div>
 
             <div class="flex items-center py-2 border-b border-gray-200">
               <span class="text-sm font-medium text-gray-600 w-1/3">主素材</span>
