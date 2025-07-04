@@ -35,7 +35,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700">メール検索</label>
+          <label class="block text-sm font-medium text-gray-700">ニックネーム・メール検索</label>
           <div>
             <input name="keyword" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" type="text" placeholder="キーワードを入力">
           </div>

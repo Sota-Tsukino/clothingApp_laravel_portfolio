@@ -125,7 +125,11 @@ class User extends Authenticatable
 
             foreach ($keywords as $word) //単語をループで回す
             {
-                $query->where('users.email', 'like', '%' . $word . '%');
+                $query->where(function ($q) use ($word) { //グループ化されたwhere条件を使うため、クロージャー（関数）を使う
+                    $q->where('users.email', 'like', '%' . $word . '%')
+                        ->orWhere('users.nickname', 'like', '%' . $word . '%');
+                    //WHERE (email LIKE '%word%' OR nickname LIKE '%word%')に同じ
+                });
             }
             return $query;
         } else {
