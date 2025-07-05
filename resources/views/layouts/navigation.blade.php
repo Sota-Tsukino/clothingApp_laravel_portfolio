@@ -11,7 +11,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-2 md:-my-px md:ml-8 md:flex">
+                <div class="hidden  md:ml-6 md:flex lg:ml-20">
                     <x-nav-link
                         :href="route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show')">
                         <div class="w-8 mx-auto">

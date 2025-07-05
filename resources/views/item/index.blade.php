@@ -4,7 +4,7 @@
       衣類アイテム一覧
     </h2>
     <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.index' : 'clothing-item.index') }}"
-      method="get" class="space-y-4">
+      method="get" class="bg-white p-4 mt-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
           <label for="category" class="block text-sm font-medium text-gray-700">カテゴリー</label>
@@ -50,9 +50,11 @@
         </div>
       </div>
 
-      <div>
-        <button class="mt-4 bg-indigo-600 text-white font-semibold py-2 px-6 rounded hover:bg-indigo-700 transition">
-          この条件で検索
+      <div class="mt-4">
+        <button
+          class="bg-indigo-600 text-white font-medium py-2 px-4 rounded hover:bg-indigo-700 transition-colors duration-200 inline-flex items-center">
+          <img src="{{ asset('images/icons/search.svg') }}" class="w-4 h-4" alt="検索アイコン">
+          <span class="inline-block ml-2">この条件で検索</span>
         </button>
       </div>
     </form>

@@ -127,7 +127,7 @@
 <script>
   function deletePost(e) {
     'use strict';
-    if (confirm('本当に削除してもいいですか?')) {
+    if (confirm('このコーデを削除します。よろしいですか？')) {
       document.getElementById('delete_' + e.dataset.id).submit();
     }
   }

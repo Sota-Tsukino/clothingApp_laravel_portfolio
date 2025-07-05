@@ -6,7 +6,7 @@
       </h2>
 
       <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.coordinate.index' : 'coordinate.index') }}"
-        method="get" class="bg-white p-4 rounded-lg shadow-sm mt-4">
+        method="get" class="bg-white p-4 mt-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <!-- お気に入り -->
           <div>
