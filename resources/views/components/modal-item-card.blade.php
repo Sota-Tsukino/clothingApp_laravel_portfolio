@@ -6,7 +6,7 @@
     </div>
     <div class="p-3 text-sm text-gray-800 space-y-1">
       <div class="flex justify-between items-center">
-        <div class="text-sm lg:text-base text-gray-600">{{ $item->brand->name }} /
+        <div class="text-sm lg:text-base text-gray-600">{{ __("brand.{$item->brand->name}") }} /
           {{ $item->category->name ? __("category.{$item->category->name}") : '' }}</div>
         <div class="w-8 h-8">
           @if ($item->status === 'owned')

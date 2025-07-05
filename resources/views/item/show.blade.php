@@ -40,7 +40,7 @@
 
               <div class="flex items-center py-2 border-b border-gray-200">
                 <span class="text-sm font-medium text-gray-600 w-1/3">ブランド</span>
-                <span class="text-sm text-gray-900 font-semibold">{{ $item->brand->name }}</span>
+                <span class="text-sm text-gray-900 font-semibold">{{ __("brand.{$item->brand->name}") }}</span>
               </div>
 
               <div class="flex items-center py-2 border-b border-gray-200">

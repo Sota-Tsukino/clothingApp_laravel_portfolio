@@ -8,10 +8,19 @@ return [
      | 衣類アイテムカテゴリー言語行　カスタム作成
      |--------------------------------------------------------------------------
      */
-    'business' => 'ビジネス',
     'casual' => 'カジュアル',
-    'cold-day' => '寒い日',
-    'fashonable' => 'おしゃれ',
     'formal' => 'フォーマル',
-    'hot-day' => '暑い日',
+    'business' => 'ビジネス',
+    'sporty' => 'スポーティ',
+    'ceremonial' => '冠婚葬祭',
+    'commute' => '通勤',
+    'school' => '学校',
+    'spring' => '春向け',
+    'summer' => '夏向け',
+    'autumn' => '秋向け',
+    'winter' => '冬向け',
+    'rainy_day' => '雨の日',
+    'snowy_day' => '雪の日',
+    'cold_protection' => '防寒',
+
 ];
