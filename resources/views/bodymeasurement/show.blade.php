@@ -138,7 +138,7 @@
 
               <form
                 action="{{ route(Auth::user()->role === 'admin' ? 'admin.measurement.destroy' : 'measurement.destroy', ['measurement' => $bodyMeasurement->id]) }}"
-                method="post" class="inline" onsubmit="return confirm('本当に削除しますか？')">
+                method="post" class="inline" onsubmit="return confirm('この体格情報を削除します。よろしいですか？')">
                 @csrf
                 @method('delete')
                 <button type="submit"

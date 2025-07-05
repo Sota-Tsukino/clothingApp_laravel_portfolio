@@ -4,7 +4,7 @@
       ユーザー一覧
     </h2>
     <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.user.index' : 'user.index') }}" method="get"
-      class="space-y-4">
+      class="bg-white p-4 mt-4">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 
         <div>
@@ -37,14 +37,18 @@
         <div>
           <label class="block text-sm font-medium text-gray-700">ニックネーム・メール検索</label>
           <div>
-            <input name="keyword" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" type="text" placeholder="キーワードを入力">
+            <input name="keyword" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" type="text"
+              placeholder="キーワードを入力">
           </div>
         </div>
       </div>
 
-      <div>
-        <button class="mt-4 bg-indigo-600 text-white font-semibold py-2 px-6 rounded hover:bg-indigo-700 transition">
-          この条件で検索
+      <div class="mt-4">
+        <button
+          class="bg-indigo-600 text-white font-medium py-2 px-4 rounded hover:bg-indigo-700 transition-colors duration-200 inline-flex items-center">
+          <img src="{{ asset('images/icons/search.svg') }}" class="w-4 h-4" alt="検索アイコン">
+          <span class="inline-block ml-2">この条件で検索</span>
+
         </button>
       </div>
     </form>

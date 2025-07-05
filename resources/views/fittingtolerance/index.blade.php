@@ -6,7 +6,7 @@
   </x-slot>
 
   <section class="text-gray-600 body-font overflow-hidden px-2 sm:px-7">
-    <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
+    <div class="max-w-3xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
