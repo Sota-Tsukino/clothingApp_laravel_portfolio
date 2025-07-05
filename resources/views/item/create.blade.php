@@ -85,7 +85,7 @@
               <option value="" {{ old('brand_id') == '' ? 'selected' : '' }}>ブランドを選択してください</option>
               @foreach ($brands as $brand)
                 <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
-                  {{ $brand->name }}
+                  {{ __("brand.$brand->name") }}
                 </option>
               @endforeach
             </select>

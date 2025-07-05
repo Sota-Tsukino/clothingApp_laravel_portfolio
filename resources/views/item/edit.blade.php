@@ -23,26 +23,26 @@
           <!-- 画像アップロード -->
           <div class="mb-6">
             <label for="file_name" class="block text-sm font-medium text-gray-700 mb-2">衣類アイテム画像を変更</label>
-              <div class="w-full">
-                <div
-                  class="mt-1 px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-indigo-500 transition-colors">
-                  <div class="mx-auto aspect-square max-w-xs bg-gray-100 rounded-lg overflow-hidden shadow-md">
-                    <img id="preview" src="{{ asset('storage/items/' . $item->image->file_name) }}" alt="プレビュー画像"
-                      class="w-full h-full object-cover">
+            <div class="w-full">
+              <div
+                class="mt-1 px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-indigo-500 transition-colors">
+                <div class="mx-auto aspect-square max-w-xs bg-gray-100 rounded-lg overflow-hidden shadow-md">
+                  <img id="preview" src="{{ asset('storage/items/' . $item->image->file_name) }}" alt="プレビュー画像"
+                    class="w-full h-full object-cover">
+                </div>
+                <div class="space-y-1 text-center">
+                  <div class="text-sm text-gray-600 mt-4">
+                    <label for="file_name"
+                      class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                      <span class="block">画像をアップロード</span>
+                      <input id="file_name" name="file_name" type="file" class="sr-only"
+                        accept="image/jpg, image/jpeg, image/png">
+                    </label>
                   </div>
-                  <div class="space-y-1 text-center">
-                    <div class="text-sm text-gray-600 mt-4">
-                      <label for="file_name"
-                        class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
-                        <span class="block">画像をアップロード</span>
-                        <input id="file_name" name="file_name" type="file" class="sr-only"
-                          accept="image/jpg, image/jpeg, image/png">
-                      </label>
-                    </div>
-                    <p class="text-xs text-gray-500">PNG, JPG, JPEG （最大4MB）</p>
-                  </div>
+                  <p class="text-xs text-gray-500">PNG, JPG, JPEG （最大4MB）</p>
                 </div>
               </div>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -91,7 +91,7 @@
               <option value="" {{ $item->brand_id == '' ? 'selected' : '' }}>ブランドを選択してください</option>
               @foreach ($brands as $brand)
                 <option value="{{ $brand->id }}" {{ $item->brand_id == $brand->id ? 'selected' : '' }}>
-                  {{ $brand->name }}
+                  {{ __("brand.$brand->name") }}
                 </option>
               @endforeach
             </select>
