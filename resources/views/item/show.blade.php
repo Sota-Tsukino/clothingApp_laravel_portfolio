@@ -121,9 +121,38 @@
 
             <div class="flex items-center py-2 border-b border-gray-200">
               <span class="text-sm font-medium text-gray-600 w-1/3">家庭洗濯</span>
-              <span class="text-sm text-gray-900">
-                {{ $item->washability_option !== null ? __("washability.$item->washability_option") : '未登録' }}
-              </span>
+              @if ($item->washability_option === 'washable_machine')
+                <div class="flex items-center py-1 px-1 rounded-full bg-green-100 text-green-800">
+                  <span class="inline-block w-6 h-6 mr-2">
+                    <img src="{{ asset('images/icons/washable_machine.svg') }}" alt="洗濯機可アイコン" class="w-full h-full">
+                  </span>
+                  <span class="text-sm/6 font-semibold ">
+                    {{ __("washability.$item->washability_option") }}
+                  </span>
+                </div>
+              @elseif($item->washability_option === 'washable_hand')
+                <div class="flex items-center px-1 py-1 rounded-full bg-yellow-100 text-yellow-800">
+                  <span class="inline-block w-6 h-6 mr-2">
+                    <img src="{{ asset('images/icons/washable_hand.svg') }}" alt="手洗いOKアイコン" class="w-full h-full">
+                  </span>
+                  <span class="text-sm/6 font-semibold ">
+                    {{ __("washability.$item->washability_option") }}
+                  </span>
+                </div>
+              @elseif($item->washability_option === 'not_washable')
+                <div class="flex items-center px-1 py-1 rounded-full bg-gray-100 text-gray-800">
+                  <span class="inline-block w-6 h-6 mr-2">
+                    <img src="{{ asset('images/icons/not_washable.svg') }}" alt="家庭洗濯不可アイコン" class="w-full h-full">
+                  </span>
+                  <span class="text-sm/6 font-semibold ">
+                    {{ __("washability.$item->washability_option") }}
+                  </span>
+                </div>
+              @else
+                <div class="flex items-center py-1 rounded-full">
+                  <span class="text-sm text-gray-900">未登録</span>
+                </div>
+              @endif
             </div>
 
             <div class="flex items-center py-2 border-b border-gray-200">

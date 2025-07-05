@@ -75,7 +75,11 @@
           </div>
         </div>
       @else
-        <p class="w-full text-xl text-gray-700 py-16 text-center">コーデが登録されていません。</p>
+        @if (request()->hasAny(['is_favorite', 'sort', 'pagination']))
+          <p class="text-xl text-gray-700">検索条件に一致するコーデは見つかりませんでした。</p>
+        @else
+          <p class="w-full text-xl text-gray-700 py-16 text-center">コーデが登録されていません。</p>
+        @endif
       @endif
 
       <div class="mt-8">
