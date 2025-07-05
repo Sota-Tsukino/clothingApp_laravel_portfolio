@@ -6,13 +6,13 @@
   </x-slot>
 
   <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden p-6 md:p-8">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
       <form id="form"
         action="{{ route(Auth::user()->role === 'admin' ? 'admin.clothing-item.store' : 'clothing-item.store') }}"
-        method="post" enctype="multipart/form-data" class="p-6 md:p-8">
+        method="post" enctype="multipart/form-data">
         @csrf
         <!-- 必須入力項目 -->
         <div class="mb-8">
