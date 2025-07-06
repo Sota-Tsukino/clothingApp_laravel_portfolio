@@ -6,9 +6,11 @@
     </div>
     <div class="p-3 text-sm text-gray-800 space-y-1">
       <div class="flex justify-between items-center">
-        <div class="text-sm lg:text-base text-gray-600">{{ __("brand.{$item->brand->name}") }} /
-          {{ $item->category->name ? __("category.{$item->category->name}") : '' }}</div>
-        <div class="w-8 h-8">
+        <!-- ブランド名 -->
+        <div class="text-sm lg:text-base text-gray-600 truncate whitespace-nowrap"
+          title="{{ __("brand.{$item->brand->name}") }}">{{ __("brand.{$item->brand->name}") }}</div>
+        <!-- ステータスアイコン -->
+        <div class="w-8 h-8 flex-shrink-0">
           @if ($item->status === 'owned')
             <img src="{{ asset('images/icons/owned.svg') }}" class="w-full " alt="所有中アイコン">
           @elseif($item->status === 'cleaning')
@@ -18,7 +20,11 @@
           @endif
         </div>
       </div>
-      <div class="text-sm sm:text-md text-gray-500">
+      <div class="text-sm lg:text-base text-gray-600">
+        {{ $item->category->name ? __("category.{$item->category->name}") : '' }}
+      </div>
+      <div class="text-sm sm:text-md text-gray-500 truncate whitespace-nowrap"
+        title="{{ __("subcategory.{$item->subcategory->name}") }}">
         {{ isset($item->subcategory) ? __("subcategory.{$item->subcategory->name}") : '' }}
       </div>
       <div class="text-md text-gray-600">
