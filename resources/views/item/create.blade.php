@@ -95,8 +95,7 @@
           <div class="mb-4">
             <label for="color" class="block text-sm font-medium text-gray-700 mb-1">色</label>
             <select name="colors[]" id="colors" multiple
-              class="mt-1 block w-full text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
-              required>
+              class="mt-1 block w-full text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
               @foreach ($colors as $color)
                 <option value="{{ $color->id }}" data-custom-properties='{"hex":"{{ $color->hex_code }}"}'
                   {{ collect(old('colors'))->contains($color->id) ? 'selected' : '' }}>
