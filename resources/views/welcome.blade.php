@@ -90,7 +90,7 @@
                 お住まいの地域を登録してお天気情報を表示し、その日の天気に合った衣類を提案します。
               </p>
               <div class="img mt-4 bg-no-repeat bg-center w-full h-[200px]"
-                style="background-image: url('{{ asset('images/intro_weatherInfo.png') }}'); background-size: 100%;">
+                style="background-image: url('{{ asset('images/intro_weatherInfo.png') }}'); background-size: 72%;">
               </div>
             </div>
           </div>
@@ -120,9 +120,9 @@
           &nbsp;
         </div>
 
-        <div class="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
-          Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
-        </div>
+        <small class="mt-6 block font-semibold text-sm text-gray-800 dark:text-gray-200 leading-tight">
+          &copy; 2025 FitCloset
+        </small>
       </div>
     </div>
   </div>
