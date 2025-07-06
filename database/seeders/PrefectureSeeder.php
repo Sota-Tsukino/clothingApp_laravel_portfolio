@@ -15,14 +15,6 @@ class PrefectureSeeder extends Seeder
      */
     public function run(): void
     {
-        // DB::table('prefectures')->insert([
-        //     [
-        //         'name' => '東京都',
-        //     ],
-        //     [
-        //         'name' => '神奈川',
-        //     ],
-        // ]);
         Excel::import(new PrefecturesImport,
         storage_path('app/data/prefectures.csv'));
     }

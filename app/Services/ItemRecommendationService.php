@@ -7,7 +7,6 @@ class ItemRecommendationService
 
     public static function recommendByTemperature(float $temperature, string $gender): array
     {
-        // dd($temperature);
         foreach (config('clothing_recommendations.temperature_ranges') as $range) {
             if (($range['min'] === null || $temperature >= $range['min']) &&
                 ($range['max'] === null || $temperature < $range['max'])

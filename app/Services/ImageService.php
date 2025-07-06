@@ -20,9 +20,8 @@ class ImageService
             $file = $imageFile;
         }
         $fileName = uniqid(rand() . '_'); //ランダム関数で重複しないファイル名を作る
-        $extension = $file->getClientOriginalExtension(); // extension()では取れなかった？
+        $extension = $file->getClientOriginalExtension();
         $fileNameToStore = $fileName . '.' . $extension;
-        // dd($file, $fileName, $extension, $fileNameToStore);
 
         try {
             //make()で読み込み

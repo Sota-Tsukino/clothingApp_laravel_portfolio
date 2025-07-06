@@ -209,7 +209,6 @@ class ItemService
             // 中間テーブル（多対多）の更新（null配列に注意）
             //attach()：既存のデータに追加する（重複しても追加してしまう）→store()で使う
             //sync()：既存の中間テーブルのデータを一旦全削除し、再登録する（クリーンな更新）→update()で使う
-            // dd($item);
             $item->colors()->sync($data['colors'] ?? []);
             $item->tags()->sync($data['tags'] ?? []);
             $item->seasons()->sync($data['seasons'] ?? []);

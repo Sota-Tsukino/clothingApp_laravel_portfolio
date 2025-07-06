@@ -13,8 +13,6 @@ class Category extends Model
 
     public function item()
     {
-        // 1itemにつきカテゴリーは１つだけ選択なのでhasOne()?
-        //もしくは複数のitemで同じカテゴリーが選択される可能性があるのでhasmany()か？
         return $this->hasMany(Item::class);
     }
 

@@ -213,7 +213,6 @@ class ItemController extends Controller
 
     public function switchStatus(Request $request, string $id)
     {
-        // dd($request);
         $request->validate(['status' => [Rule::in(['owned', 'cleaning', 'discarded'])]]);
         $userId = Auth::id();
 
