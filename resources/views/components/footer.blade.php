@@ -12,7 +12,11 @@
       &copy; OpenStreetMap
     </a> のデータを使用しています。
   </p>
-  <small class="mt-6 block font-semibold text-sm text-gray-800 dark:text-gray-200 leading-tight">
+  <p class="text-sm font-semibold text-gray-800 mt-4">
+    <a href="{{ route('terms_of_use') }}" class="underline">利用規約</a>・<a href="{{ route('privacy_policy') }}"
+      class="underline">プライバシーポリシー</a>
+  </p>
+  <small class="mt-4 block font-semibold text-sm text-gray-800 dark:text-gray-200 leading-tight">
     &copy; 2025 FitCloset
   </small>
 </footer>
