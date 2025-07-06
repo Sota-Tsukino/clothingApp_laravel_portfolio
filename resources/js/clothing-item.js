@@ -212,3 +212,21 @@ window.addEventListener("DOMContentLoaded", () => {
     // サブカテゴリ未選択でも仮画像を出す
     switchItemImg(categoryName, subCategoryName || null);
 });
+
+// 戻るボタン等で復元されたときにも再初期化
+window.addEventListener("pageshow", function (e) {
+    const { categoryName, subCategoryName } = getSelectedCategoryTypes(
+        categorySelect,
+        subCategorySelect
+    );
+
+    if (!categoryName) return; // 未選択なら何もしない
+
+    toggleFields(categoryName);
+    if (["tops", "outer", "setup"].includes(categoryName)) {
+        toggleImgTitle(categoryName);
+    }
+
+    // サブカテゴリ未選択でも仮画像を出す
+    switchItemImg(categoryName, subCategoryName || null);
+});
