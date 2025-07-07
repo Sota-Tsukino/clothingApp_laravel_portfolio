@@ -122,7 +122,7 @@
             <div class="flex items-center py-2 border-b border-gray-200">
               <span class="text-sm font-medium text-gray-600 w-1/3">家庭洗濯</span>
               @if ($item->washability_option === 'washable_machine')
-                <div class="flex items-center py-1 px-1 rounded-full bg-green-100 text-green-800">
+                <div class="flex items-center py-1 px-1 rounded-full bg-green-100 text-green-600">
                   <span class="inline-block w-6 h-6 mr-2">
                     <img src="{{ asset('images/icons/washable_machine.svg') }}" alt="洗濯機可アイコン" class="w-full h-full">
                   </span>
@@ -202,7 +202,7 @@
               <div class="flex flex-wrap gap-2">
                 @foreach ($item->seasons as $season)
                   <span
-                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600">
                     {{ __("season.$season->name") ?? '未登録' }}
                   </span>
                 @endforeach

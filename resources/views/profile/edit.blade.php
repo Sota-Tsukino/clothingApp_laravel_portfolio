@@ -6,7 +6,7 @@
   </x-slot>
 
   <section class="text-gray-600 body-font overflow-hidden px-4 md:px-8">
-    <div class="container max-w-2xl px-8 md:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
+    <div class="max-w-xl px-8 sm:px-16 py-16 mx-auto bg-white rounded-lg my-24 shadow-lg">
       <!-- Validation Errors -->
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
@@ -14,21 +14,21 @@
         method="post">
         @csrf
         @method('put') <!-- formタグがPOSTでも、laravelがput methodとして認識できるようになる-->
-        <div class="w-full mb-6 ">
-          <div class="flex mb-6 items-center">
-            <label for="nickname" class="leading-7 text-sm text-gray-600 w-1/3">ニックネーム</label>
+        <div class="mb-6 ">
+          <div class="mb-4">
+            <label for="nickname" class="block text-sm font-medium text-gray-700 mb-1">ニックネーム</label>
             <input type="text" id="nickname" name="nickname" value="{{ $user->nickname }}" required
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="email" class="leading-7 text-sm text-gray-600 w-1/3">メール</label>
+          <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">メール</label>
             <input type="text" id="email" name="email" value="{{ $user->email }}" required
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="gender" class="leading-7 text-sm text-gray-600 w-1/3">性別</label>
+          <div class="mb-4">
+            <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">性別</label>
             <select name="gender" id="gender"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
               <option value="male" {{ $user->gender == 'male' ? 'selected' : '' }}>
                 {{ __('user.male') }}
               </option>
@@ -40,22 +40,26 @@
               </option>
             </select>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="prefecture_id" class="leading-7 text-sm text-gray-600 w-1/3">都道府県</label>
-            <select name="prefecture_id" id="prefecture_id"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-              <option value="" {{ $user->prefecture_id === null ? 'selected' : '' }}>都道府県を選択してください</option>
-              @foreach ($prefectures as $prefecture)
-                <option value="{{ $prefecture->id }}" {{ $user->prefecture_id == $prefecture->id ? 'selected' : '' }}>
-                  {{ $prefecture->name }}
-                </option>
-              @endforeach
-            </select>
+          <div>
+            <div class="mb-4">
+              <label for="prefecture_id" class="block text-sm font-medium text-gray-700 mb-1">都道府県</label>
+              <select name="prefecture_id" id="prefecture_id"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
+                <option value="" {{ $user->prefecture_id === null ? 'selected' : '' }}>都道府県を選択してください</option>
+                @foreach ($prefectures as $prefecture)
+                  <option value="{{ $prefecture->id }}"
+                    {{ $user->prefecture_id == $prefecture->id ? 'selected' : '' }}>
+                    {{ $prefecture->name }}
+                  </option>
+                @endforeach
+              </select>
+              <p class="mt-1 text-xs text-gray-500">※一都三県から選択可能</p>
+            </div>
           </div>
-          <div class="flex mb-6 items-center">
-            <label for="city_id" class="leading-7 text-sm text-gray-600 w-1/3">市区町村</label>
+          <div class="mb-4">
+            <label for="city_id" class="block text-sm font-medium text-gray-700 mb-1">市区町村</label>
             <select name="city_id" id="city_id"
-              class="w-2/3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm">
               <option value="" {{ $user->city_id === null ? 'selected' : '' }}>市区町村を選択してください</option>
               @foreach ($prefectures as $prefecture)
                 @foreach ($prefecture->city as $city)

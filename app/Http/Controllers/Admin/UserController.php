@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
 use App\Services\ImageService;
 use App\Services\UserService;
-use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -27,38 +25,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
@@ -67,15 +33,7 @@ class UserController extends Controller
             'is_active' => 'required|integer|in:0,1',
         ]);
 
-        // dd($request);
         $user = User::findOrFail($id);
-        // if (!$user) {
-        //     return back()
-        //         ->with([
-        //             'message' => 'ユーザーが見つかりません',
-        //             'status' => 'alert'
-        //         ]);
-        // }
 
         $user->is_active = $user->is_active ? 0 : 1;
         $user->save();
@@ -142,7 +100,7 @@ class UserController extends Controller
 
     public function restoreUser($id)
     {
-        User::onlyTrashed()->findOrFail($id)->restore(); //この記述でOK？
+        User::onlyTrashed()->findOrFail($id)->restore();
         return redirect()
             ->route('admin.softDeleted-user.index')
             ->with([

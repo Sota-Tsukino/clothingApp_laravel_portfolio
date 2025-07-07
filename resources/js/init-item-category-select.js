@@ -8,15 +8,6 @@ function initItemCategorySelect() {
     );
     const item = el.dataset.item ? JSON.parse(el.dataset.item) : null;
 
-    // サブカテゴリの日本語変換（必要な場合）render時に変換してるので不要
-    // categories.forEach((cat) => {
-    //     cat.sub_category.forEach((sub) => {
-    //         if (sub.name in subCategoryTranslations) {
-    //             sub.name = subCategoryTranslations[sub.name];
-    //         }
-    //     });
-    // });
-
     setupDependentSelect({
         parentSelector: "categorySelect", //idの値で指定
         childSelector: "sub_category_id",

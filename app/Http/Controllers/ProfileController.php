@@ -20,14 +20,14 @@ class ProfileController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth'); //必要？ web.phpでもこれを通している？
+        $this->middleware('auth');
     }
 
     public function show(Request $request): View
     {
         //※App\Models\User.phpにリレーションを定義していること
         $user = User::with(['prefecture', 'city'])->findOrFail(Auth::id());
-        // dd($user);
+        
         return view('profile.show', compact('user'));
     }
 

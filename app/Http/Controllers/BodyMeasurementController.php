@@ -46,34 +46,8 @@ class BodyMeasurementController extends Controller
     public function store(Request $request)
     {
         $request->validate(BodyMeasurementService::getValidationRules(true));
-        // dd($request);
 
         try {
-            // $bodyMeasurement = BodyMeasurement::create([
-            //     'user_id' => Auth::id(),
-            //     'measured_at' => $request->measured_at,
-            //     'height' => $request->height,
-            //     'head_circumference' => $request->head_circumference,
-            //     'neck_circumference' => $request->neck_circumference,
-            //     'shoulder_width' => $request->shoulder_width,
-            //     'yuki_length' => $request->yuki_length,
-            //     'sleeve_length' => $request->sleeve_length,
-            //     'chest_circumference' => $request->chest_circumference,
-            //     'waist' => $request->waist,
-            //     'hip' => $request->hip,
-            //     'inseam' => $request->inseam,
-            //     'foot_length' => $request->foot_length,
-            //     'foot_circumference' => $request->foot_circumference,
-            // ]);
-
-
-            // ↓の動作確認
-            // $datas = $request->only('measured_at', 'height', 'waist');// ['key' => value]で返す
-            // $datas = array_merge(['measured_at'], BodyMeasurementService::getFields());
-            // $datas = $request->only(array_merge(['measured_at'], BodyMeasurementService::getFields()));
-            // dd($datas);
-
-            //リファクタリング
             $bodyMeasurement = BodyMeasurement::create(array_merge(
                 $request->only(array_merge(['measured_at'], BodyMeasurementService::getFields())), //
                 ['user_id' => Auth::id()]

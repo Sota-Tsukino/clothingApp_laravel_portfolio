@@ -21,7 +21,7 @@
       <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
         @auth
           <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.home' : 'home') }}"
-            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">ダッシュボード</a>
+            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">ホーム</a>
         @else
           <a href="{{ route('login') }}"
             class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">ログイン</a>
@@ -90,7 +90,7 @@
                 お住まいの地域を登録してお天気情報を表示し、その日の天気に合った衣類を提案します。
               </p>
               <div class="img mt-4 bg-no-repeat bg-center w-full h-[200px]"
-                style="background-image: url('{{ asset('images/intro_weatherInfo.png') }}'); background-size: 100%;">
+                style="background-image: url('{{ asset('images/intro_weatherInfo.png') }}'); background-size: 72%;">
               </div>
             </div>
           </div>
@@ -115,14 +115,14 @@
         </div>
       </div>
 
-      <div class="flex justify-center mt-16 px-0 sm:items-center sm:justify-between">
-        <div class="text-center text-sm sm:text-left">
-          &nbsp;
-        </div>
+      <div class="mt-16 px-0 text-center">
+        <p class="text-sm font-semibold text-gray-800 mb-2">
+          <a href="{{ route('terms_of_use') }}" class="underline">利用規約</a>・<a href="{{ route('privacy_policy') }}" class="underline">プライバシーポリシー</a>・<a href="{{ route('contact') }}" class="underline">お問い合わせ</a>
+        </p>
+          <small class="block font-semibold text-sm text-gray-800 dark:text-gray-200 leading-tight">
+          &copy; 2025 FitCloset All Rights reserved.
+        </small>
 
-        <div class="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
-          Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
-        </div>
       </div>
     </div>
   </div>

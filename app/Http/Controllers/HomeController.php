@@ -70,17 +70,13 @@ class HomeController extends Controller
                 $topsItem = ItemService::getRecommendedItems($recommendedSubCategories['tops'], $userId);
                 $bottomsItem = ItemService::getRecommendedItems($recommendedSubCategories['bottoms'], $userId);
                 $outerItem = ItemService::getRecommendedItems($recommendedSubCategories['outers'], $userId);
-
-                // dd($topsItem, $bottomsItem, $outerItem);
             } catch (\Exception $e) {
                 Log::error('天気情報の処理中にエラーが発生しました: ' . $e->getMessage());
-                // weatherSummaryやrecommend系は空のままでよい
             }
         } else {
-            Log::warning("message");('天気APIからのデータが取得できませんでした');
+            Log::warning("message");
+            ('天気APIからのデータが取得できませんでした');
         }
-
-        // dd($weatherSummary, $weatherMessage);
 
         return view('home', compact('weatherSummary', 'user', 'weatherMessage', 'topsItem', 'bottomsItem', 'outerItem'));
     }

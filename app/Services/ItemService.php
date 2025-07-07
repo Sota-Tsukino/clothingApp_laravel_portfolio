@@ -44,7 +44,7 @@ class ItemService
             'sub_material' => 'nullable|integer|exists:materials,id',
             'washability_option' => [Rule::in(['washable_machine', 'washable_hand', 'not_washable']), 'nullable'],
             'purchased_at' => 'nullable|string|max:20',
-            'price' => 'integer|nullable',
+            'price' => 'integer|nullable|min:0|max:9999999',
             'memo' => 'string|nullable|max:50',
         ];
 
@@ -209,7 +209,6 @@ class ItemService
             // 中間テーブル（多対多）の更新（null配列に注意）
             //attach()：既存のデータに追加する（重複しても追加してしまう）→store()で使う
             //sync()：既存の中間テーブルのデータを一旦全削除し、再登録する（クリーンな更新）→update()で使う
-            // dd($item);
             $item->colors()->sync($data['colors'] ?? []);
             $item->tags()->sync($data['tags'] ?? []);
             $item->seasons()->sync($data['seasons'] ?? []);

@@ -28,6 +28,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/terms_of_use', function () {
+    return view('terms');
+})->name('terms_of_use');
+
+Route::get('/privacy_policy', function () {
+    return view('privacy');
+})->name('privacy_policy');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
 Route::get('/home', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('home');
@@ -99,14 +111,8 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
             ->name('softDeleted-user.restore');
     });
 
-Route::get('/phpinfo', function () {
-    phpinfo();
-});
-
-// Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
-// Route::get('/component-test2', [ComponentTestController::class, 'showComponent2']);
-// Route::get('/servicecontainertest', [LifeCycleTestController::class, 'showServiceContainerTest']);
-// Route::get('/serviceprovidertest', [LifeCycleTestController::class, 'showServiceProviderTest']);
-
+// Route::get('/phpinfo', function () {
+//     phpinfo();
+// });
 
 require __DIR__ . '/auth.php';

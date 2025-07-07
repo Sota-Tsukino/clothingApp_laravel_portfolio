@@ -140,7 +140,6 @@ class CoordinateController extends Controller
 
     public function toggleIsFavorite(Request $request, string $id)
     {
-        // dd($request);
         $request->validate([
             'is_favorite' => 'boolean|required',
         ]);
