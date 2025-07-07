@@ -36,6 +36,10 @@ Route::get('/privacy_policy', function () {
     return view('privacy');
 })->name('privacy_policy');
 
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
 Route::get('/home', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('home');

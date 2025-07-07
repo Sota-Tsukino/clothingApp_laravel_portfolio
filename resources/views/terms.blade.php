@@ -133,7 +133,7 @@
       <div class="mt-16 px-0 text-center">
         <p class="text-sm font-semibold text-gray-800 mb-2">
           <a href="{{ route('terms_of_use') }}" class="underline">利用規約</a>・<a href="{{ route('privacy_policy') }}"
-            class="underline">プライバシーポリシー</a>
+            class="underline">プライバシーポリシー</a>・<a href="{{ route('contact') }}" class="underline">お問い合わせ</a>
         </p>
         <small class="block font-semibold text-sm text-gray-800 dark:text-gray-200 leading-tight">
           &copy; 2025 FitCloset All Rights reserved.
