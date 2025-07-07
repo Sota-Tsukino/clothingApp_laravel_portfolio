@@ -230,17 +230,17 @@
               <label for="purchased_at" class="block text-sm font-medium text-gray-700 mb-1">購入場所</label>
               <input type="text" name="purchased_at" id="purchased_at"
                 class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
-                maxlength="20" value="{{ $item->purchased_at }}">
+                maxlength="20" value="{{ $item->purchased_at }}" placeholder="最大20文字">
             </div>
           </div>
 
           <!-- 金額 -->
           <div class="mb-4">
             <label for="price" class="block text-sm font-medium text-gray-700 mb-1">金額</label>
-            <div class="mt-1 flex rounded-md shadow-sm">
+            <div class="mt-1 flex rounded-md shadow-sm sm:w-1/3">
               <input type="number" name="price" id="price"
                 class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-l-md border-gray-300"
-                value="{{ $item->price }}">
+                value="{{ $item->price }}" min="1" max="9999999" placeholder="1～9999999">
               <span
                 class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">円</span>
             </div>
@@ -251,8 +251,7 @@
             <label for="memo" class="block text-sm font-medium text-gray-700 mb-1">メモ</label>
             <textarea name="memo" id="memo" rows="3"
               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full border-gray-300 rounded-md"
-              maxlength="50">{{ $item->memo }}</textarea>
-            <p class="mt-1 text-xs text-gray-500">最大50文字</p>
+              maxlength="50" placeholder="最大50文字">{{ $item->memo }}</textarea>
           </div>
         </div>
 

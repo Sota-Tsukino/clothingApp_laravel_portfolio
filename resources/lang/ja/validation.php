@@ -220,7 +220,7 @@ return [
         'purchased_date' => '購入日',
         'price' => '価格',
         'purchased_at' => '購入場所',
-        'memo' =>'メモ',
+        'memo' => 'メモ',
 
         //体格許容値
         'tolerances.yuki_length-just.min_value' => '裄丈（ちょうどいい）の下限値',
@@ -292,5 +292,10 @@ return [
         'tolerances.hip-slight.max_value' => 'ヒップ（ややあわない）の上限値',
         'tolerances.hip-long_or_short.min_value' => 'ヒップ（合わない）の下限値',
         'tolerances.hip-long_or_short.max_value' => 'ヒップ（合わない）の上限値',
+
+        //コーデ
+        'items' => '衣類画像',
+        'sceneTag_id' => 'シーンタグ',
+        'is_favorite' => 'お気に入り',
     ],
 ];

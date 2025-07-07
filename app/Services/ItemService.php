@@ -44,7 +44,7 @@ class ItemService
             'sub_material' => 'nullable|integer|exists:materials,id',
             'washability_option' => [Rule::in(['washable_machine', 'washable_hand', 'not_washable']), 'nullable'],
             'purchased_at' => 'nullable|string|max:20',
-            'price' => 'integer|nullable',
+            'price' => 'integer|nullable|min:0|max:9999999',
             'memo' => 'string|nullable|max:50',
         ];
 
