@@ -16,7 +16,7 @@
 
 <body class="antialiased">
   <div
-    class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+    class="h-[100vh] p-6 lg:p-8 relative bg-dots-darker bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
     @if (Route::has('login'))
       <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
         @auth
@@ -34,24 +34,25 @@
       </div>
     @endif
 
-    <div class="max-w-5xl mx-auto p-6 lg:p-8">
-      <div class="flex justify-center">
-        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-      </div>
-      <iframe
+
+    <div class="w-[213px] mx-auto">
+      <x-application-logo class="text-center block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+    </div>
+    <div class="w-full">
+      <iframe class="w-full h-[864px]"
         src="https://docs.google.com/forms/d/e/1FAIpQLSe3ECHmsJ7tsMPBYuBx0hQ3_WVtZbOGj96KE2769k3COefluA/viewform?embedded=true"
-        width="640" height="1342" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>
+        frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>
+    </div>
 
-      <div class="mt-16 px-0 text-center">
-        <p class="text-sm font-semibold text-gray-800 mb-2">
-          <a href="{{ route('terms_of_use') }}" class="underline">利用規約</a>・<a href="{{ route('privacy_policy') }}"
-            class="underline">プライバシーポリシー</a>
-        </p>
-        <small class="block font-semibold text-sm text-gray-800 dark:text-gray-200 leading-tight">
-          &copy; 2025 FitCloset All Rights reserved.
-        </small>
+    <div class="mt-16 px-0 text-center">
+      <p class="text-sm font-semibold text-gray-800 mb-2">
+        <a href="{{ route('terms_of_use') }}" class="underline">利用規約</a>・<a href="{{ route('privacy_policy') }}"
+          class="underline">プライバシーポリシー</a>
+      </p>
+      <small class="block font-semibold text-sm text-gray-800 dark:text-gray-200 leading-tight">
+        &copy; 2025 FitCloset All Rights reserved.
+      </small>
 
-      </div>
     </div>
   </div>
 </body>
