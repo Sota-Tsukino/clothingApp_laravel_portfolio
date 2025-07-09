@@ -10,6 +10,10 @@ class SendWelcomeMail
 {
     public function handle(Registered $event)
     {
-        Mail::to($event->user->email)->send(new WelcomeMail($event->user));
+        try {
+            Mail::to($event->user->email)->send(new WelcomeMail($event->user));
+        } catch (\Throwable $e) {
+            \Log::error('Welcomeメール送信エラー: ' . $e->getMessage());
+        }
     }
 }
