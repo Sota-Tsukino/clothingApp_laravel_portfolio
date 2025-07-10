@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\User;
+use App\Services\ImageService;
+use App\Services\UserService;
+
+class UserController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $params = $request->only(['is_active', 'sort', 'keyword', 'pagination']);
+        $filtered = array_filter($params, fn($v) => $v !== null && $v !== '');
+        $users = !empty($filtered)
+            ? UserService::searchUserByAdmin($params)
+            : UserService::getAllUsers(true);
+
+        return view('admin.user.index', compact('users'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'is_active' => 'required|integer|in:0,1',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->is_active = $user->is_active ? 0 : 1;
+        $user->save();
+
+        return redirect()
+            ->route('admin.user.index')
+            ->with([
+                'message' => 'ユーザーステータスを更新しました。',
+                'status' => 'info'
+            ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request, string $id)
+    {
+        User::findOrFail($id)->delete(); //ソフトデリート
+
+        return redirect()
+            ->route('admin.user.index')
+            ->with([
+                'message' => 'ユーザーを削除しました。',
+                'status' => 'info'
+            ]);
+    }
+
+    public function softDeletedUsersIndex(Request $request)
+    {
+        $params = $request->only(['sort', 'keyword', 'pagination']);
+        $filtered = array_filter($params, fn($v) => $v !== null && $v !== '');
+
+        $softDeletedUsers = !empty($filtered)
+            ? UserService::searchUserByAdmin($params, true) // 第二引数 true を渡す
+            : User::onlyTrashed()
+            ->orderBy('deleted_at', 'desc')
+            ->paginate($request->input('pagination', 12))
+            ->appends($request->all());
+
+        return view('admin.user.softdeleted-index', compact('softDeletedUsers'));
+    }
+
+    public function destroySoftDeletedUser($id)
+    {
+        try {
+            //ユーザーが登録した衣類アイテム画像（サーバー上）を削除
+            ImageService::deleteAllUserImages($id);
+
+            // ユーザー完全削除（子のレコードはリレーションで削除）
+            User::onlyTrashed()->findOrFail($id)->forceDelete();
+            return redirect()
+                ->route('admin.softDeleted-user.index')
+                ->with([
+                    'message' => 'ユーザーを完全削除しました。',
+                    'status' => 'info'
+                ]);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->with([
+                'message' => 'ユーザーが見つかりませんでした。',
+                'status' => 'error'
+            ]);
+        }
+    }
+
+    public function restoreUser($id)
+    {
+        User::onlyTrashed()->findOrFail($id)->restore();
+        return redirect()
+            ->route('admin.softDeleted-user.index')
+            ->with([
+                'message' => 'ユーザーを復元しました。',
+                'status' => 'info'
+            ]);
+    }
+}
