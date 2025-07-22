@@ -13,7 +13,7 @@ use App\Constants\Common;
 
 class Coordinate extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'user_id',
