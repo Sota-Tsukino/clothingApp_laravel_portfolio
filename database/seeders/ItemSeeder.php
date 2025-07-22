@@ -22,7 +22,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
             [
@@ -33,7 +33,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
             [
@@ -44,7 +44,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
             [
@@ -55,7 +55,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
             [
@@ -66,7 +66,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
             [
@@ -77,7 +77,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
             [
@@ -88,7 +88,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
             [
@@ -99,7 +99,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
             [
@@ -110,7 +110,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
             [
@@ -121,7 +121,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
             [
@@ -132,7 +132,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
             [
@@ -143,7 +143,7 @@ class ItemSeeder extends Seeder
                 'brand_id' => '1',
                 'status' => 'owned',
                 // 'is_public' => 0,
-                'is_item_suggest' => 0,
+                'is_item_suggest' => 1,
                 'created_at' => '2025/01/01',
             ],
         ]);
