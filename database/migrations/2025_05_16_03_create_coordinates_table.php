@@ -24,7 +24,6 @@ return new class extends Migration
             // $table->boolean('is_public')->default(false);
             $table->string('memo', 100)->nullable();
             $table->boolean('is_favorite')->default(false);
-            $table->softDeletes(); // ←deleted_atカラム追加
             $table->timestamps();
         });
     }
