@@ -27,7 +27,7 @@ class ProfileController extends Controller
     {
         //※App\Models\User.phpにリレーションを定義していること
         $user = User::with(['prefecture', 'city'])->findOrFail(Auth::id());
-        
+
         return view('profile.show', compact('user'));
     }
 
@@ -101,5 +101,31 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function editPassword(Request $request): View
+    {
+        return view('profile.password-edit');
+    }
+
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $request->validate(UserService::getUpdatePasswordRules());
+
+        try {
+            $user = $request->user(); //ログインUser(model型)を取得
+            UserService::savePassword($request->input('new_password'), $user);
+        } catch (Exception $e) {
+            return redirect()
+                ->route(Auth::user()->role === 'admin' ? 'admin.profile.edit-password' : 'profile.edit-password')
+                ->with(['message' => $e->getMessage(), 'status' => 'alert']);
+        }
+
+        return redirect()
+            ->route(Auth::user()->role === 'admin' ? 'admin.profile.show' : 'profile.show')
+            ->with([
+                'message' => 'パスワードを更新しました。',
+                'status' => 'info'
+            ]);
     }
 }

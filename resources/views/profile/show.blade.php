@@ -39,7 +39,10 @@
           <div class="flex flex-col sm:flex-row gap-3 justify-around">
             <button
               onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.profile.edit' : 'profile.edit') }}'"
-              class="inline-block px-4 py-2 bg-indigo-600 rounded-md font-semibold text-sm text-white hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">編集する</button>
+              class="inline-block px-4 py-2 bg-indigo-600 rounded-md font-semibold text-sm text-white hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">プロフィールを編集</button>
+            <button
+              onclick="location.href='{{ route(Auth::user()->role === 'admin' ? 'admin.profile.edit-password' : 'profile.edit-password') }}'"
+              class="inline-block px-4 py-2 bg-green-600 rounded-md font-semibold text-sm text-white hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">パスワードを変更</button>
           </div>
         </div>
       </div>
