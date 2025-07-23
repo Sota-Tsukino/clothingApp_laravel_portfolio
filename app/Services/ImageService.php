@@ -45,9 +45,9 @@ class ImageService
 
         foreach ($images as $image) {
             // ファイル削除（DB削除はリレーションで対応する前提）
-            $filePath = 'public/items/' . $image->file_name;
-            if (Storage::exists($filePath)) {
-                Storage::delete($filePath);
+            $filePath = $image->file_name;
+            if (Storage::disk('s3')->exists($filePath)) {
+                Storage::disk('s3')->delete($filePath);
             }
         }
     }

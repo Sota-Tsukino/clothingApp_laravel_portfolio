@@ -39,7 +39,7 @@
 
               <div class="w-2/3 mx-auto mt-3">
                 <img id="preview-main" class="rounded shadow w-full object-cover"
-                  src="{{ asset('storage/items/' . $coordinate->items[0]->image->file_name) }}">
+                  src="{{ Storage::disk('s3')->url($coordinate->items[0]->image->file_name) }}">
                 <input type="hidden" name="items[]" id="input-main" value="{{ $coordinate->items[0]->id }}">
               </div>
             </div>
@@ -61,7 +61,7 @@
 
               <div class="w-2/3 mx-auto mt-3">
                 <img id="preview-sub1" class="rounded shadow w-full object-cover"
-                  src="{{ asset('storage/items/' . $coordinate->items[1]->image->file_name) }}">
+                  src="{{ Storage::disk('s3')->url($coordinate->items[1]->image->file_name) }}">
                 <input type="hidden" name="items[]" id="input-sub1" value="{{ $coordinate->items[1]->id }}">
               </div>
             </div>
@@ -84,7 +84,7 @@
               <div class="w-2/3 mx-auto mt-3">
                 @if (isset($coordinate->items[2]))
                   <img id="preview-sub2" class="rounded shadow w-full object-cover"
-                    src="{{ asset('storage/items/' . $coordinate->items[2]->image->file_name) }}">
+                    src="{{ Storage::disk('s3')->url($coordinate->items[2]->image->file_name) }}">
                   <input type="hidden" name="items[]" id="input-sub2" value="{{ $coordinate->items[2]->id }}">
                 @else
                   <img id="preview-sub2" class="rounded shadow w-full object-cover" style="display: none;">

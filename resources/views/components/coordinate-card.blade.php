@@ -18,7 +18,7 @@
           <div class="text-center text-xs text-gray-500 mb-1">メイン</div>
           <div class="aspect-square bg-white rounded overflow-hidden flex items-center justify-center p-1">
             @if ($main)
-              <img src="{{ asset('storage/items/' . $main->image->file_name) }}" alt="メイン衣類"
+              <img src="{{ Storage::disk('s3')->url($main->image->file_name) }}" alt="メイン衣類"
                 class="max-h-full object-contain rounded">
             @else
               <div class="text-xs text-gray-400">未登録</div>
@@ -31,7 +31,7 @@
           <div class="text-center text-xs text-gray-500 mb-1">サブ1</div>
           <div class="aspect-square bg-white rounded overflow-hidden flex items-center justify-center p-1">
             @if ($sub1)
-              <img src="{{ asset('storage/items/' . $sub1->image->file_name) }}" alt="サブ1衣類"
+              <img src="{{Storage::disk('s3')->url($sub1->image->file_name) }}" alt="サブ1衣類"
                 class="max-h-full object-contain rounded">
             @else
               <div class="text-xs text-gray-400">未登録</div>
@@ -44,7 +44,7 @@
           <div class="text-center text-xs text-gray-500 mb-1">サブ2</div>
           <div class="aspect-square bg-white rounded overflow-hidden flex items-center justify-center p-1">
             @if ($sub2)
-              <img src="{{ asset('storage/items/' . $sub2->image->file_name) }}" alt="サブ2衣類"
+              <img src="{{ Storage::disk('s3')->url($sub2->image->file_name) }}" alt="サブ2衣類"
                 class="max-h-full object-contain rounded">
             @else
               <div class="text-xs text-gray-400">未登録</div>
