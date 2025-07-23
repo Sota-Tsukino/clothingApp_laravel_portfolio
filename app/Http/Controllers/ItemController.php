@@ -251,7 +251,7 @@ class ItemController extends Controller
                 $item->image->delete();
 
                 //イメージ画像削除（サーバー内）
-                Storage::delete('public/items/' . $filePath);
+                Storage::disk('s3')->delete($filePath);
             }
 
             //衣類アイテムを削除

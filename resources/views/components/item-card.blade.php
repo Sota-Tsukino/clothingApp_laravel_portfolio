@@ -6,7 +6,7 @@
 
     <!-- 画像 -->
     <div class="w-full h-52 overflow-hidden">
-      <img src="{{ asset('storage/items/' . $item->image->file_name) }}" alt="衣類画像" class="w-full h-full object-cover">
+      <img src="{{ Storage::disk('s3')->url($item->image->file_name) }}" alt="衣類画像" class="w-full h-full object-cover">
     </div>
   </a>
 

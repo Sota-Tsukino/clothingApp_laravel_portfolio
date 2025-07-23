@@ -50,6 +50,8 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/password', [ProfileController::class, 'editPassword'])->name('profile.edit-password');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
 
     Route::resource('/measurement', BodyMeasurementController::class);
 
@@ -77,6 +79,8 @@ Route::middleware(['auth', 'verified', 'role:admin']) // ← 管理者のみ通�
         Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+        Route::get('/profile/password', [ProfileController::class, 'editPassword'])->name('profile.edit-password');
+        Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
 
         Route::resource('/measurement', BodyMeasurementController::class);
 

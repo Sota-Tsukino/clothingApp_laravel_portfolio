@@ -180,6 +180,7 @@ return [
         'user_id' => 'ユーザーID',
         'nickname' => 'ニックネーム',
         'password' => 'パスワード',
+        'new_password' => '新しいパスワード',
         'email' => 'メール',
         'gender' => '性別',
         'prefecture_id' => '都道府県',

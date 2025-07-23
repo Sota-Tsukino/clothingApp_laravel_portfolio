@@ -27,7 +27,7 @@
               <div
                 class="mt-1 px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-indigo-500 transition-colors">
                 <div class="mx-auto aspect-square max-w-xs bg-gray-100 rounded-lg overflow-hidden shadow-md">
-                  <img id="preview" src="{{ asset('storage/items/' . $item->image->file_name) }}" alt="プレビュー画像"
+                  <img id="preview" src="{{ Storage::disk('s3')->url($item->image->file_name) }}" alt="プレビュー画像"
                     class="w-full h-full object-cover">
                 </div>
                 <div class="space-y-1 text-center">

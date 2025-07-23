@@ -1,8 +1,8 @@
   <div
     class="bg-gray-100 rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-200 cursor-pointer"
-    onclick="selectItem({{ $item->id }}, '{{ asset('storage/items/' . $item->image->file_name) }}')">
+    onclick="selectItem({{ $item->id }}, '{{ Storage::disk('s3')->url($item->image->file_name) }}')">
     <div class="w-full h-52 overflow-hidden">
-      <img src="{{ asset('storage/items/' . $item->image->file_name) }}" alt="衣類画像" class="w-full h-full object-cover">
+      <img src="{{ Storage::disk('s3')->url($item->image->file_name) }}" alt="衣類画像" class="w-full h-full object-cover">
     </div>
     <div class="p-3 text-sm text-gray-800 space-y-1">
       <div class="flex justify-between items-center">

@@ -32,6 +32,7 @@ class UserService
 
     public static function getPasswordRule(): array
     {
+        // confirmedは {field}_confirmationと一致してるかvalidationする
         return ['required', 'confirmed', Rules\Password::defaults()];
     }
 
@@ -50,6 +51,16 @@ class UserService
         } else { //ログイン済みユーザー更新の場合
             $rules['email'] = self::getEmailUpdateRule($userId);
         }
+
+        return $rules;
+    }
+
+    public static function getUpdatePasswordRules()
+    {
+        $rules = [
+            'current_password' => ['required', 'current_password'],
+            'new_password' => self::getPasswordRule(),
+        ];
 
         return $rules;
     }
@@ -82,6 +93,13 @@ class UserService
         }
 
         return $user;
+    }
+
+    public static function savePassword($newPassword, ?User $user = null)
+    {
+        $user->update([
+            'password' => Hash::make($newPassword),
+        ]);
     }
 
     public static function getAllUsers($is_paginate = false)
