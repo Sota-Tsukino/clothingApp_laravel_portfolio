@@ -17,7 +17,7 @@
             <h2 class="text-lg font-medium text-gray-700 border-b border-gray-200 pb-2">衣類アイテム画像</h2>
             <div class="aspect-square w-full overflow-hidden rounded-lg bg-gray-100 shadow-md">
               <img class="w-full h-full object-cover" id="item-img"
-                src="{{ Storage::disk('s3')->url($item->image->file_name) }}" alt="衣類画像">
+                src="{{ Storage::disk('s3')->temporaryUrl('items/' . $item->image->file_name, now()->addMinutes(10)) }}" alt="衣類画像">
             </div>
           </div>
 
