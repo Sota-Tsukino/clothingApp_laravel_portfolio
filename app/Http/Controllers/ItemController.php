@@ -245,7 +245,7 @@ class ItemController extends Controller
             ItemService::isUsedInCoordinates($item->id, $userId);
 
             if (!empty($item->image)) {
-                $filePath = $item->image->file_name;
+                $filePath = 'items/' . $item->image->file_name;
 
                 //イメージテーブル削除
                 $item->image->delete();

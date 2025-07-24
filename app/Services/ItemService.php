@@ -151,7 +151,7 @@ class ItemService
 
                 if ($item && $item->image) { //既存アイテムなら更新する
                     //サーバーのファイル削除
-                    Storage::disk('s3')->delete($item->image->file_name);
+                    Storage::disk('s3')->delete('items/' . $item->image->file_name);
                     // 画像情報を update（file_name だけを更新）
                     $item->image->update([
                         'file_name' => $fileName,
