@@ -24,6 +24,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// SSL化後のCSS崩れ対応
+if (config('app.env') === 'production' or config('app.env') === 'staging') {
+    URL::forceScheme('https');
+}
+
 Route::get('/', function () {
     return view('welcome');
 });
