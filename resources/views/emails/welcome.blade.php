@@ -7,6 +7,9 @@
 
 <body>
   <div style="padding:24px;">
+    <div class="img" style="margin: 0  auto 32px auto; width: 270px;">
+        <img src="https://fitcloset-clothing-items.s3.ap-northeast-1.amazonaws.com/assets/logo/FitCloset_logo.png" alt="FitCloset" style="width: 100%;">
+    </div>
     <div
       style="padding:40px; background-color:#f9fafb; border-radius:8px; max-width:600px; margin:0 auto; margin-bottom:32px; color:black;">
       <h2 style="margin-bottom:16px; font-weight:bold;">FitCloset へようこそ、{{ $user->nickname }} さん</h2>
