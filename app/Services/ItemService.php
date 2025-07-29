@@ -146,13 +146,12 @@ class ItemService
 
             // 新しい画像があればアップロードしてDB登録
             if (isset($data['file_name']) && $data['file_name'] instanceof \Illuminate\Http\UploadedFile) {
-                // 'items/xxxx.jpg' というパスが返る
-                $fileName = Storage::disk('s3')->put('items', $data['file_name'], 'public');
+                $fileName = ImageService::upload($data['file_name'], 'items');
 
 
                 if ($item && $item->image) { //既存アイテムなら更新する
                     //サーバーのファイル削除
-                    Storage::disk('s3')->delete($item->image->file_name);
+                    Storage::disk('s3')->delete('items/' . $item->image->file_name);
                     // 画像情報を update（file_name だけを更新）
                     $item->image->update([
                         'file_name' => $fileName,

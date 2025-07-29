@@ -25,7 +25,7 @@
             <span class="block mb-2 text-gray-700 font-medium">メイン画像</span>
             <div class="w-2/3 mx-auto">
               @if ($main)
-                <img src="{{ Storage::disk('s3')->url($main->image->file_name) }}" alt="衣類画像"
+                <img src="{{ Storage::disk('s3')->temporaryUrl('items/' . $main->image->file_name, now()->addMinutes(10)) }}" alt="衣類画像"
                   class="mt-2 rounded shadow w-full object-cover">
               @else
                 <div class="bg-gray-100 rounded-lg p-6 flex items-center justify-center">
@@ -39,7 +39,7 @@
             <span class="block mb-2 text-gray-700 font-medium">サブ画像1</span>
             <div class="w-2/3 mx-auto">
               @if ($sub1)
-                <img src="{{ Storage::disk('s3')->url($sub1->image->file_name) }}" alt="衣類画像"
+                <img src="{{ Storage::disk('s3')->temporaryUrl('items/' . $sub1->image->file_name, now()->addMinutes(10)) }}" alt="衣類画像"
                   class="mt-2 rounded shadow w-full object-cover">
               @else
                 <div class="bg-gray-100 rounded-lg p-6 flex items-center justify-center">
@@ -53,7 +53,7 @@
             <span class="block mb-2 text-gray-700 font-medium">サブ画像2</span>
             <div class="w-2/3 mx-auto">
               @if ($sub2)
-                <img src="{{ Storage::disk('s3')->url($sub2->image->file_name) }}" alt="衣類画像"
+                <img src="{{ Storage::disk('s3')->temporaryUrl('items/' . $sub2->image->file_name, now()->addMinutes(10)) }}" alt="衣類画像"
                   class="mt-2 rounded shadow w-full object-cover">
               @else
                 <div class="bg-gray-100 rounded-lg p-6 flex items-center justify-center">
