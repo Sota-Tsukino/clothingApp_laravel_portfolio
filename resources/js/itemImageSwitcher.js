@@ -40,6 +40,7 @@ export function createItemImageSwitcher() {
     const camisoleGroup = ["camisole", "thin-bustier", "thick-bustier"];
     const cardiganGroup = ["thin-cardigan", "thick-cardigan"];
     const coatGroup = ["thin-coat", "thick-coat"];
+    const onePieceGroup = ["thin-one-piece", "thick-one-piece"];
 
     function switchItemImg(categoryName, subCategoryName) {
         if (!subCategoryName) {
@@ -79,6 +80,8 @@ export function createItemImageSwitcher() {
                 topsImgEl.src = `${basePath}cardigan.svg`;
             } else if (coatGroup.includes(subCategoryName)) {
                 topsImgEl.src = `${basePath}coat.svg`;
+            } else if (onePieceGroup.includes(subCategoryName)) {
+                topsImgEl.src = `${basePath}one-piece.svg`;
             } else {
                 topsImgEl.src = `${basePath}${subCategoryName}.svg`;
             }
