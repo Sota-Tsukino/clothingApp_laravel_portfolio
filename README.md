@@ -1,4 +1,5 @@
-# FitCloset
+# FitCloset　衣類管理アプリ
+本アプリはポートフォリオアプリです。
 
 Laravel × Tailwind CSS で構築された衣類管理・提案アプリです。
 体格に応じた適切な衣類選びや、気温に応じた最適な衣類の提案を行います。
@@ -44,7 +45,7 @@ Laravel × Tailwind CSS で構築された衣類管理・提案アプリです�
 ### その他
 - Gmail SMTP（メール送信）
 - Google Forms（お問い合わせ）
-- Figma（ロゴ・アイコン作成）
+- Figma（画面遷移図・ロゴ・アイコン作成）
 
 ## AWS構成図
 <img width="600" alt="AWS構成図" src="https://fitcloset-clothing-items.s3.ap-northeast-1.amazonaws.com/assets/docs/FitCloset_AWS%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E6%A7%8B%E6%88%90.jpg">
@@ -56,4 +57,5 @@ Laravel × Tailwind CSS で構築された衣類管理・提案アプリです�
 <img width="995" alt="ER図" src="https://fitcloset-clothing-items.s3.ap-northeast-1.amazonaws.com/assets/docs/%E8%A1%A3%E9%A1%9E%E7%AE%A1%E7%90%86%E3%82%A2%E3%83%97%E3%83%AA_ER%E5%9B%B3_initial_release.png">
 
 ## デザイン（ロゴ・アイコン）
+※本ページに掲載しているロゴ・アイコンのデザインは、すべて学習目的で作成した自作のデザインです。無断転載・使用はご遠慮ください。
 <img width="995" alt="デザイン" src="https://fitcloset-clothing-items.s3.ap-northeast-1.amazonaws.com/assets/docs/%E3%83%AD%E3%82%B4%E3%83%BB%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3.png">
