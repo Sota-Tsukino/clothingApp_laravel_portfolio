@@ -5,18 +5,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Laravel</title>
+  <title>{{ config('app.name', 'Laravel') }}</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="{{ asset('images/icons/favicon.ico') }}">
   <!-- Scripts -->
   @vite(['resources/css/app.css'])
 </head>
 
-<body class="antialiased">
+<body class="antialiased bg-gray-100 dark:bg-dots-lighter">
   <div
-    class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+    class="relative mb-14 sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center  dark:bg-gray-900 selection:bg-red-500 selection:text-white">
     @if (Route::has('login'))
       <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
         @auth
@@ -35,14 +37,19 @@
     @endif
 
     <div class="max-w-7xl mx-auto p-6 lg:p-8">
-      <div class="flex justify-center">
-        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+      <div class="w-[213px] mx-auto">
+        <a href="/">
+          <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+        </a>
       </div>
 
       <div class="mt-16">
+        <h2 class="text-[24px] mb-4 font-semibold">FitClosetの特徴</h2>
+        <p class="text-[16px] mb-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+          体格情報や衣類アイテムを管理できる衣類管理アプリで、下記の機能があります。</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           <div
-            class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+            class="p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 flex">
             <div class="w-full">
               <div class="p-2 h-16 w-16 bg-gray-100 dark:bg-gray-800/20 flex justify-center rounded-full">
                 <img src="{{ asset('images/icons/BodyMeasurement.svg') }}" alt="体格情報アイコン" class="w-9/10">
@@ -60,7 +67,7 @@
           </div>
 
           <div
-            class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+            class="p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 flex">
             <div class="w-full">
               <div class="p-2 h-16 w-16 bg-gray-100 dark:bg-gray-800/20 flex justify-center rounded-full">
                 <img src="{{ asset('images/icons/ClothingItems.svg') }}" alt="体格情報アイコン" class="w-9/10">
@@ -78,7 +85,7 @@
           </div>
 
           <div
-            class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+            class="p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 flex">
             <div class="w-full">
               <div class="p-2 h-16 w-16 bg-gray-100 dark:bg-gray-800/20 flex justify-center rounded-full">
                 <img src="{{ asset('images/icons/Weather.svg') }}" alt="天気情報アイコン" class="w-9/10 object-contain">
@@ -96,7 +103,7 @@
           </div>
 
           <div
-            class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+            class="p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 flex">
             <div class="w-full">
               <div class="p-2 h-16 w-16 bg-gray-100 dark:bg-gray-800/20 flex justify-center rounded-full">
                 <img src="{{ asset('images/icons/Coordinate.svg') }}" alt="体格情報アイコン" class="w-9/10">
@@ -115,17 +122,10 @@
         </div>
       </div>
 
-      <div class="mt-16 px-0 text-center">
-        <p class="text-sm font-semibold text-gray-800 mb-2">
-          <a href="{{ route('terms_of_use') }}" class="underline">利用規約</a>・<a href="{{ route('privacy_policy') }}" class="underline">プライバシーポリシー</a>・<a href="{{ route('contact') }}" class="underline">お問い合わせ</a>
-        </p>
-          <small class="block font-semibold text-sm text-gray-800 dark:text-gray-200 leading-tight">
-          &copy; 2025 FitCloset All Rights reserved.
-        </small>
-
-      </div>
     </div>
-  </div>
+</div>
+<!-- Page Footer -->
+<x-footer />
 </body>
 
 </html>
