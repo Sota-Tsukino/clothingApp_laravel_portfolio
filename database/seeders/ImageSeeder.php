@@ -51,14 +51,14 @@ class ImageSeeder extends Seeder
                 'user_id' => 2,
                 'file_name' => 'shirt3.jpg',
             ],
-            [
-                'user_id' => 2,
-                'file_name' => 'shirt4.jpg',
-            ],
-            [
-                'user_id' => 2,
-                'file_name' => 'shirt5.jpg',
-            ],
+            // [
+            //     'user_id' => 2,
+            //     'file_name' => 'shirt4.jpg',
+            // ],
+            // [
+            //     'user_id' => 2,
+            //     'file_name' => 'shirt5.jpg',
+            // ],
             [
                 'user_id' => 2,
                 'file_name' => 'slacks1.jpg',
@@ -79,10 +79,10 @@ class ImageSeeder extends Seeder
             //     'user_id' => 1,
             //     'file_name' => 'slacks5.jpg',
             // ],
-            // [
-            //     'user_id' => 1,
-            //     'file_name' => 'T-shirt1.jpg',
-            // ],
+            [
+                'user_id' => 1,
+                'file_name' => 'T-shirt1.jpg',
+            ],
             // [
             //     'user_id' => 1,
             //     'file_name' => 'T-shirt2.jpg',
