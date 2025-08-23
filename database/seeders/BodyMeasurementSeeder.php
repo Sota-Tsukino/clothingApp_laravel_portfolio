@@ -47,6 +47,22 @@ class BodyMeasurementSeeder extends Seeder
                 'foot_length' => '11.5',
                 'foot_circumference' => '22.0',
             ],
+            [
+                'user_id' => '2',
+                'measured_at' => '2024/01/02',
+                'height' => '144.1',
+                'head_circumference' => '33.5',
+                'neck_circumference' => '44.2',
+                'shoulder_width' => '34.5',
+                'chest_circumference' => '26.5',
+                'waist' => '65.2',
+                'hip'=> '77',
+                'sleeve_length' => '45.0',
+                'yuki_length' => '78.0',
+                'inseam' => '34.0',
+                'foot_length' => '11.5',
+                'foot_circumference' => '22.0',
+            ],
         ]);
     }
 }
