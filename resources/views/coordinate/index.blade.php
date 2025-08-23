@@ -59,7 +59,7 @@
 
   <section class="text-gray-600 body-font">
     <div
-      class="container px-4 sm:px-5 py-6 sm:py-8 mx-auto bg-white rounded-lg my-6 sm:my-12 md:my-16 lg:my-24 shadow-lg">
+      class="max-w-5xl px-4 py-6 sm:py-8 mx-auto bg-white rounded-lg my-6 sm:my-12 md:my-16 lg:my-24 shadow-lg">
       <x-auth-validation-errors class="mb-4" :errors="$errors" />
       <x-flash-message status="session('status')" />
 

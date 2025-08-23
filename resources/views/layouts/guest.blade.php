@@ -11,6 +11,8 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <link rel="icon" type="image/png" href="{{ asset('images/icons/favicon.png') }}">
+
         <!-- Scripts -->
         @php
             $viteFiles = array_filter([
@@ -21,17 +23,19 @@
         @endphp
         @vite($viteFiles)
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-            <div>
+    <body class="min-h-screen flex flex-col justify-between font-sans text-gray-900 antialiased  bg-gray-100 dark:bg-gray-900">
+        <div class="pt-16">
+            <div class="w-52 mx-auto">
                 <a href="/">
                     <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-8 py-8 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+            <div class="my-20 w-full mx-auto max-w-md px-8 py-8 bg-white dark:bg-gray-800 shadow-md overflow-hidden rounded-lg">
                 {{ $slot }}
             </div>
         </div>
+        <!-- Page Footer -->
+        <x-footer />
     </body>
 </html>
