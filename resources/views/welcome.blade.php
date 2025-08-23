@@ -5,11 +5,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Laravel</title>
+  <title>{{ config('app.name', 'Laravel') }}</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+
+  <link rel="icon" type="image/png" href="{{ asset('images/icons/favicon.png') }}">
   <!-- Scripts -->
   @vite(['resources/css/app.css'])
 </head>
@@ -40,9 +42,11 @@
       </div>
 
       <div class="mt-16">
+        <h2 class="text-[24px] mb-4 font-semibold">FitClosetの特徴</h2>
+        <p class="text-[16px] mb-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">体格情報や衣類アイテムを管理できる衣類管理アプリで、下記の機能があります。</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           <div
-            class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+            class="p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 flex">
             <div class="w-full">
               <div class="p-2 h-16 w-16 bg-gray-100 dark:bg-gray-800/20 flex justify-center rounded-full">
                 <img src="{{ asset('images/icons/BodyMeasurement.svg') }}" alt="体格情報アイコン" class="w-9/10">
@@ -60,7 +64,7 @@
           </div>
 
           <div
-            class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+            class="p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 flex">
             <div class="w-full">
               <div class="p-2 h-16 w-16 bg-gray-100 dark:bg-gray-800/20 flex justify-center rounded-full">
                 <img src="{{ asset('images/icons/ClothingItems.svg') }}" alt="体格情報アイコン" class="w-9/10">
@@ -78,7 +82,7 @@
           </div>
 
           <div
-            class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+            class="p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 flex">
             <div class="w-full">
               <div class="p-2 h-16 w-16 bg-gray-100 dark:bg-gray-800/20 flex justify-center rounded-full">
                 <img src="{{ asset('images/icons/Weather.svg') }}" alt="天気情報アイコン" class="w-9/10 object-contain">
@@ -96,7 +100,7 @@
           </div>
 
           <div
-            class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+            class="p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 flex">
             <div class="w-full">
               <div class="p-2 h-16 w-16 bg-gray-100 dark:bg-gray-800/20 flex justify-center rounded-full">
                 <img src="{{ asset('images/icons/Coordinate.svg') }}" alt="体格情報アイコン" class="w-9/10">
