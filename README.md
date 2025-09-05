@@ -7,6 +7,8 @@ Laravel × Tailwind CSS で構築された衣類管理・提案アプリです�
 
 製作期間：4カ月（516時間）
 
+企画から設計・実装・AWS環境構築・デプロイまで一人で行いました。
+
 ## デモアカウント
 
 管理者用と一般ユーザー用アカウントを準備しておりますので、
@@ -65,13 +67,14 @@ Laravel × Tailwind CSS で構築された衣類管理・提案アプリです�
 ## 使用技術 Tech Stack　
 | カテゴリ | 技術 | 
 | --- | --- |
-| フロントエンド | HTML / CSS / Tailwind CSS / JavaScript / Node.js / Vite | 
-| バックエンド | PHP 8.3 / Laravel 10 / Composer |
+| フロントエンド | HTML / CSS / Tailwind CSS / JavaScript | 
+| バックエンド | PHP 8.3 / Laravel 10 |
 | データベース | MySQL 8.0 |
 | 認証 | Laravel Breeze |
-| 環境構築 | MAMP 5.0.6 / Apache |
+| 開発環境 | MAMP 5.0.6 / Apache | 
 | 外部API | OpenStreetMap API / OpenWeatherMap API  |
 | パッケージ・ライブラリ | Laravel Excel / Intervention Image / Micromodal.js / Choices.js / Alpine.js  |
+| 開発ツール | Node.js (npmのみ使用) / Composer / Vite |
 | インフラ | Amazon Web Service (VPC, Route53, ELB, ACM, EC2, RDS, S3) |
 | その他 | Gmail SMTP（メール送信）/ Google Forms（お問い合わせ）/ Figma（画面遷移図・ロゴ・アイコン作成）  |
 
@@ -114,7 +117,14 @@ Laravel × Tailwind CSS で構築された衣類管理・提案アプリです�
   
   インフラ構築からデプロイまで一通り学習する目的と、MySQL対応の柔軟性・拡張性から採用しました。HerokuやRenderはコスト面・対応DBの制約で不採用としました。
 
+## 開発時に意識したこと
+- Github Flowに沿ったブランチ運用
+  
+  個人開発ながらチーム開発を想定し、GitHub Flowをベースにブランチ運用・コミットメッセージのルール化を行いました。
 
+- ユーザー視点を意識した設計
+  
+  企画・設計フェーズでは支援員スタッフからユーザー目線のフィードバックを取り入れ、機能洗い出しやDB設計を入念に行いました。その結果、実装フェーズでの手戻りを大幅に減らせました。
 
 ## AWS構成図
 <img width="600" alt="AWS構成図" src="https://fitcloset-clothing-items.s3.ap-northeast-1.amazonaws.com/assets/docs/FitCloset_AWS%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E6%A7%8B%E6%88%90.jpg">
@@ -131,12 +141,9 @@ Laravel × Tailwind CSS で構築された衣類管理・提案アプリです�
 ## デザイン（ロゴ・アイコン）
 本ページに掲載しているロゴ・アイコンのデザインは、すべて学習目的で作成した自作のデザインです。　
 
-※無断転載・使用はご遠慮ください。
 <img width="995" alt="デザイン" src="https://fitcloset-clothing-items.s3.ap-northeast-1.amazonaws.com/assets/docs/%E3%83%AD%E3%82%B4%E3%83%BB%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3.png">
 
-## 今後の課題について
-- テストコードの実装
-- Dockerを用いた環境構築
-- コードのリファクタリングによる可読性・メンテナンス性の向上
-- CI/CDを使用した自動デプロイ
-- Github Flow / Git flowルールに基づく運用ルールの適用
+## 将来の展望
+- 「統計・分析」の機能を追加し、ユーザー所持の衣類アイテムをブランド、色、カテゴリー、金額別にグラフ表示できるようにしたいです。
+- 衣類アイテムにカレンダー機能と着用回数の登録機能を追加し、衣類提案ロジックや「統計・分析」の機能に活かしたいです。
+- チーム開発を想定して、CI/CDやDocker環境を導入し、開発効率と品質を高めたいです。
